@@ -7,7 +7,7 @@ export const authOptions: AuthOptions = {
     StravaProvider({
       clientId: process.env.STRAVA_CLIENT_ID || '',
       clientSecret: process.env.STRAVA_CLIENT_SECRET || '',
-      authorization: { params: { scope: 'read_all' } },
+      authorization: { params: { scope: 'activity:read_all' } },
     }),
   ],
   callbacks: {
@@ -18,15 +18,11 @@ export const authOptions: AuthOptions = {
       }
       return token;
     },
-    async session({ session, token, user }) {
-      // Send properties to the client, like an access_token
-      // @ts-ignore
-      session.accessToken = token.accessToken;
-
-      return session;
-    },
   },
   secret: process.env.AUTH_SECRET,
+  pages: {
+    signIn: '/auth/signin',
+  },
 };
 
 export default NextAuth(authOptions);
