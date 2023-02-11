@@ -1,4 +1,4 @@
-import { getInitColorSchemeScript } from '@mui/joy';
+import { getInitColorSchemeScript } from '@mui/joy/styles';
 import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {
