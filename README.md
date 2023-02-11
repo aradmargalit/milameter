@@ -8,6 +8,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+### Configure your environment file
+
+Copy `env.sample.local` and rename as `env.local`. Update the values with the relevant secrets from Slack.
+
 ```sh
 npm install # install dependencies
 
@@ -35,6 +39,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Documentation
 
-Still hankerin' for more information? See these detail pages below.
+Still hankerin' for more information? See these details here.
 
-- [Database & ORM](./docs/database.md)
+### Authentication
+
+* We use [next-auth](https://next-auth.js.org/) to manage our OAuth 2.0 connection with Strava
+* Sign in is available at `/auth/signin`
+
