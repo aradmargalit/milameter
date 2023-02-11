@@ -1,5 +1,5 @@
 import StravaLoginButtonContainer from '@/components/StravaLoginButton';
-import { Button, Stack, Typography } from '@mui/joy';
+import { Button, Sheet, Stack, Typography } from '@mui/joy';
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 
@@ -15,16 +15,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {session?.user ? (
-          <Stack direction="row" spacing={2}>
-            <Typography>Welcome, {session.user.name}</Typography>
-            <Button variant="soft" color="danger" onClick={() => signOut()}>
-              Log Out
-            </Button>
-          </Stack>
-        ) : (
-          <StravaLoginButtonContainer />
-        )}
+        <Sheet sx={{ margin: 4 }}>
+          {session?.user ? (
+            <Stack direction="row" spacing={2} alignItems="center" padding={4}>
+              <Typography>Welcome, {session.user.name}</Typography>
+              <Button variant="soft" color="danger" onClick={() => signOut()}>
+                Log Out
+              </Button>
+            </Stack>
+          ) : (
+            <StravaLoginButtonContainer />
+          )}
+        </Sheet>
       </main>
     </>
   );
