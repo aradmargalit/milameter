@@ -1,17 +1,12 @@
 import Button from '@mui/joy/Button';
-import { ReactNode } from 'react';
+
 import Face5 from '@mui/icons-material/Face5';
-import { borderColor } from '@mui/system';
 
 type StravaLoginButtonProps = {
-  children: ReactNode;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export default function StravaLoginButton({
-  children,
-  onClick,
-}: StravaLoginButtonProps) {
+export function StravaLoginButton({ onClick }: StravaLoginButtonProps) {
   return (
     <Button
       startDecorator={<Face5 />}
@@ -22,7 +17,7 @@ export default function StravaLoginButton({
         borderColor: 'var(--strava-orange)',
       }}
     >
-      {children}
+      Login with Strava
     </Button>
   );
 }
