@@ -4,13 +4,13 @@ import { ActivityResponse } from './responseTypes';
 export function convertActivityResponse(response: ActivityResponse): Activity {
   return {
     ...response,
-    averageCadence: response.average_cadence,
+    averageCadence: response.average_cadence ?? null,
     averageHeartrate: response.average_heartrate,
     averageSpeed: response.average_speed,
-    averageTemp: response.average_temp,
+    averageTemp: response.average_temp ?? null,
     elapsedTime: response.elapsed_time,
-    elevHigh: response.elev_high,
-    elevLow: response.elev_low,
+    elevHigh: response.elev_high ?? null,
+    elevLow: response.elev_low ?? null,
     startLatLng: response.start_latlng,
     endLatLng: response.end_latlng,
     externalId: response.external_id,

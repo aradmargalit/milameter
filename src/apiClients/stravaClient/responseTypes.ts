@@ -104,8 +104,8 @@ export type ActivityResponse = {
   has_heartrate: boolean;
   average_heartrate: number;
   max_heartrate: number;
-  elev_high: number;
-  elev_low: number;
+  elev_high?: number;
+  elev_low?: number;
   upload_id: number;
   upload_id_str: string;
   external_id: string;

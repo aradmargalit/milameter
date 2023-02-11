@@ -64,13 +64,13 @@ export type Activity = {
   endLatLng: [Latitude, Longitude];
   averageSpeed: MetersPerSecond;
   maxSpeed: MetersPerSecond;
-  averageCadence: number;
+  averageCadence: number | null;
   averageTemp: number;
   hasHeartrate: boolean;
   averageHeartrate: number;
   maxHeartrate: number;
-  elevHigh: number;
-  elevLow: number;
+  elevHigh: number | null;
+  elevLow: number | null;
   uploadId: number;
   uploadIdString: string;
   externalId: string;
