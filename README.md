@@ -46,3 +46,17 @@ Still hankerin' for more information? See these details here.
 * We use [next-auth](https://next-auth.js.org/) to manage our OAuth 2.0 connection with Strava
 * Sign in is available at `/auth/signin`
 
+### Styling
+
+We use [Joy UI](https://mui.com/joy-ui/getting-started/overview/), a variant of Material UI that accelerates development and has beautiful components out of the box.
+
+_Note: Joy UI is in alpha at the time of writing and is somewhat unstable_
+
+### Next 13 app directory adoption
+As of Next 13, the `app` directory [is in Beta](https://beta.nextjs.org/docs/getting-started). We are leaning into this change, migrating everything except API routes, which must stay at `pages/api`.
+
+This has a few considerations for development:
+
+1. Routing works much the same, but only files named `page.tsx` will be publicly accessible.
+1. Each `app` subdirectory can contain its own `layout.tsx` (for shared UI), `error.tsx` (for custom error states), `head.tsx` (for custom `<head>` tag stuff), and of course, `page.tsx`, for the page itself.
+1. By default, everything in the `app` directory is a [Server Component](https://beta.nextjs.org/docs/getting-started#thinking-in-server-components), significantly reducing bundle size for non-interactive components. If you need interactivity, just add `'use client'` at the top of the file.
