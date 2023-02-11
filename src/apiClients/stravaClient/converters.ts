@@ -1,0 +1,33 @@
+import { Activity } from './models';
+import { ActivityResponse } from './responseTypes';
+
+export function convertActivityResponse(response: ActivityResponse): Activity {
+  return {
+    ...response,
+    averageCadence: response.average_cadence,
+    averageHeartrate: response.average_heartrate,
+    averageSpeed: response.average_speed,
+    averageTemp: response.average_temp,
+    elapsedTime: response.elapsed_time,
+    elevHigh: response.elev_high,
+    elevLow: response.elev_low,
+    startLatLng: response.start_latlng,
+    endLatLng: response.end_latlng,
+    externalId: response.external_id,
+    hasHeartrate: response.has_heartrate,
+    maxHeartrate: response.max_heartrate,
+    maxSpeed: response.max_speed,
+    startDate: response.start_date,
+    startDateLocal: response.start_date_local,
+    movingTIme: response.moving_time,
+    totalElevationGain: response.total_elevation_gain,
+    uploadId: response.upload_id,
+    uploadIdString: response.upload_id_str,
+    UtcOffset: response.utc_offset,
+    map: {
+      ...response.map,
+      resourceState: response.map.resource_state,
+      summaryPolyline: response.map.summary_polyline,
+    },
+  };
+}

@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { Athlete } from './types';
+import { convertActivityResponse } from './converters';
+import { Activity } from './models';
+import { ActivityResponse, AthleteResponse } from './responseTypes';
 
 type AxiosInstance = ReturnType<typeof axios.create>;
 
@@ -21,7 +23,7 @@ export class StravaClient {
    * https://developers.strava.com/docs/reference/#api-Athletes
    */
   async getAthlete() {
-    const response = await this.axiosInstance.get<Athlete>('/athlete');
+    const response = await this.axiosInstance.get<AthleteResponse>('/athlete');
     return response.data;
   }
 
@@ -29,19 +31,23 @@ export class StravaClient {
    * Returns athlete activities
    * https://developers.strava.com/docs/reference/#api-Activities-getLoggedInAthleteActivities
    */
-  async getAthleteActivities(per_page = 5) {
+  async getAthleteActivities(per_page = 5): Promise<Activity[]> {
     try {
-      const response = await this.axiosInstance.get('/athlete/activities', {
-        params: {
-          // before: '1', // An epoch timestamp to use for filtering activities that have taken place before a certain time.
-          // after: '2', // An epoch timestamp to use for filtering activities that have taken place after a certain time.
-          per_page, // Number of items per page. Defaults to 30.
-        },
-      });
+      const response = await this.axiosInstance.get<ActivityResponse[]>(
+        '/athlete/activities',
+        {
+          params: {
+            // before: '1', // An epoch timestamp to use for filtering activities that have taken place before a certain time.
+            // after: '2', // An epoch timestamp to use for filtering activities that have taken place after a certain time.
+            per_page, // Number of items per page. Defaults to 30.
+          },
+        }
+      );
 
-      return response.data;
+      return response.data.map(convertActivityResponse);
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      return [];
     }
   }
 }
