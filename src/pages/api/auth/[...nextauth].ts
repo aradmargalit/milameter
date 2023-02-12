@@ -19,7 +19,6 @@ export const authOptions: AuthOptions = {
       return token;
     },
   },
-  secret: process.env.AUTH_SECRET,
   pages: {
     signIn: '/auth/signin',
   },

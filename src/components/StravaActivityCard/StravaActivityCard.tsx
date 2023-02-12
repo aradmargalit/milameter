@@ -27,7 +27,6 @@ export function StravaActivityCard({ activity }: StravaActivityCardProps) {
       }}
     >
       <AspectRatio ratio="1" sx={{ width: 90 }}>
-        {/* TODO: update to a mapbox (good luck lol) */}
         <ActivityMapContainer activity={activity} />
       </AspectRatio>
       <div>
