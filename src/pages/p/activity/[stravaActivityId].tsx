@@ -1,9 +1,11 @@
 import { Activity } from '@/apiClients/stravaClient/models';
 import { StravaClient } from '@/apiClients/stravaClient/stravaClient';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import Link from 'next/link';
 import { getToken } from 'next-auth/jwt';
 import { DetailedActivityMap } from '@/components/ActivityMap/DetailedActivityMap';
-import { Box } from '@mui/joy';
+import { Box, Button, Grid, Sheet, Stack, Typography } from '@mui/joy';
+import { ArrowBack } from '@mui/icons-material';
 
 type Data = {
   activity: Activity | null;
@@ -49,9 +51,23 @@ export default function StravaActivityDetailPage({
     return <p>Could not find activity</p>;
   }
 
+  const { activity } = data;
   return (
-    <Box sx={{ width: 700, height: 400 }}>
-      <DetailedActivityMap activity={data.activity} />
-    </Box>
+    <Sheet sx={{ margin: 4 }}>
+      <Stack spacing={2}>
+        <Link href="/p/strava-activities" passHref>
+          <Button startDecorator={<ArrowBack />}>Back</Button>
+        </Link>
+        <Typography level="h4">{activity.name}</Typography>
+        <Grid container>
+          <Grid xs={8}>
+            <Box sx={{ width: '100%', height: 500 }}>
+              <DetailedActivityMap activity={activity} />
+            </Box>
+          </Grid>
+          <Grid xs={4}>Sick Stats</Grid>
+        </Grid>
+      </Stack>
+    </Sheet>
   );
 }
