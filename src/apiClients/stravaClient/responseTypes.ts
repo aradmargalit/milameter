@@ -4,6 +4,7 @@ import {
   Longitude,
   Meters,
   MetersPerSecond,
+  Polyline,
   Seconds,
   SummaryPolyline,
   URL,
@@ -87,6 +88,7 @@ export type ActivityResponse = {
     id: string;
     summary_polyline: SummaryPolyline;
     resource_state: number;
+    polyline: Polyline;
   };
   trainer: boolean;
   commute: boolean;

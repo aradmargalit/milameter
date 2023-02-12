@@ -4,6 +4,7 @@ import {
   Longitude,
   Meters,
   MetersPerSecond,
+  Polyline,
   Seconds,
   SummaryPolyline,
   URL,
@@ -52,6 +53,7 @@ export type Activity = {
     id: string;
     summaryPolyline: SummaryPolyline;
     resourceState: number;
+    polyline: Polyline;
   };
   // trainer: boolean;
   // commute: boolean;
@@ -67,8 +69,8 @@ export type Activity = {
   averageCadence: number | null;
   averageTemp: number;
   hasHeartrate: boolean;
-  averageHeartrate: number;
-  maxHeartrate: number;
+  averageHeartrate: number | null;
+  maxHeartrate: number | null;
   elevHigh: number | null;
   elevLow: number | null;
   uploadId: number;
