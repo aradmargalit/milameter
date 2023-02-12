@@ -2,12 +2,6 @@ import { Activity } from '@/apiClients/stravaClient/models';
 import { StravaClient } from '@/apiClients/stravaClient/stravaClient';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
-import polyline from '@mapbox/polyline';
-import { Box } from '@mui/joy';
-import mapboxgl from 'mapbox-gl';
-import { useEffect, useRef } from 'react';
-import { swapLatLong } from '@/utils/coordinateUtils';
-import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
 import { DetailedActivityMap } from '@/components/ActivityMap/DetailedActivityMap';
 
 type Data = {

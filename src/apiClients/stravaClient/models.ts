@@ -69,8 +69,8 @@ export type Activity = {
   averageCadence: number | null;
   averageTemp: number;
   hasHeartrate: boolean;
-  averageHeartrate: number;
-  maxHeartrate: number;
+  averageHeartrate: number | null;
+  maxHeartrate: number | null;
   elevHigh: number | null;
   elevLow: number | null;
   uploadId: number;

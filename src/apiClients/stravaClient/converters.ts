@@ -5,7 +5,7 @@ export function convertActivityResponse(response: ActivityResponse): Activity {
   return {
     ...response,
     averageCadence: response.average_cadence ?? null,
-    averageHeartrate: response.average_heartrate,
+    averageHeartrate: response.average_heartrate ?? null,
     averageSpeed: response.average_speed,
     averageTemp: response.average_temp ?? null,
     elapsedTime: response.elapsed_time,
@@ -15,7 +15,7 @@ export function convertActivityResponse(response: ActivityResponse): Activity {
     endLatLng: response.end_latlng,
     externalId: response.external_id,
     hasHeartrate: response.has_heartrate,
-    maxHeartrate: response.max_heartrate,
+    maxHeartrate: response.max_heartrate ?? null,
     maxSpeed: response.max_speed,
     startDate: response.start_date,
     startDateLocal: response.start_date_local,
