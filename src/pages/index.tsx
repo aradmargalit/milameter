@@ -1,11 +1,30 @@
 import StravaLoginButtonContainer from '@/components/StravaLoginButton';
-import { Button, Sheet, Stack, Typography } from '@mui/joy';
-import { signOut, useSession } from 'next-auth/react';
+import { Sheet } from '@mui/joy';
+import { GetServerSideProps } from 'next';
+import { getServerSession } from 'next-auth';
 import Head from 'next/head';
+import { authOptions } from './api/auth/[...nextauth]';
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  // If we have an access token, redirect to the activities page
+  const session = await getServerSession(req, res, authOptions);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/p/strava-activities',
+        permanent: false,
+      },
+    };
+  }
+
+  // if we don't have an access token, proceed to Home (no props needed)
+  return {
+    props: {},
+  };
+};
 
 export default function Home() {
-  const { data: session } = useSession();
-
   return (
     <>
       <Head>
@@ -16,16 +35,7 @@ export default function Home() {
       </Head>
       <main>
         <Sheet sx={{ margin: 4 }}>
-          {session?.user ? (
-            <Stack direction="row" spacing={2} alignItems="center" padding={4}>
-              <Typography>Welcome, {session.user.name}</Typography>
-              <Button variant="soft" color="danger" onClick={() => signOut()}>
-                Log Out
-              </Button>
-            </Stack>
-          ) : (
-            <StravaLoginButtonContainer />
-          )}
+          <StravaLoginButtonContainer />
         </Sheet>
       </main>
     </>
