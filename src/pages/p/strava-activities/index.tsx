@@ -28,12 +28,12 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   }
 
   const stravaClient = new StravaClient(jwt.accessToken);
-  const firstNActivities = await stravaClient.getAthleteActivities(PAGE_SIZE);
+  const latestActivities = await stravaClient.getAthleteActivities(PAGE_SIZE);
 
   return {
     props: {
       data: {
-        activities: firstNActivities,
+        activities: latestActivities,
       },
     },
   };
