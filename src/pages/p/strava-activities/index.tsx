@@ -15,15 +15,12 @@ const PAGE_SIZE = 5;
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   context
 ) => {
-  // we should always have a session since this is a /p/* protected route
-  const session = await getServerSession(context.req, context.res, authOptions);
   const jwt = await getToken({
     req: context.req,
-    secret: process.env.AUTH_SECRET,
   });
 
   // This should never happen, but what can ya do
-  if (!session || !jwt) {
+  if (!jwt?.accessToken) {
     return {
       redirect: {
         destination: '/',
@@ -32,8 +29,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
     };
   }
 
-  // TODO: find a way to reuse this instance, fix casting
-  const stravaClient = new StravaClient(jwt.accessToken as string);
+  const stravaClient = new StravaClient(jwt.accessToken);
   const firstFiveActivities = await stravaClient.getAthleteActivities(
     PAGE_SIZE
   );
