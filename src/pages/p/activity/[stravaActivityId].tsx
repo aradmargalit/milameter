@@ -6,6 +6,8 @@ import polyline from '@mapbox/polyline';
 import { Box } from '@mui/joy';
 import mapboxgl from 'mapbox-gl';
 import { useEffect, useRef } from 'react';
+import { swapLatLong } from '@/utils/coordinateUtils';
+import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
 
 type Data = {
   activity: Activity | null;
@@ -52,11 +54,11 @@ export default function StravaActivityDetailPage({
   mapboxgl.accessToken =
     'pk.eyJ1IjoiYXJhZG1hcmdhbGl0IiwiYSI6ImNsZTBkbnk1NDE5eGkzbnIzNGE3Zmx1NnQifQ.qOh6-x2DMYLm9qcp9ck-MA';
 
-  const mapContainer = useRef(null);
-  const map = useRef(null);
+  const mapContainer = useRef<HTMLElement | null>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
-    if (map.current) return; // initialize map only once
+    if (map.current || !mapContainer.current) return; // initialize map only once
 
     // if there are no coordinates, there's nothing to show here
     if (!data.activity) {
@@ -64,41 +66,21 @@ export default function StravaActivityDetailPage({
     }
 
     const coordinates = polyline.decode(data.activity.map.polyline);
+    const correctedCoordinates = swapLatLong(coordinates);
+    const bounds = expandBounds(correctedCoordinates);
+    const geoJSON = makeLineFromCoordinates(correctedCoordinates);
 
-    // coordinates are swapped 🤪
-    for (let i = 0; i < coordinates.length; i++) {
-      coordinates[i] = [coordinates[i][1], coordinates[i][0]];
-    }
-
-    const geoJSON = {
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: coordinates,
-      },
-    };
-
-    // Pass the first coordinates in the LineString to `lngLatBounds` &
-    // wrap each coordinate pair in `extend` to include them in the bounds
-    // result.
-    const bounds = coordinates.reduce(function (bounds, coord) {
-      return bounds.extend(coord);
-    }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-
-    // @ts-ignore
     map.current = new mapboxgl.Map({
-      // @ts-ignore
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/outdoors-v12',
       attributionControl: false,
       bounds,
     });
 
-    // @ts-ignore
-    map.current!.on('load', function () {
-      // @ts-ignore
+    map.current.on('load', function () {
+      if (map.current === null) return;
+
       map.current.addSource('route', { type: 'geojson', data: geoJSON });
-      // @ts-ignore
       map.current.addLayer({
         id: 'route',
         type: 'line',
@@ -110,7 +92,6 @@ export default function StravaActivityDetailPage({
         },
       });
 
-      // @ts-ignore
       map.current.fitBounds(bounds, {
         padding: 80, // add some spacing around the coordinates
       });

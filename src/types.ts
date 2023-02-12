@@ -9,3 +9,6 @@ export type Latitude = number;
 export type Longitude = number;
 
 export type MetersPerSecond = number;
+
+export type Coordinate = [number, number];
+export type Coordinates = Coordinate[];
