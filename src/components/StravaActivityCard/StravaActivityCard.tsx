@@ -6,6 +6,7 @@ import Link from '@mui/joy/Link';
 import { Activity } from '@/apiClients/stravaClient/models';
 import Image from 'next/image';
 import { Chip } from '@mui/joy';
+import { ActivityMapContainer } from '../ActivityMap/ActivityMapContainer';
 
 type StravaActivityCardProps = {
   activity: Activity;
@@ -27,12 +28,7 @@ export function StravaActivityCard({ activity }: StravaActivityCardProps) {
     >
       <AspectRatio ratio="1" sx={{ width: 90 }}>
         {/* TODO: update to a mapbox (good luck lol) */}
-        <Image
-          src="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90"
-          alt=""
-          width={500}
-          height={200}
-        />
+        <ActivityMapContainer activity={activity} />
       </AspectRatio>
       <div>
         <Typography level="h2" fontSize="lg" id="card-description" mb={0.5}>

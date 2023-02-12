@@ -1,7 +1,4 @@
-import StravaLoginButtonContainer from '@/components/StravaLoginButton';
-import { Button, Sheet, Stack, Typography } from '@mui/joy';
-import { signOut, useSession } from 'next-auth/react';
-import Head from 'next/head';
+import { Sheet, Stack } from '@mui/joy';
 
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { Activity } from '@/apiClients/stravaClient/models';
@@ -36,7 +33,6 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   }
 
   // TODO: find a way to reuse this instance, fix casting
-  console.log(jwt.accessToken);
   const stravaClient = new StravaClient(jwt.accessToken as string);
   const firstFiveActivities = await stravaClient.getAthleteActivities(
     PAGE_SIZE
