@@ -10,7 +10,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### Configure your environment file
 
-Copy `env.sample.local` and rename as `env.local`. Update the values with the relevant secrets from Slack.
+Copy `env.local.sample` and rename as `env.local`. Update the values with the relevant secrets from Slack.
 
 ```sh
 npm install # install dependencies
