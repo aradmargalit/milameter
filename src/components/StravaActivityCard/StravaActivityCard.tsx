@@ -6,10 +6,14 @@ import Link from '@mui/joy/Link';
 import { Activity } from '@/apiClients/stravaClient/models';
 import { Chip } from '@mui/joy';
 import { ActivityMapContainer } from '../ActivityMap/ActivityMapContainer';
+import { metersToMiles } from '@/utils/distanceUtils';
+import { truncateTitle } from '@/utils/activityCardUtils';
 
 type StravaActivityCardProps = {
   activity: Activity;
 };
+
+const MAX_TITLE_LEN = 100;
 
 export function StravaActivityCard({ activity }: StravaActivityCardProps) {
   return (
@@ -17,7 +21,8 @@ export function StravaActivityCard({ activity }: StravaActivityCardProps) {
       variant="outlined"
       orientation="horizontal"
       sx={{
-        width: 700,
+        width: '100%',
+        height: 200,
         gap: 2,
         '&:hover': {
           boxShadow: 'md',
@@ -25,7 +30,7 @@ export function StravaActivityCard({ activity }: StravaActivityCardProps) {
         },
       }}
     >
-      <AspectRatio ratio="1" sx={{ width: 90 }}>
+      <AspectRatio ratio="1" sx={{ minWidth: 90 }}>
         <ActivityMapContainer activity={activity} />
       </AspectRatio>
       <div>
@@ -36,11 +41,11 @@ export function StravaActivityCard({ activity }: StravaActivityCardProps) {
             href={`/p/activity/${activity.id}`}
             sx={{ color: 'text.tertiary' }}
           >
-            {activity.name}
+            {truncateTitle(activity.name, MAX_TITLE_LEN)}
           </Link>
         </Typography>
         <Typography fontSize="sm" aria-describedby="card-description" mb={1}>
-          {activity.distance} meters
+          {metersToMiles(activity.distance).toFixed(2)} mi
         </Typography>
         <Chip
           variant="outlined"

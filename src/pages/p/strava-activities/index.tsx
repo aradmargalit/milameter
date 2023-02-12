@@ -1,4 +1,4 @@
-import { Sheet, Stack } from '@mui/joy';
+import { Grid, Sheet } from '@mui/joy';
 
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { Activity } from '@/apiClients/stravaClient/models';
@@ -8,7 +8,7 @@ import StravaActivityCard from '@/components/StravaActivityCard';
 
 type Data = { activities: Activity[] };
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 9;
 
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   context
@@ -28,14 +28,12 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   }
 
   const stravaClient = new StravaClient(jwt.accessToken);
-  const firstFiveActivities = await stravaClient.getAthleteActivities(
-    PAGE_SIZE
-  );
+  const firstNActivities = await stravaClient.getAthleteActivities(PAGE_SIZE);
 
   return {
     props: {
       data: {
-        activities: firstFiveActivities,
+        activities: firstNActivities,
       },
     },
   };
@@ -47,11 +45,13 @@ export default function StravaActivities({
   return (
     <main>
       <Sheet sx={{ margin: 4, padding: 4 }}>
-        <Stack spacing={2}>
+        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
           {data.activities.map((d) => (
-            <StravaActivityCard key={d.id} activity={d} />
+            <Grid key={d.id} xs={12} md={6} lg={4}>
+              <StravaActivityCard activity={d} />
+            </Grid>
           ))}
-        </Stack>
+        </Grid>
       </Sheet>
     </main>
   );
