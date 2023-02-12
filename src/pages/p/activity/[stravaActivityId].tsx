@@ -3,6 +3,7 @@ import { StravaClient } from '@/apiClients/stravaClient/stravaClient';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { DetailedActivityMap } from '@/components/ActivityMap/DetailedActivityMap';
+import { Box } from '@mui/joy';
 
 type Data = {
   activity: Activity | null;
@@ -49,8 +50,8 @@ export default function StravaActivityDetailPage({
   }
 
   return (
-    <div>
+    <Box sx={{ width: 700, height: 400 }}>
       <DetailedActivityMap activity={data.activity} />
-    </div>
+    </Box>
   );
 }
