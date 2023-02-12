@@ -1,16 +1,15 @@
 import StravaLoginButtonContainer from '@/components/StravaLoginButton';
 import { Sheet } from '@mui/joy';
 import { GetServerSideProps } from 'next';
-import { getToken } from 'next-auth/jwt';
+import { getServerSession } from 'next-auth';
 import Head from 'next/head';
+import { authOptions } from './api/auth/[...nextauth]';
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const jwt = await getToken({
-    req: context.req,
-  });
-
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // If we have an access token, redirect to the activities page
-  if (jwt?.accessToken) {
+  const session = await getServerSession(req, res, authOptions);
+
+  if (session) {
     return {
       redirect: {
         destination: '/p/strava-activities',

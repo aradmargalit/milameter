@@ -19,6 +19,9 @@ export const authOptions: AuthOptions = {
       return token;
     },
   },
+  session: {
+    maxAge: 6 * 60 * 60, // 6 hours
+  },
   pages: {
     signIn: '/auth/signin',
   },
