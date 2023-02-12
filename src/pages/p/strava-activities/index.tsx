@@ -2,8 +2,6 @@ import { Sheet, Stack } from '@mui/joy';
 
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { Activity } from '@/apiClients/stravaClient/models';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { StravaClient } from '@/apiClients/stravaClient/stravaClient';
 import { getToken } from 'next-auth/jwt';
 import StravaActivityCard from '@/components/StravaActivityCard';

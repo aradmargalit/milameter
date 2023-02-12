@@ -31,17 +31,17 @@ export function StravaActivityCard({ activity }: StravaActivityCardProps) {
       </AspectRatio>
       <div>
         <Typography level="h2" fontSize="lg" id="card-description" mb={0.5}>
-          {activity.name}
-        </Typography>
-        <Typography fontSize="sm" aria-describedby="card-description" mb={1}>
           <Link
             overlay
             underline="none"
-            href="#interactive-card"
+            href={`/p/activity/${activity.id}`}
             sx={{ color: 'text.tertiary' }}
           >
-            {activity.distance} meters
+            {activity.name}
           </Link>
+        </Typography>
+        <Typography fontSize="sm" aria-describedby="card-description" mb={1}>
+          {activity.distance} meters
         </Typography>
         <Chip
           variant="outlined"

@@ -13,6 +13,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/public-sans": "^4.5.12",
+    "@mapbox/polyline": "^1.1.1",
     "@mui/icons-material": "^5.11.0",
     "@mui/joy": "^5.0.0-alpha.66",
     "@mui/material": "^5.11.8",
@@ -31,6 +32,7 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
+    "@types/mapbox__polyline": "^1.0.2",
     "@types/mapbox-gl": "^2.7.10",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.3",

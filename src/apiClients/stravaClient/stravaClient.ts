@@ -50,4 +50,20 @@ export class StravaClient {
       return [];
     }
   }
+
+  /**
+   * Returns a detailed representation of a single activity
+   * @param id the strava activity ID
+   */
+  async getActivityById(id: string): Promise<Activity | null> {
+    try {
+      const response = await this.axiosInstance.get<ActivityResponse>(
+        `/activities/${id}`
+      );
+      return convertActivityResponse(response.data);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
 }
