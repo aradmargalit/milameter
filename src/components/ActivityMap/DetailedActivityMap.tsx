@@ -2,7 +2,6 @@ import { Activity } from '@/apiClients/stravaClient/models';
 import { swapLatLong } from '@/utils/coordinateUtils';
 import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
 import polyline from '@mapbox/polyline';
-import { Box } from '@mui/joy';
 import { useRef } from 'react';
 import { MapRef, Layer, LayerProps, Source } from 'react-map-gl';
 import MapboxMap from '../MapboxMap';
@@ -52,16 +51,14 @@ export function DetailedActivityMap({ activity }: DetailedActivityMapProps) {
   };
 
   return (
-    <Box sx={{ height: '700px' }}>
-      <MapboxMap
-        ref={mapRef}
-        onLoad={handleMapLoad}
-        initialViewState={{ bounds }}
-      >
-        <Source id="route" type="geojson" data={geoJSON} lineMetrics>
-          <Layer {...routeLayer} />
-        </Source>
-      </MapboxMap>
-    </Box>
+    <MapboxMap
+      ref={mapRef}
+      onLoad={handleMapLoad}
+      initialViewState={{ bounds }}
+    >
+      <Source id="route" type="geojson" data={geoJSON} lineMetrics>
+        <Layer {...routeLayer} />
+      </Source>
+    </MapboxMap>
   );
 }
