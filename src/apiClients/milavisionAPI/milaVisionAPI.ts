@@ -43,7 +43,9 @@ export class MilavisionAPI {
     );
 
     const localizedActivities = await Promise.all<Activity>(
-      latestActivities.map(this.buildActivity)
+      latestActivities.map((activityResponse) =>
+        this.buildActivity(activityResponse)
+      )
     );
     return localizedActivities;
   }
