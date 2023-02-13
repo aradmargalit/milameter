@@ -30,7 +30,7 @@ export type Athlete = {
 /**
  * The fields we care about from a Strava activity
  */
-export type Activity = {
+export type StravaActivity = {
   // resourceState: number;
   // athlete: { id: Athlete['id']; resourceState: number };
   name: string;

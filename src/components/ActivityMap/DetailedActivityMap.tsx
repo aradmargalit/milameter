@@ -1,4 +1,4 @@
-import { Activity } from '@/apiClients/stravaClient/models';
+import { Activity } from '@/apiClients/mapBoxClient/models';
 import { swapLatLong } from '@/utils/coordinateUtils';
 import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
 import polyline from '@mapbox/polyline';

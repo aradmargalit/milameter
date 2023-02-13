@@ -1,10 +1,11 @@
 import { Grid, Sheet } from '@mui/joy';
 
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { Activity } from '@/apiClients/stravaClient/models';
 import { StravaClient } from '@/apiClients/stravaClient/stravaClient';
 import { getToken } from 'next-auth/jwt';
 import StravaActivityCard from '@/components/StravaActivityCard';
+import { MapBoxClient } from '@/apiClients/mapBoxClient/mapBoxClient';
+import { Activity } from '@/apiClients/mapBoxClient/models';
 
 type Data = { activities: Activity[] };
 
@@ -30,10 +31,17 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   const stravaClient = new StravaClient(jwt.accessToken);
   const latestActivities = await stravaClient.getAthleteActivities(PAGE_SIZE);
 
+  const mapBoxClient = new MapBoxClient();
+  const localizedActivities = await Promise.all(
+    latestActivities.map(
+      async (activity) => await mapBoxClient.addLocationName(activity)
+    )
+  );
+
   return {
     props: {
       data: {
-        activities: latestActivities,
+        activities: localizedActivities,
       },
     },
   };
