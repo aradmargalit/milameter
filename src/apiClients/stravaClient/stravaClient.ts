@@ -31,7 +31,7 @@ export class StravaClient {
    * Returns athlete activities
    * https://developers.strava.com/docs/reference/#api-Activities-getLoggedInAthleteActivities
    */
-  async getAthleteActivities(per_page = 5): Promise<StravaActivity[]> {
+  async getAthleteActivities(per_page = 5): Promise<StravaActivityResponse[]> {
     try {
       const response = await this.axiosInstance.get<StravaActivityResponse[]>(
         '/athlete/activities',
@@ -44,7 +44,7 @@ export class StravaClient {
         }
       );
 
-      return response.data.map(convertStravaActivityResponse);
+      return response.data;
     } catch (e) {
       console.error(e);
       return [];

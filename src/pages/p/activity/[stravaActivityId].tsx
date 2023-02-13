@@ -1,12 +1,11 @@
-import { StravaClient } from '@/apiClients/stravaClient/stravaClient';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
 import { getToken } from 'next-auth/jwt';
 import { DetailedActivityMap } from '@/components/ActivityMap/DetailedActivityMap';
 import { Box, Button, Grid, Sheet, Stack, Typography } from '@mui/joy';
 import { ArrowBack } from '@mui/icons-material';
-import { MapBoxClient } from '@/apiClients/mapBoxClient/mapBoxClient';
-import { Activity } from '@/apiClients/mapBoxClient/models';
+import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
+import { Activity } from '@/models/activity';
 
 type Data = {
   activity: Activity | null;
@@ -37,14 +36,8 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
     };
   }
 
-  const stravaClient = new StravaClient(jwt.accessToken);
-  const stravaActivity = await stravaClient.getActivityById(stravaActivityId);
-
-  const mapBoxClient = new MapBoxClient();
-  const activity = stravaActivity
-    ? await mapBoxClient.addLocationName(stravaActivity)
-    : null;
-
+  const milavisionAPI = new MilavisionAPI(jwt.accessToken);
+  const activity = await milavisionAPI.getActivityById(stravaActivityId);
   return {
     props: { data: { activity } },
   };
