@@ -1,3 +1,4 @@
+import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { Stack, Typography } from '@mui/joy';
 import { ChangeEventHandler, useRef, useState } from 'react';
 import ErrorAlert from '../ErrorAlert';
@@ -7,6 +8,7 @@ export function GarminFilePicker() {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const [files, setFileList] = useState<File[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
+  const { uploadActivities } = useGarminActivities();
 
   // inspired 😉 by https://github.com/meinstein/react-sage/blob/master/src/useFilePicker.tsx
   const handleChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
@@ -26,6 +28,8 @@ export function GarminFilePicker() {
 
     // set local state so we know how many files we have
     setFileList(fileList);
+    // send files to context
+    uploadActivities(fileList);
   };
 
   return (
