@@ -6,6 +6,7 @@ import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import { Inter } from '@next/font/google';
 import { CssVarsProvider } from '@mui/joy/styles';
+import { GarminActivityProvider } from '@/contexts/GarminActivityContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,9 +14,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <CssVarsProvider>
-        <main className={inter.className}>
-          <Component {...pageProps} />
-        </main>
+        <GarminActivityProvider>
+          <main className={inter.className}>
+            <Component {...pageProps} />
+          </main>
+        </GarminActivityProvider>
       </CssVarsProvider>
     </SessionProvider>
   );

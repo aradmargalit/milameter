@@ -1,10 +1,11 @@
-import { Grid, Sheet } from '@mui/joy';
-
+import { Divider, Sheet, Stack, Typography } from '@mui/joy';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
-import StravaActivityCard from '@/components/StravaActivityCard';
 import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
 import { Activity } from '@/models/activity';
+import ActivityGrid from '@/components/ActivityGrid';
+import GarminFilePicker from '@/components/GarminFilePicker';
+import { useGarminActivities } from '@/contexts/GarminActivityContext';
 
 type Data = { activities: Activity[] };
 
@@ -42,16 +43,22 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
 export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { garminActivities } = useGarminActivities();
+
   return (
     <main>
       <Sheet sx={{ margin: 4, padding: 4 }}>
-        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-          {data.activities.map((d) => (
-            <Grid key={d.id} xs={12} md={6} lg={4}>
-              <StravaActivityCard activity={d} />
-            </Grid>
+        <GarminFilePicker />
+        <Stack spacing={2}>
+          <Typography>Garmin activities</Typography>
+          {garminActivities.map((ga) => (
+            <div key={ga.records[0].timestamp}>
+              Activity has {ga.records.length} records. Enjoy!
+            </div>
           ))}
-        </Grid>
+        </Stack>
+        <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
+        <ActivityGrid activities={data.activities} />
       </Sheet>
     </main>
   );
