@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { convertActivityResponse } from './converters';
-import { Activity } from './models';
-import { ActivityResponse, AthleteResponse } from './responseTypes';
+import { convertStravaActivityResponse } from './converters';
+import { StravaActivity } from './models';
+import { StravaActivityResponse, AthleteResponse } from './responseTypes';
 
 type AxiosInstance = ReturnType<typeof axios.create>;
 
@@ -31,9 +31,9 @@ export class StravaClient {
    * Returns athlete activities
    * https://developers.strava.com/docs/reference/#api-Activities-getLoggedInAthleteActivities
    */
-  async getAthleteActivities(per_page = 5): Promise<Activity[]> {
+  async getAthleteActivities(per_page = 5): Promise<StravaActivityResponse[]> {
     try {
-      const response = await this.axiosInstance.get<ActivityResponse[]>(
+      const response = await this.axiosInstance.get<StravaActivityResponse[]>(
         '/athlete/activities',
         {
           params: {
@@ -44,7 +44,7 @@ export class StravaClient {
         }
       );
 
-      return response.data.map(convertActivityResponse);
+      return response.data;
     } catch (e) {
       console.error(e);
       return [];
@@ -55,12 +55,12 @@ export class StravaClient {
    * Returns a detailed representation of a single activity
    * @param id the strava activity ID
    */
-  async getActivityById(id: string): Promise<Activity | null> {
+  async getActivityById(id: string): Promise<StravaActivity | null> {
     try {
-      const response = await this.axiosInstance.get<ActivityResponse>(
+      const response = await this.axiosInstance.get<StravaActivityResponse>(
         `/activities/${id}`
       );
-      return convertActivityResponse(response.data);
+      return convertStravaActivityResponse(response.data);
     } catch (e) {
       console.error(e);
       return null;

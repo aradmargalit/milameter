@@ -1,4 +1,4 @@
-import { Activity } from '@/apiClients/stravaClient/models';
+import { Activity } from '@/apiClients/mapBoxClient/models';
 import { Box } from '@mui/joy';
 import MapboxMap from '../MapboxMap';
 

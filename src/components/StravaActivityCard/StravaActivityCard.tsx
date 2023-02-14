@@ -3,11 +3,12 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
 import Link from '@mui/joy/Link';
-import { Activity } from '@/apiClients/stravaClient/models';
 import { Chip } from '@mui/joy';
 import { ActivityMapContainer } from '../ActivityMap/ActivityMapContainer';
 import { metersToMiles } from '@/utils/distanceUtils';
 import { truncateTitle } from '@/utils/activityCardUtils';
+import { Place } from '@mui/icons-material';
+import { Activity } from '@/apiClients/mapBoxClient/models';
 
 type StravaActivityCardProps = {
   activity: Activity;
@@ -46,6 +47,9 @@ export function StravaActivityCard({ activity }: StravaActivityCardProps) {
         </Typography>
         <Typography fontSize="sm" aria-describedby="card-description" mb={1}>
           {metersToMiles(activity.distance).toFixed(2)} mi
+        </Typography>
+        <Typography fontSize="sm" startDecorator={<Place />} mb={1}>
+          {activity.locationName}
         </Typography>
         <Chip
           variant="outlined"

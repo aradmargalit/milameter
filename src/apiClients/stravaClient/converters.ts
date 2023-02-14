@@ -1,7 +1,9 @@
-import { Activity } from './models';
-import { ActivityResponse } from './responseTypes';
+import { StravaActivity } from './models';
+import { StravaActivityResponse } from './responseTypes';
 
-export function convertActivityResponse(response: ActivityResponse): Activity {
+export function convertStravaActivityResponse(
+  response: StravaActivityResponse
+): StravaActivity {
   return {
     ...response,
     averageCadence: response.average_cadence ?? null,

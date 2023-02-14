@@ -65,7 +65,7 @@ export type AthleteResponse = {
   profile: URL;
 };
 
-export type ActivityResponse = {
+export type StravaActivityResponse = {
   resource_state: number;
   athlete: { id: AthleteResponse['id']; resource_state: number };
   name: string;
