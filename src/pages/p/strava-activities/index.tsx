@@ -1,9 +1,10 @@
-import { Sheet } from '@mui/joy';
+import { Divider, Sheet } from '@mui/joy';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
 import { Activity } from '@/models/activity';
 import ActivityGrid from '@/components/ActivityGrid';
+import GarminFilePicker from '@/components/GarminFilePicker';
 
 type Data = { activities: Activity[] };
 
@@ -44,6 +45,8 @@ export default function StravaActivities({
   return (
     <main>
       <Sheet sx={{ margin: 4, padding: 4 }}>
+        <GarminFilePicker />
+        <Divider />
         <ActivityGrid activities={data.activities} />
       </Sheet>
     </main>
