@@ -6,6 +6,8 @@ import { Box, Button, Grid, Sheet, Stack, Typography } from '@mui/joy';
 import { ArrowBack } from '@mui/icons-material';
 import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
 import { Activity } from '@/models/activity';
+import { useGarminActivities } from '@/contexts/GarminActivityContext';
+import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
 
 type Data = {
   activity: Activity | null;
@@ -46,6 +48,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
 export default function StravaActivityDetailPage({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { selectedGarminActivity } = useGarminActivities();
   if (!data.activity) {
     return <p>Could not find activity</p>;
   }
@@ -61,10 +64,18 @@ export default function StravaActivityDetailPage({
         <Grid container>
           <Grid xs={8}>
             <Box sx={{ width: '100%', height: 500 }}>
-              <DetailedActivityMap activity={activity} />
+              <DetailedActivityMap
+                activity={activity}
+                garminActivity={selectedGarminActivity}
+              />
             </Box>
           </Grid>
-          <Grid xs={4}>Sick Stats</Grid>
+          <Grid xs={4}>
+            <ActivityStats
+              activity={activity}
+              garminActivity={selectedGarminActivity}
+            />
+          </Grid>
         </Grid>
       </Stack>
     </Sheet>

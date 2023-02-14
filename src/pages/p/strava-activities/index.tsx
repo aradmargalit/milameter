@@ -1,4 +1,4 @@
-import { Divider, Sheet, Stack, Typography } from '@mui/joy';
+import { Divider, Sheet } from '@mui/joy';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
@@ -72,29 +72,22 @@ export default function StravaActivities({
       activityDistance(gA, activity)
     );
     const argMin = distances.indexOf(Math.min(...distances));
-    console.log(distances, argMin, distances[argMin]);
 
-    let matchedGarminActivity = null;
     if (distances[argMin] < 0.5) {
-      matchedGarminActivity = garminActivities[argMin];
+      return garminActivities[argMin];
     }
-    return { ...activity, matchedGarminActivity };
+    return null;
   });
 
   return (
     <main>
       <Sheet sx={{ margin: 4, padding: 4 }}>
         <GarminFilePicker />
-        <Stack spacing={2}>
-          <Typography>Garmin activities</Typography>
-          {garminActivities.map((ga) => (
-            <div key={ga.records[0].timestamp}>
-              Activity has {ga.records.length} records. Enjoy!
-            </div>
-          ))}
-        </Stack>
         <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
-        <ActivityGrid activities={mappedActivities} />
+        <ActivityGrid
+          activities={data.activities}
+          matchingGarminActivities={mappedActivities}
+        />
       </Sheet>
     </main>
   );

@@ -1,4 +1,4 @@
-import { Activity } from '@/apiClients/mapBoxClient/models';
+import { Activity } from '@/models/activity';
 import { Box } from '@mui/joy';
 import MapboxMap from '../MapboxMap';
 

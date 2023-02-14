@@ -1,4 +1,5 @@
-import { Activity } from '@/apiClients/mapBoxClient/models';
+import { Activity } from '@/models/activity';
+import { GarminActivity } from '@/models/garminActivity';
 import { swapLatLong } from '@/utils/coordinateUtils';
 import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
 import polyline from '@mapbox/polyline';
@@ -8,15 +9,24 @@ import MapboxMap from '../MapboxMap';
 
 type DetailedActivityMapProps = {
   activity: Activity;
+  garminActivity: GarminActivity | null;
 };
 
-export function DetailedActivityMap({ activity }: DetailedActivityMapProps) {
+export function DetailedActivityMap({
+  activity,
+  garminActivity,
+}: DetailedActivityMapProps) {
   const mapRef = useRef<MapRef | null>(null);
 
   const coordinates = polyline.decode(activity.map.polyline);
   const correctedCoordinates = swapLatLong(coordinates);
   const bounds = expandBounds(correctedCoordinates);
   const geoJSON = makeLineFromCoordinates(correctedCoordinates);
+
+  let garminGeoJSON = null;
+  if (garminActivity) {
+    garminGeoJSON = makeLineFromCoordinates(garminActivity.coordinates);
+  }
 
   function handleMapLoad() {
     mapRef.current?.fitBounds(bounds, {
@@ -50,6 +60,32 @@ export function DetailedActivityMap({ activity }: DetailedActivityMapProps) {
     },
   };
 
+  const dogRouteLayer: LayerProps = {
+    id: 'dogRoute',
+    type: 'line',
+    source: 'dogRoute',
+    paint: {
+      'line-color': 'blue',
+      'line-width': 5,
+      'line-opacity': 0.75,
+      'line-gradient': [
+        'interpolate',
+        ['linear'],
+        ['line-progress'],
+        0,
+        'blue',
+        0.5,
+        'darkblue',
+        1,
+        'blue',
+      ],
+    },
+    layout: {
+      'line-cap': 'round',
+      'line-join': 'round',
+    },
+  };
+
   return (
     <MapboxMap
       ref={mapRef}
@@ -59,6 +95,11 @@ export function DetailedActivityMap({ activity }: DetailedActivityMapProps) {
       <Source id="route" type="geojson" data={geoJSON} lineMetrics>
         <Layer {...routeLayer} />
       </Source>
+      {garminGeoJSON ? (
+        <Source id="dogRoute" type="geojson" data={garminGeoJSON} lineMetrics>
+          <Layer {...dogRouteLayer} />
+        </Source>
+      ) : null}
     </MapboxMap>
   );
 }
