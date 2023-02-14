@@ -41,7 +41,7 @@ export class MapBoxClient {
         }
       );
 
-      return response.data.features[0].text;
+      return response.data.features[0]?.text ?? 'Unknown';
     } catch (e) {
       console.error(e);
       return 'Unknown';
