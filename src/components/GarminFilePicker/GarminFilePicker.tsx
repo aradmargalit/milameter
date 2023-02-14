@@ -45,12 +45,7 @@ export function GarminFilePicker() {
         accept=".fit"
         onChange={handleChange}
       />
-      {errors.length ? <ErrorAlert errors={errors} /> : null}
-      {files.length ? (
-        <Typography>
-          You have selected {files.length} file{files.length > 1 ? 's' : ''}
-        </Typography>
-      ) : null}
+      {errors.length && <ErrorAlert errors={errors} />}
     </Stack>
   );
 }

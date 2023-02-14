@@ -17,11 +17,11 @@ export function ActivityStats({
       <Typography level="body1">
         🏃‍♂️: {metersToMiles(activity.distance).toFixed(2)} mi
       </Typography>
-      {garminActivity ? (
+      {garminActivity && (
         <Typography level="body1">
           🐶: {metersToMiles(garminActivity.distanceMeters).toFixed(2)} mi
         </Typography>
-      ) : null}
+      )}
     </div>
   );
 }

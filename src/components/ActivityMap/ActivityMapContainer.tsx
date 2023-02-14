@@ -9,7 +9,7 @@ type ActivityMapContainerProps = {
 export function ActivityMapContainer({ activity }: ActivityMapContainerProps) {
   return (
     <Box sx={{ height: '90px' }}>
-      {activity.startLatLng[0] ? (
+      {activity.startLatLng[0] && (
         <MapboxMap
           initialViewState={{
             bounds: [
@@ -21,7 +21,7 @@ export function ActivityMapContainer({ activity }: ActivityMapContainerProps) {
           }}
           interactive={false}
         />
-      ) : null}
+      )}
     </Box>
   );
 }

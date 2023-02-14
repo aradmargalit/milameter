@@ -95,11 +95,11 @@ export function DetailedActivityMap({
       <Source id="route" type="geojson" data={geoJSON} lineMetrics>
         <Layer {...routeLayer} />
       </Source>
-      {garminGeoJSON ? (
+      {garminGeoJSON && (
         <Source id="dogRoute" type="geojson" data={garminGeoJSON} lineMetrics>
           <Layer {...dogRouteLayer} />
         </Source>
-      ) : null}
+      )}
     </MapboxMap>
   );
 }

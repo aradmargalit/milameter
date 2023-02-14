@@ -68,7 +68,7 @@ export function StravaActivityCard({
         >
           {activity.type}
         </Chip>
-        {matchedGarminActivity ? (
+        {matchedGarminActivity && (
           <Chip
             variant="outlined"
             color="success"
@@ -77,7 +77,7 @@ export function StravaActivityCard({
           >
             🐶 Good Dogette
           </Chip>
-        ) : null}
+        )}
       </div>
     </Card>
   );
