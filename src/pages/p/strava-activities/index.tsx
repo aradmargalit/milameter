@@ -6,6 +6,8 @@ import { Activity } from '@/models/activity';
 import ActivityGrid from '@/components/ActivityGrid';
 import GarminFilePicker from '@/components/GarminFilePicker';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
+import { GarminActivity } from '@/models/garminActivity';
+import { DateTime } from 'luxon';
 
 type Data = { activities: Activity[] };
 
@@ -40,10 +42,44 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   };
 };
 
+function activityDistance(
+  garminActivity: GarminActivity,
+  activity: Activity
+): number {
+  // return [0, 1]
+  const targetStartTime = DateTime.fromISO(activity.startDate, {
+    setZone: true,
+  }).toLocal();
+  const garminStartTime = DateTime.fromJSDate(
+    new Date(garminActivity.records[0].timestamp)
+  );
+  const startTimeOffset = Math.abs(
+    targetStartTime.diff(garminStartTime, 'seconds').seconds
+  );
+
+  const BIGGEST_GAP_SEC = 30 * 60; // 30 minutes
+  const fracGap = Math.min(startTimeOffset, BIGGEST_GAP_SEC) / BIGGEST_GAP_SEC;
+  return fracGap;
+}
+
 export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { garminActivities } = useGarminActivities();
+
+  const mappedActivities = data.activities.map((activity) => {
+    const distances = garminActivities.map((gA) =>
+      activityDistance(gA, activity)
+    );
+    const argMin = distances.indexOf(Math.min(...distances));
+    console.log(distances, argMin, distances[argMin]);
+
+    let matchedGarminActivity = null;
+    if (distances[argMin] < 0.5) {
+      matchedGarminActivity = garminActivities[argMin];
+    }
+    return { ...activity, matchedGarminActivity };
+  });
 
   return (
     <main>
@@ -58,7 +94,7 @@ export default function StravaActivities({
           ))}
         </Stack>
         <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
-        <ActivityGrid activities={data.activities} />
+        <ActivityGrid activities={mappedActivities} />
       </Sheet>
     </main>
   );

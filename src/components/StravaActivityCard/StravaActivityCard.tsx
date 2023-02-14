@@ -1,10 +1,8 @@
 import * as React from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
 import Link from '@mui/joy/Link';
 import { Chip } from '@mui/joy';
-import { ActivityMapContainer } from '../ActivityMap/ActivityMapContainer';
 import { metersToMiles } from '@/utils/distanceUtils';
 import { truncateTitle } from '@/utils/activityCardUtils';
 import { Place } from '@mui/icons-material';
@@ -31,9 +29,9 @@ export function StravaActivityCard({ activity }: StravaActivityCardProps) {
         },
       }}
     >
-      <AspectRatio ratio="1" sx={{ minWidth: 90 }}>
+      {/* <AspectRatio ratio="1" sx={{ minWidth: 90 }}>
         <ActivityMapContainer activity={activity} />
-      </AspectRatio>
+      </AspectRatio> */}
       <div>
         <Typography level="h2" fontSize="lg" id="card-description" mb={0.5}>
           <Link
@@ -59,6 +57,16 @@ export function StravaActivityCard({ activity }: StravaActivityCardProps) {
         >
           {activity.type}
         </Chip>
+        {activity.matchedGarminActivity ? (
+          <Chip
+            variant="outlined"
+            color="neutral"
+            size="sm"
+            sx={{ pointerEvents: 'none' }}
+          >
+            🐶{` `}({activity.matchedGarminActivity.records.length} records)
+          </Chip>
+        ) : null}
       </div>
     </Card>
   );
