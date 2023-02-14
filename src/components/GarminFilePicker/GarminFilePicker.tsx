@@ -1,11 +1,11 @@
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { Stack, Typography } from '@mui/joy';
-import { ChangeEventHandler, useRef, useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import ErrorAlert from '../ErrorAlert';
+import FilePicker from '../FilePicker';
 
 // TODO: migrate UI to a pure component and separate logic into container
 export function GarminFilePicker() {
-  const filePickerRef = useRef<HTMLInputElement>(null);
   const [files, setFileList] = useState<File[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const { uploadActivities } = useGarminActivities();
@@ -37,14 +37,12 @@ export function GarminFilePicker() {
       <label htmlFor="file-picker">
         <Typography level="h3">Please select your .fit files</Typography>
       </label>
-      <Typography level="body1">TODO: update style</Typography>
-
-      <input
-        ref={filePickerRef}
+      <FilePicker
         id="file-picker"
-        type="file"
+        buttonProps={{
+          variant: 'soft',
+        }}
         accept=".fit"
-        multiple
         onChange={handleChange}
       />
       {errors.length ? <ErrorAlert errors={errors} /> : null}
