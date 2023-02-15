@@ -9,6 +9,7 @@ import { Activity } from '@/models/activity';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
 import { Layout } from '@/layout';
+import { Legend } from '@/components/ActivityMap/Legend';
 
 type Data = {
   activity: Activity | null;
@@ -78,6 +79,7 @@ export default function StravaActivityDetailPage({
                 garminActivity={selectedGarminActivity}
               />
             </Grid>
+            {selectedGarminActivity && <Legend />}
           </Grid>
         </Stack>
       </Sheet>

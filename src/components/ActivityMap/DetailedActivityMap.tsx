@@ -5,6 +5,7 @@ import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
 import polyline from '@mapbox/polyline';
 import { useRef } from 'react';
 import { MapRef, Layer, LayerProps, Source } from 'react-map-gl';
+import { HUMAN_COLOR, DOG_COLOR } from '@/colors';
 import MapboxMap from '../MapboxMap';
 
 type DetailedActivityMapProps = {
@@ -39,20 +40,9 @@ export function DetailedActivityMap({
     type: 'line',
     source: 'route',
     paint: {
-      'line-color': 'red',
+      'line-color': HUMAN_COLOR,
       'line-width': 5,
       'line-opacity': 0.75,
-      'line-gradient': [
-        'interpolate',
-        ['linear'],
-        ['line-progress'],
-        0,
-        'red',
-        0.5,
-        'darkred',
-        1,
-        'red',
-      ],
     },
     layout: {
       'line-cap': 'round',
@@ -65,20 +55,10 @@ export function DetailedActivityMap({
     type: 'line',
     source: 'garminRoute',
     paint: {
-      'line-color': 'blue',
-      'line-width': 5,
+      'line-color': DOG_COLOR,
+      'line-dasharray': [3.5, 2],
+      'line-width': 4,
       'line-opacity': 0.75,
-      'line-gradient': [
-        'interpolate',
-        ['linear'],
-        ['line-progress'],
-        0,
-        'blue',
-        0.5,
-        'darkblue',
-        1,
-        'blue',
-      ],
     },
     layout: {
       'line-cap': 'round',
@@ -96,14 +76,16 @@ export function DetailedActivityMap({
         <Layer {...routeLayer} />
       </Source>
       {garminGeoJSON && (
-        <Source
-          id="garminRoute"
-          type="geojson"
-          data={garminGeoJSON}
-          lineMetrics
-        >
-          <Layer {...garminRouteLayer} />
-        </Source>
+        <>
+          <Source
+            id="garminRoute"
+            type="geojson"
+            data={garminGeoJSON}
+            lineMetrics
+          >
+            <Layer {...garminRouteLayer} />
+          </Source>
+        </>
       )}
     </MapboxMap>
   );
