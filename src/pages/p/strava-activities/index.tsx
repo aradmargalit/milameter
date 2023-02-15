@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
 /**
  * compute an abstract numeric "distance" score between a given garmin activity and
  * standard activity.
- * Currently this just computes the time difference, with a cutoff of
+ * Currently this just computes the time difference, with a cutoff of 1 hour
  *
  * @param garminActivity activity from the watch
  * @param activity primary activity to compare against
