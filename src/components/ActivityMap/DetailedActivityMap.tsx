@@ -60,10 +60,10 @@ export function DetailedActivityMap({
     },
   };
 
-  const dogRouteLayer: LayerProps = {
-    id: 'dogRoute',
+  const garminRouteLayer: LayerProps = {
+    id: 'garminRoute',
     type: 'line',
-    source: 'dogRoute',
+    source: 'garminRoute',
     paint: {
       'line-color': 'blue',
       'line-width': 5,
@@ -96,8 +96,13 @@ export function DetailedActivityMap({
         <Layer {...routeLayer} />
       </Source>
       {garminGeoJSON && (
-        <Source id="dogRoute" type="geojson" data={garminGeoJSON} lineMetrics>
-          <Layer {...dogRouteLayer} />
+        <Source
+          id="garminRoute"
+          type="geojson"
+          data={garminGeoJSON}
+          lineMetrics
+        >
+          <Layer {...garminRouteLayer} />
         </Source>
       )}
     </MapboxMap>
