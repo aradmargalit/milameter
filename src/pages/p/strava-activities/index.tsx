@@ -8,6 +8,7 @@ import GarminFilePicker from '@/components/GarminFilePicker';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { GarminActivity } from '@/models/garminActivity';
 import { DateTime } from 'luxon';
+import { ActivityPair } from '@/models/activityPair';
 
 type Data = { activities: Activity[] };
 
@@ -85,16 +86,19 @@ export default function StravaActivities({
   // for each activity, find the garmin activity with the lowest dissimilarity. If that
   // dissimilarity is above an arbitrarily threshold (0.5 for now), assume there's no
   // good match
-  const mappedActivities = data.activities.map((activity) => {
+  const activityPairs: ActivityPair[] = data.activities.map((activity) => {
     const distances = garminActivities.map((gA) =>
       activityDistance(gA, activity)
     );
     const argMin = distances.indexOf(Math.min(...distances));
 
     if (distances[argMin] < 0.5) {
-      return garminActivities[argMin];
+      return {
+        activity,
+        garminActivity: garminActivities[argMin],
+      };
     }
-    return null;
+    return { activity, garminActivity: null };
   });
 
   return (
@@ -102,10 +106,7 @@ export default function StravaActivities({
       <Sheet sx={{ margin: 4, padding: 4 }}>
         <GarminFilePicker />
         <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
-        <ActivityGrid
-          activities={data.activities}
-          matchingGarminActivities={mappedActivities}
-        />
+        <ActivityGrid activityPairs={activityPairs} />
       </Sheet>
     </main>
   );
