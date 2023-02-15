@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
  * standard activity.
  * Currently this just computes the time difference, with a cutoff of
  *
- * @param garminActivity activity form the watch
+ * @param garminActivity activity from the watch
  * @param activity primary activity to compare against
  * @param timeGapCutoff the longest amount of time (in seconds) that we'll consider as
  *  possibly belonging to the same activity (default: 1 hour = 3600 seconds)
