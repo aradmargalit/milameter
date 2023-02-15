@@ -1,17 +1,20 @@
-import { Activity } from '@/models/activity';
+import { ActivityPair } from '@/models/activityPair';
 import { Grid } from '@mui/joy';
 import StravaActivityCard from '../StravaActivityCard';
 
 type ActivityGridProps = {
-  activities: Activity[];
+  activityPairs: ActivityPair[];
 };
 
-export function ActivityGrid({ activities }: ActivityGridProps) {
+export function ActivityGrid({ activityPairs }: ActivityGridProps) {
   return (
     <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-      {activities.map((d) => (
-        <Grid key={d.id} xs={12} md={6} lg={4}>
-          <StravaActivityCard activity={d} />
+      {activityPairs.map(({ activity, garminActivity }) => (
+        <Grid key={activity.id} xs={12} md={6} lg={4}>
+          <StravaActivityCard
+            activity={activity}
+            matchedGarminActivity={garminActivity}
+          />
         </Grid>
       ))}
     </Grid>

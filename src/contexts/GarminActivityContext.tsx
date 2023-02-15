@@ -4,11 +4,13 @@ import { createContext, useContext, useState } from 'react';
 
 type GarminActivityContextData = {
   garminActivities: GarminActivity[];
+  selectedGarminActivity: GarminActivity | null;
 };
 
 type GarminActivityContextMethods = {
   clearActivities: () => void;
   uploadActivities: (_fitFiles: File[]) => Promise<void>;
+  setSelectedGarminActivity: (_garminActivity: GarminActivity | null) => void;
 };
 
 type GarminActivityContextValue = GarminActivityContextData &
@@ -26,6 +28,9 @@ export function GarminActivityProvider({
   const [garminActivities, setGarminActivities] = useState<GarminActivity[]>(
     []
   );
+  const [selectedGarminActivity, setSelectedGarminActivity] =
+    useState<GarminActivity | null>(null);
+
   const clearActivities = () => setGarminActivities([]);
   const uploadActivities = async (fitFiles: File[]) => {
     const activities = await Promise.all(fitFiles.map(garminActivityFromFile));
@@ -34,6 +39,8 @@ export function GarminActivityProvider({
 
   const value: GarminActivityContextValue = {
     garminActivities,
+    selectedGarminActivity,
+    setSelectedGarminActivity,
     clearActivities,
     uploadActivities,
   };
