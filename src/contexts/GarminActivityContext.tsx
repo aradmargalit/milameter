@@ -16,9 +16,9 @@ type GarminActivityContextMethods = {
 type GarminActivityContextValue = GarminActivityContextData &
   GarminActivityContextMethods;
 
-const GarminActivityContext = createContext<GarminActivityContextValue | null>(
-  null
-);
+const GarminActivityContext = createContext<
+  GarminActivityContextValue | undefined
+>(undefined);
 
 export function GarminActivityProvider({
   children,
