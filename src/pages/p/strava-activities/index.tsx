@@ -9,6 +9,7 @@ import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { GarminActivity } from '@/models/garminActivity';
 import { DateTime } from 'luxon';
 import { ActivityPair } from '@/models/activityPair';
+import { Layout } from '@/layout';
 
 type Data = { activities: Activity[] };
 
@@ -103,11 +104,13 @@ export default function StravaActivities({
 
   return (
     <main>
-      <Sheet sx={{ margin: 4, padding: 4 }}>
-        <GarminFilePicker />
-        <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
-        <ActivityGrid activityPairs={activityPairs} />
-      </Sheet>
+      <Layout>
+        <Sheet sx={{ margin: 4, padding: 4 }}>
+          <GarminFilePicker />
+          <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
+          <ActivityGrid activityPairs={activityPairs} />
+        </Sheet>
+      </Layout>
     </main>
   );
 }
