@@ -8,6 +8,7 @@ import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
 import { Activity } from '@/models/activity';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
+import { Layout } from '@/layout';
 
 type Data = {
   activity: Activity | null;
@@ -55,29 +56,31 @@ export default function StravaActivityDetailPage({
 
   const { activity } = data;
   return (
-    <Sheet sx={{ margin: 4 }}>
-      <Stack spacing={2}>
-        <Link href="/p/strava-activities" passHref>
-          <Button startDecorator={<ArrowBack />}>Back</Button>
-        </Link>
-        <Typography level="h4">{activity.name}</Typography>
-        <Grid container>
-          <Grid xs={8}>
-            <Box sx={{ width: '100%', height: 500 }}>
-              <DetailedActivityMap
+    <Layout>
+      <Sheet sx={{ margin: 4 }}>
+        <Stack spacing={2}>
+          <Link href="/p/strava-activities" passHref>
+            <Button startDecorator={<ArrowBack />}>Back</Button>
+          </Link>
+          <Typography level="h4">{activity.name}</Typography>
+          <Grid container>
+            <Grid xs={8}>
+              <Box sx={{ width: '100%', height: 500 }}>
+                <DetailedActivityMap
+                  activity={activity}
+                  garminActivity={selectedGarminActivity}
+                />
+              </Box>
+            </Grid>
+            <Grid xs={4}>
+              <ActivityStats
                 activity={activity}
                 garminActivity={selectedGarminActivity}
               />
-            </Box>
+            </Grid>
           </Grid>
-          <Grid xs={4}>
-            <ActivityStats
-              activity={activity}
-              garminActivity={selectedGarminActivity}
-            />
-          </Grid>
-        </Grid>
-      </Stack>
-    </Sheet>
+        </Stack>
+      </Sheet>
+    </Layout>
   );
 }

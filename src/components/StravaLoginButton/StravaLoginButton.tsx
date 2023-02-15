@@ -1,6 +1,6 @@
 import Button from '@mui/joy/Button';
 
-import Face5 from '@mui/icons-material/Face5';
+import { LoginOutlined } from '@mui/icons-material';
 
 type StravaLoginButtonProps = {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -9,7 +9,7 @@ type StravaLoginButtonProps = {
 export function StravaLoginButton({ onClick }: StravaLoginButtonProps) {
   return (
     <Button
-      startDecorator={<Face5 />}
+      startDecorator={<LoginOutlined />}
       variant="outlined"
       onClick={onClick}
       sx={{

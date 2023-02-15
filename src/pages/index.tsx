@@ -1,4 +1,5 @@
 import StravaLoginButtonContainer from '@/components/StravaLoginButton';
+import { Layout } from '@/layout';
 import { Sheet } from '@mui/joy';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
@@ -40,9 +41,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Sheet sx={{ margin: 4 }}>
-          <StravaLoginButtonContainer />
-        </Sheet>
+        <Layout>
+          <Sheet sx={{ margin: 4 }}>
+            <StravaLoginButtonContainer />
+          </Sheet>
+        </Layout>
       </main>
     </>
   );
