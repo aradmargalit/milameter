@@ -5,6 +5,11 @@ import { Decoder, Stream } from '@garmin-fit/sdk';
 
 const TICKS_PER_GLOBE = Math.pow(2, 32);
 const DEGREES_PER_GLOBE = 360;
+export const TEST_OFFSET = 0.005;
+
+export function convertGarminCoord(gc: number): number {
+  return (gc / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE;
+}
 
 export async function garminActivityFromFile(
   file: File
@@ -21,8 +26,8 @@ export async function garminActivityFromFile(
 
   // convert coordinates from Garmin format to lat/lon degrees
   const coordinates: Coordinates = records.map((record) => [
-    (record.positionLong / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE + 0.001,
-    (record.positionLat / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE + 0.001,
+    convertGarminCoord(record.positionLong) + TEST_OFFSET,
+    convertGarminCoord(record.positionLat) + TEST_OFFSET,
   ]);
   return { records, distanceMeters, coordinates };
 }
