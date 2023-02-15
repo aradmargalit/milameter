@@ -4,7 +4,7 @@ import { Box, Button } from '@mui/joy';
 import { signOut, useSession } from 'next-auth/react';
 
 /**
- * Persistant header across pages for things like logout
+ * Persistent header across pages for things like logout
  */
 export function Header() {
   const { data } = useSession();
