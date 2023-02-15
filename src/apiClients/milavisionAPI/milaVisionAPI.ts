@@ -20,7 +20,8 @@ export class MilavisionAPI {
     stravaActivityResponse: StravaActivityResponse
   ): Promise<Activity> {
     const activityWithoutLocation = convertStravaActivityResponse(
-      stravaActivityResponse
+      stravaActivityResponse,
+      null
     );
     const locationName = await this.mapboxClient.getLocationName(
       activityWithoutLocation.startLatLng

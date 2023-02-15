@@ -12,3 +12,7 @@ export type MetersPerSecond = number;
 
 export type Coordinate = [number, number];
 export type Coordinates = Coordinate[];
+export type Record = {
+  time: ISODate;
+  coord: Coordinate;
+};

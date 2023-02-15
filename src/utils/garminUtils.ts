@@ -21,8 +21,8 @@ export async function garminActivityFromFile(
 
   // convert coordinates from Garmin format to lat/lon degrees
   const coordinates: Coordinates = records.map((record) => [
-    (record.positionLong / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE,
-    (record.positionLat / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE,
+    (record.positionLong / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE + 0.001,
+    (record.positionLat / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE + 0.001,
   ]);
   return { records, distanceMeters, coordinates };
 }

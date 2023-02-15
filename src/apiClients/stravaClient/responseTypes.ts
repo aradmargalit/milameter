@@ -1,4 +1,5 @@
 import {
+  Coordinates,
   ISODate,
   Latitude,
   Longitude,
@@ -116,4 +117,16 @@ export type StravaActivityResponse = {
   total_photo_count: number;
   has_kudoed: boolean;
   suffer_score: number;
+};
+
+export type StravaStreamsResponse = {
+  latlng: {
+    data: Coordinates;
+  };
+  distance: {
+    data: number[];
+  };
+  time: {
+    data: number[];
+  };
 };

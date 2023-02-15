@@ -1,10 +1,13 @@
+import { Coordinates, Record } from '@/types';
+import { DateTime } from 'luxon';
 import { StravaActivity } from './models';
-import { StravaActivityResponse } from './responseTypes';
+import { StravaActivityResponse, StravaStreamsResponse } from './responseTypes';
 
 export function convertStravaActivityResponse(
-  response: StravaActivityResponse
+  response: StravaActivityResponse,
+  streamsResponse: StravaStreamsResponse | null
 ): StravaActivity {
-  return {
+  const core = {
     ...response,
     averageCadence: response.average_cadence ?? null,
     averageHeartrate: response.average_heartrate ?? null,
@@ -32,4 +35,23 @@ export function convertStravaActivityResponse(
       summaryPolyline: response.map.summary_polyline,
     },
   };
+
+  if (streamsResponse) {
+    const { time, latlng } = streamsResponse;
+    const startTime = DateTime.fromISO(response.start_date);
+
+    const times = time.data.map((t) => startTime.plus({ seconds: t }).toISO());
+    const coordinates: Coordinates = latlng.data.map((coord) => [
+      coord[1],
+      coord[0],
+    ]);
+
+    const records: Record[] = times.map((time, i) => ({
+      time,
+      coord: coordinates[i],
+    }));
+    return { ...core, records };
+  }
+
+  return core;
 }
