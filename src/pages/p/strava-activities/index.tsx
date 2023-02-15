@@ -66,9 +66,7 @@ function activityDistance(
 
   // the garmin FIT decoder exports the timestamp as a stringified JS Date, so we can
   // reconstitute it that way before jamming it into a luxon.DateTime object
-  const garminStartTime = DateTime.fromJSDate(
-    new Date(garminActivity.records[0].timestamp)
-  );
+  const garminStartTime = DateTime.fromSeconds(garminActivity.records[0].time);
 
   // find the absolute difference in seconds (we don't care which watch started first)
   const startTimeOffset = Math.abs(

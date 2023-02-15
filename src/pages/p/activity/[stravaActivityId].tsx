@@ -72,6 +72,7 @@ export default function StravaActivityDetailPage({
                   garminActivity={selectedGarminActivity}
                 />
               </Box>
+              {selectedGarminActivity && <Legend />}
             </Grid>
             <Grid xs={4}>
               <ActivityStats
@@ -79,7 +80,6 @@ export default function StravaActivityDetailPage({
                 garminActivity={selectedGarminActivity}
               />
             </Grid>
-            {selectedGarminActivity && <Legend />}
           </Grid>
         </Stack>
       </Sheet>

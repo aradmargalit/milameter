@@ -1,4 +1,6 @@
+import { DEFAULT_RECORD_INTERVAL } from '@/config';
 import { Coordinates, Record } from '@/types';
+import { floorNearestInterval } from '@/utils/timeUtils';
 import { DateTime } from 'luxon';
 import { StravaActivity } from './models';
 import { StravaActivityResponse, StravaStreamsResponse } from './responseTypes';
@@ -47,7 +49,10 @@ export function convertStravaActivityResponse(
     ]);
 
     const records: Record[] = times.map((time, i) => ({
-      time,
+      time: floorNearestInterval(
+        DateTime.fromISO(time),
+        DEFAULT_RECORD_INTERVAL
+      ),
       coord: coordinates[i],
     }));
     return { ...core, records };

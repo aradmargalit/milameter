@@ -1,9 +1,12 @@
 import { Activity } from '@/models/activity';
 import { GarminActivity } from '@/models/garminActivity';
+import { Coordinate, UNIXEpochSeconds, Record } from '@/types';
 import { haversineDistance, metersToMiles } from '@/utils/distanceUtils';
-import { convertGarminCoord, TEST_OFFSET } from '@/utils/garminUtils';
 import { Stack, Typography } from '@mui/joy';
-import { DateTime } from 'luxon';
+
+function makeRecordMap(records: Record[]): Map<UNIXEpochSeconds, Coordinate> {
+  return new Map(records.map(({ time, coord }) => [time, coord]));
+}
 
 type ActivityStatsProps = {
   activity: Activity;
@@ -14,48 +17,24 @@ export function ActivityStats({
   activity,
   garminActivity,
 }: ActivityStatsProps) {
-  let maxDistance = null;
+  let maxDistance = 0;
 
-  if (garminActivity) {
-    const activityTimes =
-      activity.records &&
-      activity.records.map(({ time }) => DateTime.fromISO(time));
+  if (garminActivity && activity.records) {
+    // create a mapping from unix epoch seconds to coordinates
+    const garminRecordsMap = makeRecordMap(garminActivity.records);
 
-    const garminTimes = garminActivity.records.map((record) =>
-      DateTime.fromJSDate(new Date(record.timestamp))
+    // iterate over source activities
+    makeRecordMap(activity.records).forEach(
+      (activityCoord: Coordinate, time: UNIXEpochSeconds) => {
+        const garminCoord = garminRecordsMap.get(time);
+        const distance = garminCoord
+          ? haversineDistance(garminCoord, activityCoord)
+          : 0;
+        maxDistance = Math.max(maxDistance, distance);
+      }
     );
-
-    if (activity.records) {
-      maxDistance = activity.records.reduce(function (prevMax, activityRecord) {
-        const activityTime = DateTime.fromISO(activityRecord.time);
-        const maxDistAtTimepoint = garminActivity.records.reduce(function (
-          prevDist,
-          garminRecord
-        ) {
-          const garminTime = DateTime.fromJSDate(
-            new Date(garminRecord.timestamp)
-          );
-          const timeDiff = Math.abs(
-            garminTime.diff(activityTime, 'seconds').seconds
-          );
-          if (timeDiff < 5) {
-            const currentDist = haversineDistance(activityRecord.coord, [
-              convertGarminCoord(garminRecord.positionLong) + TEST_OFFSET,
-              convertGarminCoord(garminRecord.positionLat) + TEST_OFFSET,
-            ]);
-            return Math.max(prevDist, currentDist);
-          }
-          return prevDist;
-        },
-        0);
-        return Math.max(maxDistAtTimepoint, prevMax);
-      }, 0);
-      console.log(maxDistance);
-    }
-
-    console.log(garminTimes);
-    console.log(activityTimes);
   }
+
   return (
     <div>
       <Typography level="body1">
