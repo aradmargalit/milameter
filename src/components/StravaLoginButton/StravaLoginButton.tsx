@@ -2,15 +2,19 @@ import Button from '@mui/joy/Button';
 
 import { LoginOutlined } from '@mui/icons-material';
 
-type StravaLoginButtonProps = {
+export type StravaLoginButtonProps = {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
+  variant?: React.ComponentProps<typeof Button>['variant'];
 };
 
-export function StravaLoginButton({ onClick }: StravaLoginButtonProps) {
+export function StravaLoginButton({
+  onClick,
+  variant = 'outlined',
+}: StravaLoginButtonProps) {
   return (
     <Button
       startDecorator={<LoginOutlined />}
-      variant="outlined"
+      variant={variant}
       onClick={onClick}
       sx={{
         color: 'var(--strava-orange)',

@@ -1,6 +1,6 @@
 import StravaLoginButtonContainer from '@/components/StravaLoginButton';
-import { Layout } from '@/layout';
-import { Sheet } from '@mui/joy';
+import { keyframes } from '@mui/system';
+import { Box, Typography } from '@mui/joy';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
 import { signIn } from 'next-auth/react';
@@ -31,6 +31,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   };
 };
 
+const bgSize = '400%';
+const colorOne = 'hsl(15 90% 55%)';
+const colorTwo = 'hsl(40 95% 55%)';
+
+const animateBG = keyframes`
+  to {
+    background-position: ${bgSize} 0;
+  }
+`;
 export default function Home() {
   return (
     <>
@@ -41,11 +50,43 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Layout>
-          <Sheet sx={{ margin: 4 }}>
-            <StravaLoginButtonContainer />
-          </Sheet>
-        </Layout>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-around"
+          alignItems="center"
+          height="70vh"
+          sx={{ margin: 4 }}
+        >
+          <Box display="flex" alignItems="center">
+            <Typography
+              level="display1"
+              sx={{
+                fontSize: 'clamp(3rem, 25vmin, 8rem)',
+                fontWeight: 'bold',
+                letterSpacing: 2,
+                // fancy animation
+                background: `linear-gradient(90deg, ${colorOne}, ${colorTwo}, ${colorOne}) 0 0 / ${bgSize} 100%`,
+                color: 'transparent',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                animation: `${animateBG} 12s infinite linear`,
+              }}
+            >
+              Mila
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 'clamp(3rem, 25vmin, 8rem)',
+                fontWeight: 'bold',
+                letterSpacing: 2,
+              }}
+            >
+              vision
+            </Typography>
+          </Box>
+          <StravaLoginButtonContainer variant="plain" />
+        </Box>
       </main>
     </>
   );
