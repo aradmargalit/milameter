@@ -1,4 +1,4 @@
-import { DEFAULT_RECORD_INTERVAL } from '@/config';
+import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
 import { GarminActivity, GarminActivityRecord } from '@/models/garminActivity';
 import { Coordinate, Record } from '@/types';
 // @ts-ignore
@@ -20,7 +20,7 @@ function convertGarminRecord(garminRecord: GarminActivityRecord): Record {
     convertGarminCoord(garminRecord.positionLat) + TEST_OFFSET,
   ];
   const dt = DateTime.fromJSDate(new Date(garminRecord.timestamp));
-  const time = floorNearestInterval(dt, DEFAULT_RECORD_INTERVAL);
+  const time = floorNearestInterval(dt, DEFAULT_TIME_SNAP_INTERVAL);
   return { time, coord };
 }
 

@@ -1,4 +1,4 @@
-import { DEFAULT_RECORD_INTERVAL } from '@/config';
+import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
 import { Coordinates, Record } from '@/types';
 import { floorNearestInterval } from '@/utils/timeUtils';
 import { DateTime } from 'luxon';
@@ -7,7 +7,7 @@ import { StravaActivityResponse, StravaStreamsResponse } from './responseTypes';
 
 type ConvertStravaActivityResponseArgs = {
   response: StravaActivityResponse;
-  streamsResponse?: StravaStreamsResponse | null;
+  streamsResponse?: StravaStreamsResponse;
 };
 export function convertStravaActivityResponse({
   response,
@@ -55,7 +55,7 @@ export function convertStravaActivityResponse({
     const records: Record[] = times.map((time, i) => ({
       time: floorNearestInterval(
         DateTime.fromISO(time),
-        DEFAULT_RECORD_INTERVAL
+        DEFAULT_TIME_SNAP_INTERVAL
       ),
       coord: coordinates[i],
     }));

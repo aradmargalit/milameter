@@ -18,11 +18,9 @@ export function ActivityStats({
       ? getSeparationTrajectory(activity.records, garminActivity.records)
       : null;
 
-  console.log(separationTrajectory);
-
-  const maxSeparation = separationTrajectory
-    ? Math.max(...separationTrajectory.map((separation) => separation.distance))
-    : 0;
+  const maxSeparation =
+    separationTrajectory &&
+    Math.max(...separationTrajectory.map((separation) => separation.distance));
 
   return (
     <div>

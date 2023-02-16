@@ -30,7 +30,7 @@ function lawOfCosinesDistance(
 
 /**
  * Utility to convert an array of records to a mapping from time to coordinates,
- * allowing O(1) lookup of cooridnates from a timestamp
+ * allowing O(1) lookup of coordinates from a timestamp
  */
 function makeRecordMap(records: Record[]): Map<UNIXEpochSeconds, Coordinate> {
   return new Map(records.map(({ time, coord }) => [time, coord]));
@@ -41,20 +41,20 @@ export function getSeparationTrajectory(
   recordsB: Record[]
 ): SeparationTrajectory {
   // create a mapping from unix epoch seconds to coordinates
-  const recordsMapA = makeRecordMap(recordsA);
   const recordsMapB = makeRecordMap(recordsB);
 
   // iterate over source activities
-  const separationTrajectory: SeparationTrajectory = [];
-  recordsMapA.forEach((coordA: Coordinate, time: UNIXEpochSeconds) => {
-    const coordB = recordsMapB.get(time);
-    if (coordB) {
-      const distance = lawOfCosinesDistance(coordA, coordB);
-      separationTrajectory.push({
+  const separationTrajectory: SeparationTrajectory = recordsA
+    .map(({ time, coord }) => {
+      const coordB = recordsMapB.get(time);
+      if (!coordB) {
+        return null;
+      }
+      return {
         time,
-        distance,
-      });
-    }
-  });
+        distance: lawOfCosinesDistance(coord, coordB),
+      };
+    })
+    .filter((x): x is Separation => Boolean(x));
   return separationTrajectory;
 }

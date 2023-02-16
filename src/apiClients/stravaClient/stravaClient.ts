@@ -61,20 +61,22 @@ export class StravaClient {
    */
   async getActivityById(id: string): Promise<StravaActivity | null> {
     try {
-      const activityResponse =
-        await this.axiosInstance.get<StravaActivityResponse>(
-          `/activities/${id}`
-        );
-      const streamsResponse =
-        await this.axiosInstance.get<StravaStreamsResponse>(
-          `/activities/${id}/streams`,
-          {
-            params: {
-              keys: 'time,latlng',
-              key_by_type: true,
-            },
-          }
-        );
+      const activityReq = this.axiosInstance.get<StravaActivityResponse>(
+        `/activities/${id}`
+      );
+      const streamReq = this.axiosInstance.get<StravaStreamsResponse>(
+        `/activities/${id}/streams`,
+        {
+          params: {
+            keys: 'time,latlng',
+            key_by_type: true,
+          },
+        }
+      );
+      const [activityResponse, streamsResponse] = await Promise.all([
+        activityReq,
+        streamReq,
+      ]);
       return convertStravaActivityResponse({
         response: activityResponse.data,
         streamsResponse: streamsResponse.data,
