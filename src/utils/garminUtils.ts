@@ -8,7 +8,7 @@ import { floorNearestInterval } from './timeUtils';
 
 const TICKS_PER_GLOBE = Math.pow(2, 32);
 const DEGREES_PER_GLOBE = 360;
-export const TEST_OFFSET = 0.005;
+export const TEST_OFFSET = 0;
 
 export function convertGarminCoord(gc: number): number {
   return (gc / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE;
