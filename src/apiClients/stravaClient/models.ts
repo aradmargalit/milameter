@@ -7,6 +7,7 @@ import {
   Polyline,
   Seconds,
   SummaryPolyline,
+  Record,
   URL,
 } from '@/types';
 import { ActivityType } from './responseTypes';
@@ -81,4 +82,5 @@ export type StravaActivity = {
   // totalPhotoCount: number;
   // hasKudoed: boolean;
   // sufferScore: number;
+  records?: Record[];
 };

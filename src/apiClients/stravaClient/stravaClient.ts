@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { convertStravaActivityResponse } from './converters';
 import { StravaActivity } from './models';
-import { StravaActivityResponse, AthleteResponse } from './responseTypes';
+import {
+  StravaActivityResponse,
+  AthleteResponse,
+  StravaStreamsResponse,
+} from './responseTypes';
 
 type AxiosInstance = ReturnType<typeof axios.create>;
 
@@ -57,10 +61,26 @@ export class StravaClient {
    */
   async getActivityById(id: string): Promise<StravaActivity | null> {
     try {
-      const response = await this.axiosInstance.get<StravaActivityResponse>(
+      const activityReq = this.axiosInstance.get<StravaActivityResponse>(
         `/activities/${id}`
       );
-      return convertStravaActivityResponse(response.data);
+      const streamReq = this.axiosInstance.get<StravaStreamsResponse>(
+        `/activities/${id}/streams`,
+        {
+          params: {
+            keys: 'time,latlng',
+            key_by_type: true,
+          },
+        }
+      );
+      const [activityResponse, streamsResponse] = await Promise.all([
+        activityReq,
+        streamReq,
+      ]);
+      return convertStravaActivityResponse({
+        response: activityResponse.data,
+        streamsResponse: streamsResponse.data,
+      });
     } catch (e) {
       console.error(e);
       return null;

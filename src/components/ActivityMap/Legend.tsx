@@ -9,8 +9,9 @@ export function Legend() {
         bottom: '80%',
         left: '80%',
         width: 115,
-        height: 90,
+        height: 70,
         border: '2px solid black',
+        padding: 1,
       }}
     >
       <Stack>
@@ -18,7 +19,7 @@ export function Legend() {
           size="sm"
           sx={{
             backgroundColor: HUMAN_COLOR,
-            mb: 1,
+            mb: 0.5,
             border: '1px solid black',
           }}
         >

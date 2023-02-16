@@ -64,7 +64,7 @@ export default function StravaActivityDetailPage({
             <Button startDecorator={<ArrowBack />}>Back</Button>
           </Link>
           <Typography level="h4">{activity.name}</Typography>
-          <Grid container>
+          <Grid container spacing={1}>
             <Grid xs={8}>
               <Box sx={{ width: '100%', height: 500 }}>
                 <DetailedActivityMap
@@ -72,6 +72,7 @@ export default function StravaActivityDetailPage({
                   garminActivity={selectedGarminActivity}
                 />
               </Box>
+              {selectedGarminActivity && <Legend />}
             </Grid>
             <Grid xs={4}>
               <ActivityStats
@@ -79,7 +80,6 @@ export default function StravaActivityDetailPage({
                 garminActivity={selectedGarminActivity}
               />
             </Grid>
-            {selectedGarminActivity && <Legend />}
           </Grid>
         </Stack>
       </Sheet>

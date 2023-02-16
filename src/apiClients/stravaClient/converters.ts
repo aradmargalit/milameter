@@ -1,10 +1,19 @@
+import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
+import { Coordinates, Record } from '@/types';
+import { floorNearestInterval } from '@/utils/timeUtils';
+import { DateTime } from 'luxon';
 import { StravaActivity } from './models';
-import { StravaActivityResponse } from './responseTypes';
+import { StravaActivityResponse, StravaStreamsResponse } from './responseTypes';
 
-export function convertStravaActivityResponse(
-  response: StravaActivityResponse
-): StravaActivity {
-  return {
+type ConvertStravaActivityResponseArgs = {
+  response: StravaActivityResponse;
+  streamsResponse?: StravaStreamsResponse;
+};
+export function convertStravaActivityResponse({
+  response,
+  streamsResponse,
+}: ConvertStravaActivityResponseArgs): StravaActivity {
+  const core = {
     ...response,
     averageCadence: response.average_cadence ?? null,
     averageHeartrate: response.average_heartrate ?? null,
@@ -32,4 +41,26 @@ export function convertStravaActivityResponse(
       summaryPolyline: response.map.summary_polyline,
     },
   };
+
+  if (streamsResponse) {
+    const { time, latlng } = streamsResponse;
+    const startTime = DateTime.fromISO(response.start_date);
+
+    const times = time.data.map((t) => startTime.plus({ seconds: t }).toISO());
+    const coordinates: Coordinates = latlng.data.map((coord) => [
+      coord[1],
+      coord[0],
+    ]);
+
+    const records: Record[] = times.map((time, i) => ({
+      time: floorNearestInterval(
+        DateTime.fromISO(time),
+        DEFAULT_TIME_SNAP_INTERVAL
+      ),
+      coord: coordinates[i],
+    }));
+    return { ...core, records };
+  }
+
+  return core;
 }
