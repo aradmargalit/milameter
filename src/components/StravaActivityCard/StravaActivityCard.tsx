@@ -8,6 +8,7 @@ import { Activity } from '@/models/activity';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { useRouter } from 'next/router';
 import { GarminActivity } from '@/models/garminActivity';
+import { DOG_COLOR } from '@/colors';
 type StravaActivityCardProps = {
   activity: Activity;
   matchedGarminActivity: GarminActivity | null;
@@ -28,17 +29,19 @@ export function StravaActivityCard({
     router.push(`/p/activity/${activity.id}`);
   };
 
+  const borderColor = matchedGarminActivity ? DOG_COLOR : null;
   return (
     <Card
       variant="outlined"
       orientation="horizontal"
       sx={{
+        borderColor,
         width: '100%',
         height: 200,
         gap: 2,
         '&:hover': {
           boxShadow: 'md',
-          borderColor: 'neutral.outlinedHoverBorder',
+          borderColor,
         },
       }}
     >
@@ -71,9 +74,13 @@ export function StravaActivityCard({
         {matchedGarminActivity && (
           <Chip
             variant="outlined"
-            color="success"
             size="sm"
-            sx={{ pointerEvents: 'none', ml: 1 }}
+            sx={{
+              pointerEvents: 'none',
+              ml: 1,
+              borderColor: DOG_COLOR,
+              color: DOG_COLOR,
+            }}
           >
             🐶 Good Dogette
           </Chip>

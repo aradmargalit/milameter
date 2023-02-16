@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getToken } from 'next-auth/jwt';
 import { DetailedActivityMap } from '@/components/ActivityMap/DetailedActivityMap';
 import { Box, Button, Grid, Sheet, Stack, Typography } from '@mui/joy';
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack, Place } from '@mui/icons-material';
 import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
 import { Activity } from '@/models/activity';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
@@ -58,14 +58,19 @@ export default function StravaActivityDetailPage({
   const { activity } = data;
   return (
     <Layout>
-      <Sheet sx={{ margin: 4 }}>
+      <Sheet sx={{ margin: 4, borderRadius: 12, padding: 2 }}>
         <Stack spacing={2}>
           <Link href="/p/strava-activities" passHref>
             <Button startDecorator={<ArrowBack />}>Back</Button>
           </Link>
-          <Typography level="h4">{activity.name}</Typography>
           <Grid container spacing={1}>
             <Grid xs={8}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography level="h4">{activity.name}</Typography>
+                <Typography level="body1" startDecorator={<Place />}>
+                  {activity.locationName}
+                </Typography>
+              </Box>
               <Box sx={{ width: '100%', height: 500 }}>
                 <DetailedActivityMap
                   activity={activity}

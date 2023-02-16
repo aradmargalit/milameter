@@ -103,7 +103,7 @@ export default function StravaActivities({
   return (
     <main>
       <Layout>
-        <Sheet sx={{ margin: 4, padding: 4 }}>
+        <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
           <GarminFilePicker />
           <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />

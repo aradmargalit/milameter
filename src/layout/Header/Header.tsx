@@ -1,6 +1,6 @@
 import StravaLoginButton from '@/components/StravaLoginButton';
 import { LogoutOutlined } from '@mui/icons-material';
-import { Box, Button } from '@mui/joy';
+import { Box, Button, Typography } from '@mui/joy';
 import { signOut, useSession } from 'next-auth/react';
 
 /**
@@ -10,6 +10,7 @@ export function Header() {
   const { data } = useSession();
 
   const isLoggedIn = !!data?.user;
+  const colorOne = 'hsl(15 90% 55%)';
 
   return (
     <Box
@@ -17,8 +18,30 @@ export function Header() {
       height={4}
       padding={4}
       display="flex"
-      flexDirection="row-reverse"
+      justifyContent="space-between"
     >
+      <Box display="flex">
+        <Typography
+          level="h2"
+          sx={{
+            fontWeight: 'bold',
+            letterSpacing: 2,
+            color: colorOne,
+          }}
+        >
+          Mila
+        </Typography>
+        <Typography
+          level="h2"
+          sx={{
+            fontWeight: 'bold',
+            letterSpacing: 2,
+            color: 'white',
+          }}
+        >
+          vision
+        </Typography>
+      </Box>
       {isLoggedIn ? (
         <Button
           startDecorator={<LogoutOutlined />}
