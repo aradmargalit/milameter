@@ -5,10 +5,14 @@ import { DateTime } from 'luxon';
 import { StravaActivity } from './models';
 import { StravaActivityResponse, StravaStreamsResponse } from './responseTypes';
 
-export function convertStravaActivityResponse(
-  response: StravaActivityResponse,
-  streamsResponse: StravaStreamsResponse | null
-): StravaActivity {
+type ConvertStravaActivityResponseArgs = {
+  response: StravaActivityResponse;
+  streamsResponse?: StravaStreamsResponse | null;
+};
+export function convertStravaActivityResponse({
+  response,
+  streamsResponse,
+}: ConvertStravaActivityResponseArgs): StravaActivity {
   const core = {
     ...response,
     averageCadence: response.average_cadence ?? null,

@@ -75,10 +75,10 @@ export class StravaClient {
             },
           }
         );
-      return convertStravaActivityResponse(
-        activityResponse.data,
-        streamsResponse.data
-      );
+      return convertStravaActivityResponse({
+        response: activityResponse.data,
+        streamsResponse: streamsResponse.data,
+      });
     } catch (e) {
       console.error(e);
       return null;
