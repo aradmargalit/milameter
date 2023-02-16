@@ -8,7 +8,7 @@ import { MapRef, Layer, LayerProps, Source, Marker } from 'react-map-gl';
 import { HUMAN_COLOR, DOG_COLOR } from '@/colors';
 import MapboxMap from '../MapboxMap';
 import { Box, Slider, Stack, Typography } from '@mui/joy';
-import { Coordinate, UNIXEpochSeconds } from '@/types';
+import { Coordinate, UNIXEpochSeconds, Record } from '@/types';
 import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
 import { Duration } from 'luxon';
 
@@ -23,6 +23,7 @@ export function DetailedActivityMap({
 }: DetailedActivityMapProps) {
   const mapRef = useRef<MapRef | null>(null);
   const [humanCoord, setHumanCoord] = useState<Coordinate | null>(null);
+  const [garminCoord, setGarminCoord] = useState<Coordinate | null>(null);
 
   const coordinates = polyline.decode(activity.map.polyline);
   const correctedCoordinates = swapLatLong(coordinates);
@@ -38,8 +39,10 @@ export function DetailedActivityMap({
   const activityTimes = activity.records!.map((record) => record.time);
   let startTime = Math.min(...activityTimes);
   let endTime = Math.max(...activityTimes);
-  if (garminActivity) {
-    const garminTimes = garminActivity.records.map((record) => record.time);
+  const garminTimes = garminActivity
+    ? garminActivity.records.map((record) => record.time)
+    : null;
+  if (garminTimes) {
     startTime = Math.min(startTime, Math.min(...garminTimes));
     endTime = Math.max(endTime, Math.max(...garminTimes));
   }
@@ -88,12 +91,10 @@ export function DetailedActivityMap({
     value: number,
     _activeThumb: number
   ): void => {
-    const absTimeDiffs = activity.records!.map((record) =>
-      Math.abs(record.time - startTime - value)
-    );
-    const argMin = absTimeDiffs.indexOf(Math.min(...absTimeDiffs));
-    const newCoord = activity.records![argMin].coord;
-    setHumanCoord(newCoord);
+    setHumanCoord(findClosestCoord(activity.records!, value));
+    if (garminActivity) {
+      setGarminCoord(findClosestCoord(garminActivity.records, value));
+    }
   };
 
   function getTimeLabel(seconds: UNIXEpochSeconds): string {
@@ -103,6 +104,19 @@ export function DetailedActivityMap({
     );
     return duration.toHuman({ unitDisplay: 'short' });
   }
+
+  function findClosestCoord(records: Record[], targetTime: number): Coordinate {
+    const absTimeDiffs = records!.map((record) =>
+      Math.abs(record.time - startTime - targetTime)
+    );
+    const argMin = absTimeDiffs.indexOf(Math.min(...absTimeDiffs));
+    return records[argMin].coord;
+  }
+
+  const sliderMarks = [
+    { value: 0, label: 'Start' },
+    { value: activityDuration, label: 'End' },
+  ];
 
   return (
     <Stack sx={{ height: '100%' }}>
@@ -119,8 +133,19 @@ export function DetailedActivityMap({
             longitude={humanCoord[0]}
             latitude={humanCoord[1]}
             anchor="bottom"
+            offset={[-5, 0]}
           >
             <Typography level="h4">🏃‍♂️</Typography>
+          </Marker>
+        )}
+        {garminCoord && (
+          <Marker
+            longitude={garminCoord[0]}
+            latitude={garminCoord[1]}
+            anchor="bottom"
+            offset={[5, 0]}
+          >
+            <Typography level="h4">🐶</Typography>
           </Marker>
         )}
 
@@ -137,50 +162,25 @@ export function DetailedActivityMap({
           </>
         )}
       </MapboxMap>
-      <Box>
-        <Slider
-          aria-label="Small steps"
-          defaultValue={0}
-          step={DEFAULT_TIME_SNAP_INTERVAL * 2}
-          valueLabelFormat={getTimeLabel}
-          getAriaValueText={getTimeLabel}
-          marks
-          min={0}
-          max={activityDuration}
-          valueLabelDisplay="auto"
-          onChange={onSliderChange}
-        />
+      <Box
+        sx={{ display: 'flex', mt: 2, mb: 2, justifyContent: 'space-around' }}
+      >
+        <Box sx={{ width: '80%' }}>
+          <Slider
+            aria-label="Activity Time"
+            defaultValue={0}
+            variant="soft"
+            step={DEFAULT_TIME_SNAP_INTERVAL * 2}
+            valueLabelFormat={getTimeLabel}
+            getAriaValueText={getTimeLabel}
+            marks={sliderMarks}
+            min={0}
+            max={activityDuration}
+            valueLabelDisplay="auto"
+            onChange={onSliderChange}
+          />
+        </Box>
       </Box>
     </Stack>
   );
 }
-
-/*
-map.addSource('point', {
-'type': 'geojson',
-'data': {
-'type': 'FeatureCollection',
-'features': [
-{
-'type': 'Feature',
-'geometry': {
-'type': 'Point',
-'coordinates': [-77.4144, 25.0759]
-}
-}
-]
-}
-});
- 
-// Add a layer to use the image to represent the data.
-map.addLayer({
-'id': 'points',
-'type': 'symbol',
-'source': 'point', // reference the data source
-'layout': {
-'icon-image': 'cat', // reference the image
-'icon-size': 0.25
-}
-});
-}
-*/
