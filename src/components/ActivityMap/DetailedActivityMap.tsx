@@ -34,7 +34,6 @@ export function DetailedActivityMap({
   const garminGeoJSON =
     garminActivity && makeLineFromCoordinates(garminActivity.coordinates);
 
-  // compute total activity duration
   const { startTime, activityDuration } = computeActivityDuration(
     activity,
     garminActivity
