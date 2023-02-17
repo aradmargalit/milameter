@@ -7,10 +7,10 @@ import { useRef, useState } from 'react';
 import { MapRef, Layer, LayerProps, Source, Marker } from 'react-map-gl';
 import { HUMAN_COLOR, DOG_COLOR } from '@/colors';
 import MapboxMap from '../MapboxMap';
-import { Box, Slider, Stack, Typography } from '@mui/joy';
-import { Coordinate, UNIXEpochSeconds, Record } from '@/types';
-import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
-import { Duration } from 'luxon';
+import { Box, Stack, Typography } from '@mui/joy';
+import { Coordinate } from '@/types';
+import { computeActivityDuration, findClosestCoord } from './utils';
+import { MapSlider } from './MapSlider';
 
 type DetailedActivityMapProps = {
   activity: Activity;
@@ -30,24 +30,15 @@ export function DetailedActivityMap({
   const bounds = expandBounds(correctedCoordinates);
   const geoJSON = makeLineFromCoordinates(correctedCoordinates);
 
-  let garminGeoJSON = null;
-  if (garminActivity) {
-    garminGeoJSON = makeLineFromCoordinates(garminActivity.coordinates);
-  }
+  // if we have a garmin activity, also create a geojson object from that
+  const garminGeoJSON =
+    garminActivity && makeLineFromCoordinates(garminActivity.coordinates);
 
   // compute total activity duration
-  const activityTimes = activity.records!.map((record) => record.time);
-  let startTime = Math.min(...activityTimes);
-  let endTime = Math.max(...activityTimes);
-  const garminTimes = garminActivity
-    ? garminActivity.records.map((record) => record.time)
-    : null;
-  if (garminTimes) {
-    startTime = Math.min(startTime, Math.min(...garminTimes));
-    endTime = Math.max(endTime, Math.max(...garminTimes));
-  }
-
-  const activityDuration = endTime - startTime;
+  const { startTime, activityDuration } = computeActivityDuration(
+    activity,
+    garminActivity
+  );
 
   function handleMapLoad() {
     mapRef.current?.fitBounds(bounds, {
@@ -87,35 +78,19 @@ export function DetailedActivityMap({
   };
 
   const onSliderChange = (
-    event: Event,
+    _event: Event,
     value: number | number[],
     _activeThumb: number
   ): void => {
     // technically the slider could give us an array of values (but it never will in
     // this impl, so we just theoretically pull the first value
-    const targetTime = Array.isArray(value) ? value[0] : value;
+    const targetTime = startTime + (Array.isArray(value) ? value[0] : value);
 
     setHumanCoord(findClosestCoord(activity.records!, targetTime));
     if (garminActivity) {
       setGarminCoord(findClosestCoord(garminActivity.records, targetTime));
     }
   };
-
-  function getTimeLabel(seconds: UNIXEpochSeconds): string {
-    const duration = Duration.fromMillis(seconds * 1000).shiftTo(
-      'minutes',
-      'seconds'
-    );
-    return duration.toHuman({ unitDisplay: 'short' });
-  }
-
-  function findClosestCoord(records: Record[], targetTime: number): Coordinate {
-    const absTimeDiffs = records!.map((record) =>
-      Math.abs(record.time - startTime - targetTime)
-    );
-    const argMin = absTimeDiffs.indexOf(Math.min(...absTimeDiffs));
-    return records[argMin].coord;
-  }
 
   const sliderMarks = [
     { value: 0, label: 'Start' },
@@ -143,6 +118,7 @@ export function DetailedActivityMap({
             <Typography level="h4">🏃‍♂️</Typography>
           </Marker>
         )}
+
         {garminCoord && (
           <Marker
             longitude={garminCoord[0]}
@@ -166,32 +142,15 @@ export function DetailedActivityMap({
             </Source>
           </>
         )}
-        <Source
-          id="mapbox-dem"
-          type="raster-dem"
-          url="mapbox://mapbox.mapbox-terrain-dem-v1"
-          tileSize={512}
-          maxzoom={14}
-        />
       </MapboxMap>
       <Box
         sx={{ display: 'flex', mt: 2, mb: 2, justifyContent: 'space-around' }}
       >
-        <Box sx={{ width: '80%' }}>
-          <Slider
-            aria-label="Activity Time"
-            defaultValue={0}
-            variant="soft"
-            step={DEFAULT_TIME_SNAP_INTERVAL * 2}
-            valueLabelFormat={getTimeLabel}
-            getAriaValueText={getTimeLabel}
-            marks={sliderMarks}
-            min={0}
-            max={activityDuration}
-            valueLabelDisplay="auto"
-            onChange={onSliderChange}
-          />
-        </Box>
+        <MapSlider
+          marks={sliderMarks}
+          activityDuration={activityDuration}
+          onChange={onSliderChange}
+        />
       </Box>
     </Stack>
   );
