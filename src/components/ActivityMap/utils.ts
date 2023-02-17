@@ -9,16 +9,17 @@ export function computeActivityDuration(
   garminActivity: GarminActivity | null
 ): ActivityDuration {
   // we always have the start and end time for the primary activity, so start there
-  const activityTimes = activity.records!.map((record) => record.time);
-  let startTime = Math.min(...activityTimes);
-  let endTime = Math.max(...activityTimes);
+  let startTime = activity.records![0].time;
+  let endTime = activity.records![activity.records!.length - 1].time;
 
   // if we also have the garmin activities, update the start and end times
-  const garminTimes =
-    garminActivity && garminActivity.records.map((record) => record.time);
-  if (garminTimes) {
-    startTime = Math.min(startTime, Math.min(...garminTimes));
-    endTime = Math.max(endTime, Math.max(...garminTimes));
+
+  if (garminActivity) {
+    startTime = Math.min(startTime, garminActivity.records[0].time);
+    endTime = Math.max(
+      endTime,
+      garminActivity.records[garminActivity.records.length - 1].time
+    );
   }
 
   const activityDuration = endTime - startTime;
