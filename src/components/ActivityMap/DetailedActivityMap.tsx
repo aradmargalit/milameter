@@ -87,13 +87,17 @@ export function DetailedActivityMap({
   };
 
   const onSliderChange = (
-    _e: React.MouseEvent,
-    value: number,
+    event: Event,
+    value: number | number[],
     _activeThumb: number
   ): void => {
-    setHumanCoord(findClosestCoord(activity.records!, value));
+    // technically the slider could give us an array of values (but it never will in
+    // this impl, so we just theoretically pull the first value
+    const targetTime = Array.isArray(value) ? value[0] : value;
+
+    setHumanCoord(findClosestCoord(activity.records!, targetTime));
     if (garminActivity) {
-      setGarminCoord(findClosestCoord(garminActivity.records, value));
+      setGarminCoord(findClosestCoord(garminActivity.records, targetTime));
     }
   };
 
@@ -128,6 +132,7 @@ export function DetailedActivityMap({
         <Source id="route" type="geojson" data={geoJSON} lineMetrics>
           <Layer {...routeLayer} />
         </Source>
+
         {humanCoord && (
           <Marker
             longitude={humanCoord[0]}
@@ -161,6 +166,13 @@ export function DetailedActivityMap({
             </Source>
           </>
         )}
+        <Source
+          id="mapbox-dem"
+          type="raster-dem"
+          url="mapbox://mapbox.mapbox-terrain-dem-v1"
+          tileSize={512}
+          maxzoom={14}
+        />
       </MapboxMap>
       <Box
         sx={{ display: 'flex', mt: 2, mb: 2, justifyContent: 'space-around' }}
