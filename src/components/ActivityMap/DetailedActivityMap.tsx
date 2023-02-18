@@ -12,7 +12,7 @@ import { Coordinate } from '@/types';
 import { computeActivityDuration, findClosestCoord } from './utils';
 import { MapSlider } from './MapSlider';
 import { lawOfCosinesDistance } from '@/utils/distanceUtils';
-import { LiveDistance } from './LiveDistance';
+import { LiveSeparation } from './LiveSeparation';
 
 type DetailedActivityMapProps = {
   activity: Activity;
@@ -98,7 +98,7 @@ export function DetailedActivityMap({
     { value: activityDuration, label: 'End' },
   ];
 
-  const liveDistance =
+  const liveSeparation =
     humanCoord && garminCoord
       ? lawOfCosinesDistance(humanCoord, garminCoord)
       : null;
@@ -159,7 +159,7 @@ export function DetailedActivityMap({
             onChange={onSliderChange}
           />
         </Box>
-        <LiveDistance distance={liveDistance} />
+        {garminActivity && <LiveSeparation separation={liveSeparation} />}
       </Box>
     </Stack>
   );
