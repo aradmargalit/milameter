@@ -11,6 +11,8 @@ import { Box, Stack, Typography } from '@mui/joy';
 import { Coordinate } from '@/types';
 import { computeActivityDuration, findClosestCoord } from './utils';
 import { MapSlider } from './MapSlider';
+import { lawOfCosinesDistance } from '@/utils/distanceUtils';
+import { LiveDistance } from './LiveDistance';
 
 type DetailedActivityMapProps = {
   activity: Activity;
@@ -96,6 +98,11 @@ export function DetailedActivityMap({
     { value: activityDuration, label: 'End' },
   ];
 
+  const liveDistance =
+    humanCoord && garminCoord
+      ? lawOfCosinesDistance(humanCoord, garminCoord)
+      : null;
+
   return (
     <Stack sx={{ height: '100%' }}>
       <MapboxMap
@@ -142,14 +149,17 @@ export function DetailedActivityMap({
           </>
         )}
       </MapboxMap>
-      <Box
-        sx={{ display: 'flex', mt: 2, mb: 2, justifyContent: 'space-around' }}
-      >
-        <MapSlider
-          marks={sliderMarks}
-          activityDuration={activityDuration}
-          onChange={onSliderChange}
-        />
+      <Box>
+        <Box
+          sx={{ display: 'flex', mt: 2, mb: 2, justifyContent: 'space-around' }}
+        >
+          <MapSlider
+            marks={sliderMarks}
+            activityDuration={activityDuration}
+            onChange={onSliderChange}
+          />
+        </Box>
+        <LiveDistance distance={liveDistance} />
       </Box>
     </Stack>
   );
