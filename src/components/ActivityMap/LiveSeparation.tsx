@@ -1,16 +1,17 @@
-import { Typography } from '@mui/joy';
+import { Box, Typography } from '@mui/joy';
 
 const TOGETHERNESS_THRESH = 35; // meters
 
-type LiveSeparationProps = { separation: number };
+type LiveSeparationProps = { separation: number | null };
 
 export function LiveSeparation({ separation }: LiveSeparationProps) {
-  const runningTogether = separation < TOGETHERNESS_THRESH;
+  const runningTogether =
+    separation === null || separation < TOGETHERNESS_THRESH;
   const inner = runningTogether
     ? 'Running Together'
     : `${separation.toFixed(0)}m Apart`;
   return (
-    <Typography
+    <Box
       sx={{
         display: 'flex',
         mt: 2,
@@ -18,7 +19,7 @@ export function LiveSeparation({ separation }: LiveSeparationProps) {
         justifyContent: 'space-around',
       }}
     >
-      {inner}
-    </Typography>
+      <Typography>{inner}</Typography>
+    </Box>
   );
 }
