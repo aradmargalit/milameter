@@ -14,12 +14,10 @@ export function LiveSeparation({ separation }: LiveSeparationProps) {
     <Box
       sx={{
         display: 'flex',
-        mt: 2,
-        mb: 2,
         justifyContent: 'space-around',
       }}
     >
-      <Typography>{inner}</Typography>
+      <Typography level="body1">{inner}</Typography>
     </Box>
   );
 }
