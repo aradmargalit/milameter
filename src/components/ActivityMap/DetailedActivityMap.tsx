@@ -159,7 +159,7 @@ export function DetailedActivityMap({
             onChange={onSliderChange}
           />
         </Box>
-        <LiveSeparation separation={liveSeparation} />
+        {garminActivity && <LiveSeparation separation={liveSeparation} />}
       </Box>
     </Stack>
   );
