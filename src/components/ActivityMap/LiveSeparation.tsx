@@ -17,7 +17,7 @@ export function LiveSeparation({ separation }: LiveSeparationProps) {
         justifyContent: 'space-around',
       }}
     >
-      <Typography level="body1">{inner}</Typography>
+      <Typography level="body3">{inner}</Typography>
     </Box>
   );
 }

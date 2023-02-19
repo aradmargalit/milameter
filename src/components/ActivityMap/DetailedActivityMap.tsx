@@ -149,10 +149,8 @@ export function DetailedActivityMap({
           </>
         )}
       </MapboxMap>
-      <Box>
-        <Box
-          sx={{ display: 'flex', mt: 2, mb: 2, justifyContent: 'space-around' }}
-        >
+      <Box sx={{ mt: 2, mb: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
           <MapSlider
             marks={sliderMarks}
             activityDuration={activityDuration}
