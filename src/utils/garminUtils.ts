@@ -48,5 +48,8 @@ export async function garminActivityFromFile(
   // expose coordinates more easily
   const coordinates = records.map((record) => record.coord);
 
-  return { records, distanceMeters, coordinates };
+  // get elapsed time
+  const elapsedTime = records[records.length - 1].time - records[0].time;
+
+  return { records, distanceMeters, coordinates, elapsedTime };
 }

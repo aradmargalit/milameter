@@ -58,3 +58,20 @@ export function getSeparationTrajectory(
     .filter((x): x is Separation => Boolean(x));
   return separationTrajectory;
 }
+
+type PaceArguments = { distance: number; duration: number };
+export function computePace({ distance, duration }: PaceArguments): string {
+  console.log(distance, duration);
+  const metersPerSecond = distance / duration;
+  const metersPerMinute = metersPerSecond * 60;
+  const milesPerMinute = metersPerMinute / METERS_PER_MILE;
+  const minutesPerMile = 1 / milesPerMinute;
+
+  const whole = Math.floor(minutesPerMile);
+  const remainderMinutes = minutesPerMile - whole;
+  const remainderSeconds = Math.floor(remainderMinutes * 60);
+
+  return `${whole.toString().padStart(2, '0')}:${remainderSeconds
+    .toString()
+    .padStart(2, '0')}`;
+}
