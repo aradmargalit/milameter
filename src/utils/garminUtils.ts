@@ -35,7 +35,7 @@ export async function garminActivityFromFile(
 
   // TODO: update these
   // @ts-ignore
-  const distanceMeters =
+  const distance =
     garminRecords.length > 0
       ? garminRecords[garminRecords.length - 1].distance
       : 0;
@@ -51,5 +51,5 @@ export async function garminActivityFromFile(
   // get elapsed time
   const elapsedTime = records[records.length - 1].time - records[0].time;
 
-  return { records, distanceMeters, coordinates, elapsedTime };
+  return { records, distance, coordinates, elapsedTime };
 }

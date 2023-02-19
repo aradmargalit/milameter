@@ -1,3 +1,5 @@
+import { Activity } from '@/models/activity';
+import { GarminActivity } from '@/models/garminActivity';
 import { UNIXEpochSeconds, Record, Coordinate } from '@/types';
 
 const METERS_PER_MILE = 1609.34;
@@ -59,19 +61,23 @@ export function getSeparationTrajectory(
   return separationTrajectory;
 }
 
-type PaceArguments = { distance: number; duration: number };
-export function computePace({ distance, duration }: PaceArguments): string {
-  console.log(distance, duration);
-  const metersPerSecond = distance / duration;
+export function computePace({
+  distance,
+  elapsedTime,
+}: Activity | GarminActivity): string {
+  // convert meters per second to minutes per mile
+  const metersPerSecond = distance / elapsedTime;
   const metersPerMinute = metersPerSecond * 60;
   const milesPerMinute = metersPerMinute / METERS_PER_MILE;
   const minutesPerMile = 1 / milesPerMinute;
 
+  // format nicely as a string
   const whole = Math.floor(minutesPerMile);
   const remainderMinutes = minutesPerMile - whole;
   const remainderSeconds = Math.floor(remainderMinutes * 60);
 
-  return `${whole.toString().padStart(2, '0')}:${remainderSeconds
-    .toString()
-    .padStart(2, '0')}`;
+  const minStr = whole.toString().padStart(2, '0');
+  const secStr = remainderSeconds.toString().padStart(2, '0');
+
+  return `${minStr}:${secStr}`;
 }

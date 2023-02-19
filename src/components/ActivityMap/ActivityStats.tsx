@@ -39,10 +39,7 @@ export function ActivityStats({
         <Grid>
           <Statistic
             name="🏃‍♂️ Pace"
-            value={computePace({
-              distance: activity.distance,
-              duration: activity.elapsedTime,
-            })}
+            value={computePace(activity)}
             units="min/mi"
           />
         </Grid>
@@ -51,7 +48,7 @@ export function ActivityStats({
           <Grid>
             <Statistic
               name="🐶 Distance"
-              value={metersToMiles(garminActivity.distanceMeters).toFixed(2)}
+              value={metersToMiles(garminActivity.distance).toFixed(2)}
               units="mi"
             />
           </Grid>
@@ -60,10 +57,7 @@ export function ActivityStats({
           <Grid>
             <Statistic
               name="🐶 Pace"
-              value={computePace({
-                distance: garminActivity.distanceMeters,
-                duration: garminActivity.elapsedTime,
-              })}
+              value={computePace(garminActivity)}
               units="min/mi"
             />
           </Grid>
