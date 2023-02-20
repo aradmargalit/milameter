@@ -8,9 +8,14 @@ export function computeActivityDuration(
   activity: Activity,
   garminActivity: GarminActivity | null
 ): ActivityDuration {
+  if (!activity.records) {
+    console.error('called computeActivityDuration without records');
+    return { startTime: 0, activityDuration: 0 };
+  }
+
   // we always have the start and end time for the primary activity, so start there
-  let startTime = activity.records![0].time;
-  let endTime = activity.records![activity.records!.length - 1].time;
+  let startTime = activity.records[0].time;
+  let endTime = activity.records[activity.records.length - 1].time;
 
   // if we also have the garmin activities, update the start and end times
 
