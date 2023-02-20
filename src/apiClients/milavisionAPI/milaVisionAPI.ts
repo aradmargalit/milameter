@@ -3,6 +3,7 @@ import { MapBoxClient } from '../mapBoxClient/mapBoxClient';
 import { convertStravaActivityResponse } from '../stravaClient/converters';
 import { StravaActivityResponse } from '../stravaClient/responseTypes';
 import { StravaClient } from '../stravaClient/stravaClient';
+import { isSupportedActivity } from './milavisionAPIUtils';
 
 export class MilavisionAPI {
   stravaClient: StravaClient;
@@ -42,11 +43,14 @@ export class MilavisionAPI {
       page_size
     );
 
+    const filteredActivities = latestActivities.filter(isSupportedActivity);
+
     const localizedActivities = await Promise.all<Activity>(
-      latestActivities.map((activityResponse) =>
+      filteredActivities.map((activityResponse) =>
         this.buildActivity(activityResponse)
       )
     );
+
     return localizedActivities;
   }
 

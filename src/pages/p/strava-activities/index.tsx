@@ -10,6 +10,7 @@ import { GarminActivity } from '@/models/garminActivity';
 import { DateTime } from 'luxon';
 import { ActivityPair } from '@/models/activityPair';
 import { Layout } from '@/layout';
+import ErrorAlert from '@/components/ErrorAlert';
 
 type Data = { activities: Activity[] };
 
@@ -81,6 +82,18 @@ export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { garminActivities } = useGarminActivities();
+
+  if (!data.activities.length) {
+    return (
+      <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
+        <ErrorAlert
+          errors={[
+            'You do not have any recent Strava activities with GPS data.',
+          ]}
+        />
+      </Sheet>
+    );
+  }
 
   // for each activity, find the garmin activity with the lowest dissimilarity. If that
   // dissimilarity is above an arbitrarily threshold (0.5 for now), assume there's no
