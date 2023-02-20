@@ -1,9 +1,11 @@
-import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
-import { GarminActivity, GarminActivityRecord } from '@/models/garminActivity';
-import { Coordinate, Record } from '@/types';
 // @ts-ignore
 import { Decoder, Stream } from '@garmin-fit/sdk';
 import { DateTime } from 'luxon';
+
+import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
+import { GarminActivity, GarminActivityRecord } from '@/models/garminActivity';
+import { Coordinate, Record } from '@/types';
+
 import { floorNearestInterval } from './timeUtils';
 
 const TICKS_PER_GLOBE = Math.pow(2, 32);

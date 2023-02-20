@@ -1,15 +1,16 @@
+import { ArrowBack, Place } from '@mui/icons-material';
+import { Box, Button, Grid, Sheet, Stack, Typography } from '@mui/joy';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
 import { getToken } from 'next-auth/jwt';
-import { DetailedActivityMap } from '@/components/ActivityMap/DetailedActivityMap';
-import { Box, Button, Grid, Sheet, Stack, Typography } from '@mui/joy';
-import { ArrowBack, Place } from '@mui/icons-material';
+
 import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
-import { Activity } from '@/models/activity';
-import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
-import { Layout } from '@/layout';
+import { DetailedActivityMap } from '@/components/ActivityMap/DetailedActivityMap';
 import { Legend } from '@/components/ActivityMap/Legend';
+import { useGarminActivities } from '@/contexts/GarminActivityContext';
+import { Layout } from '@/layout';
+import { Activity } from '@/models/activity';
 
 type Data = {
   activity: Activity | null;

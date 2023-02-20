@@ -1,4 +1,4 @@
-import { UNIXEpochSeconds, Record, Coordinate } from '@/types';
+import { Coordinate, Record, UNIXEpochSeconds } from '@/types';
 
 const METERS_PER_MILE = 1609.34;
 const RADIUS_OF_EARTH_IN_KM = 6371;

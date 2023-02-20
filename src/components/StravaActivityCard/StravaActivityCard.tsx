@@ -1,14 +1,15 @@
+import { Place } from '@mui/icons-material';
+import { Chip, Link } from '@mui/joy';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
-import { Chip, Link } from '@mui/joy';
-import { metersToMiles } from '@/utils/distanceUtils';
-import { truncateTitle } from '@/utils/activityCardUtils';
-import { Place } from '@mui/icons-material';
-import { Activity } from '@/models/activity';
-import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { useRouter } from 'next/router';
-import { GarminActivity } from '@/models/garminActivity';
+
 import { DOG_COLOR } from '@/colors';
+import { useGarminActivities } from '@/contexts/GarminActivityContext';
+import { Activity } from '@/models/activity';
+import { GarminActivity } from '@/models/garminActivity';
+import { truncateTitle } from '@/utils/activityCardUtils';
+import { metersToMiles } from '@/utils/distanceUtils';
 type StravaActivityCardProps = {
   activity: Activity;
   matchedGarminActivity: GarminActivity | null;

@@ -1,7 +1,8 @@
-import StravaLoginButton from '@/components/StravaLoginButton';
 import { LogoutOutlined } from '@mui/icons-material';
 import { Box, Button, Typography } from '@mui/joy';
 import { signOut, useSession } from 'next-auth/react';
+
+import StravaLoginButton from '@/components/StravaLoginButton';
 
 /**
  * Persistent header across pages for things like logout

@@ -1,10 +1,12 @@
-import StravaLoginButtonContainer from '@/components/StravaLoginButton';
-import { keyframes } from '@mui/system';
 import { Box, Typography } from '@mui/joy';
+import { keyframes } from '@mui/system';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 import { getServerSession } from 'next-auth';
 import { signIn } from 'next-auth/react';
-import Head from 'next/head';
+
+import StravaLoginButtonContainer from '@/components/StravaLoginButton';
+
 import { authOptions } from './api/auth/[...nextauth]';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
