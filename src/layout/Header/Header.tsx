@@ -40,7 +40,7 @@ export function Header() {
             color: 'var(--joy-palette-text-primary)',
           }}
         >
-          vision
+          Meter
         </Typography>
       </Box>
       {isLoggedIn ? (

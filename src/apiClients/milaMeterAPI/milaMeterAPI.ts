@@ -5,7 +5,7 @@ import { convertStravaActivityResponse } from '../stravaClient/converters';
 import { StravaActivityResponse } from '../stravaClient/responseTypes';
 import { StravaClient } from '../stravaClient/stravaClient';
 
-export class MilavisionAPI {
+export class MilaMeterAPI {
   stravaClient: StravaClient;
   mapboxClient: MapBoxClient;
 

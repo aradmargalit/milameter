@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 
-import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
+import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import ActivityGrid from '@/components/ActivityGrid';
 import GarminFilePickerContainer from '@/components/GarminFilePicker';
 import GarminUploadInstructions from '@/components/GarminUploadInstructions';
@@ -34,8 +34,8 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
     };
   }
 
-  const milavisionAPI = new MilavisionAPI(jwt.accessToken);
-  const activities = await milavisionAPI.getActivities(PAGE_SIZE);
+  const milaMeterAPI = new MilaMeterAPI(jwt.accessToken);
+  const activities = await milaMeterAPI.getActivities(PAGE_SIZE);
 
   return {
     props: {
