@@ -1,6 +1,8 @@
 import { Stack } from '@mui/joy';
 import { ReactNode } from 'react';
 
+import MilaMeterHead from '@/components/MilaMeterHead';
+
 import Header from './Header';
 
 type LayoutProps = {
@@ -9,9 +11,12 @@ type LayoutProps = {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <Stack>
-      <Header />
-      {children}
-    </Stack>
+    <>
+      <MilaMeterHead />
+      <Stack>
+        <Header />
+        {children}
+      </Stack>
+    </>
   );
 }
