@@ -4,6 +4,7 @@ import { MapBoxClient } from '../mapBoxClient/mapBoxClient';
 import { convertStravaActivityResponse } from '../stravaClient/converters';
 import { StravaActivityResponse } from '../stravaClient/responseTypes';
 import { StravaClient } from '../stravaClient/stravaClient';
+import { isSupportedActivity } from './milaMeterAPIUtils';
 
 export class MilaMeterAPI {
   stravaClient: StravaClient;
@@ -38,16 +39,23 @@ export class MilaMeterAPI {
    *
    * @param page_size the number of activities to return
    */
-  async getActivities(page_size: number): Promise<Activity[]> {
+  async getActivities(desiredPageSize: number): Promise<Activity[]> {
+    // overfetch by 25% to increase odds of getting desired page size after filtering
+    const fetchPageSize = Math.ceil(desiredPageSize * 1.25);
     const latestActivities = await this.stravaClient.getAthleteActivities(
-      page_size
+      fetchPageSize
     );
 
+    const filteredActivities = latestActivities
+      .filter(isSupportedActivity)
+      .slice(0, desiredPageSize);
+
     const localizedActivities = await Promise.all<Activity>(
-      latestActivities.map((activityResponse) =>
+      filteredActivities.map((activityResponse) =>
         this.buildActivity(activityResponse)
       )
     );
+
     return localizedActivities;
   }
 

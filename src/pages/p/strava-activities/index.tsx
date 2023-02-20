@@ -5,6 +5,7 @@ import { getToken } from 'next-auth/jwt';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import ActivityGrid from '@/components/ActivityGrid';
+import ErrorAlert from '@/components/ErrorAlert';
 import GarminFilePickerContainer from '@/components/GarminFilePicker';
 import GarminUploadInstructions from '@/components/GarminUploadInstructions';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
@@ -15,7 +16,8 @@ import { GarminActivity } from '@/models/garminActivity';
 
 type Data = { activities: Activity[] };
 
-const PAGE_SIZE = 9;
+// We want to eventually land on roughly 9, but a few non-GPS activities may get filtered
+const DESIRED_PAGE_SIZE = 9;
 
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   context
@@ -35,7 +37,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   }
 
   const milaMeterAPI = new MilaMeterAPI(jwt.accessToken);
-  const activities = await milaMeterAPI.getActivities(PAGE_SIZE);
+  const activities = await milaMeterAPI.getActivities(DESIRED_PAGE_SIZE);
 
   return {
     props: {
@@ -83,6 +85,18 @@ export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { garminActivities } = useGarminActivities();
+
+  if (!data.activities.length) {
+    return (
+      <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
+        <ErrorAlert
+          errors={[
+            'You do not have any recent Strava activities with GPS data.',
+          ]}
+        />
+      </Sheet>
+    );
+  }
 
   // for each activity, find the garmin activity with the lowest dissimilarity. If that
   // dissimilarity is above an arbitrarily threshold (0.5 for now), assume there's no

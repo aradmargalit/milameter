@@ -10,6 +10,7 @@ function CircledNumber({ num }: { num: number }) {
       borderRadius="50%"
       textAlign="center"
       width="32px"
+      minWidth="32px"
       lineHeight="32px"
       fontSize="32px"
     >
