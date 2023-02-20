@@ -1,4 +1,5 @@
-import { ArrowBack, Place } from '@mui/icons-material';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import Place from '@mui/icons-material/Place';
 import { Box, Button, Grid, Sheet, Stack, Typography } from '@mui/joy';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';

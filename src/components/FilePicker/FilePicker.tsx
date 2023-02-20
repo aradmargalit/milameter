@@ -1,4 +1,4 @@
-import { FileUploadOutlined } from '@mui/icons-material';
+import FileUploadOutlined from '@mui/icons-material/FileUploadOutlined';
 import { Button } from '@mui/joy';
 import { ChangeEventHandler, useRef } from 'react';
 

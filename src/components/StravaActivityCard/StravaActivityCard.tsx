@@ -1,7 +1,5 @@
-import { Place } from '@mui/icons-material';
-import { Chip, Link } from '@mui/joy';
-import Card from '@mui/joy/Card';
-import Typography from '@mui/joy/Typography';
+import Place from '@mui/icons-material/Place';
+import { Card, Chip, Link, Typography } from '@mui/joy';
 import { useRouter } from 'next/router';
 
 import { DOG_COLOR } from '@/colors';

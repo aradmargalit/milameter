@@ -1,4 +1,4 @@
-import { LogoutOutlined } from '@mui/icons-material';
+import LogoutOutlined from '@mui/icons-material/LogoutOutlined';
 import { Box, Button, Typography } from '@mui/joy';
 import { signOut, useSession } from 'next-auth/react';
 

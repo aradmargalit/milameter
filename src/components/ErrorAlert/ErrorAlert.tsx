@@ -1,4 +1,4 @@
-import { Report } from '@mui/icons-material';
+import Report from '@mui/icons-material/Report';
 import { Alert, Typography } from '@mui/joy';
 
 type ErrorAlertProps = {

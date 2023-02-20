@@ -34,7 +34,6 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
     };
   }
 
-  console.log('fetching...');
   const milaMeterAPI = new MilaMeterAPI(jwt.accessToken);
   const activities = await milaMeterAPI.getActivities(PAGE_SIZE);
 
