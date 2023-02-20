@@ -1,5 +1,6 @@
-import { Card, Stack, Chip } from '@mui/joy';
-import { HUMAN_COLOR, DOG_COLOR } from '@/colors';
+import { Card, Chip, Stack } from '@mui/joy';
+
+import { DOG_COLOR, HUMAN_COLOR } from '@/colors';
 
 export function Legend() {
   return (

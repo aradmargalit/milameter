@@ -1,3 +1,5 @@
+import { Grid } from '@mui/joy';
+
 import { Activity } from '@/models/activity';
 import { GarminActivity } from '@/models/garminActivity';
 import {
@@ -5,7 +7,7 @@ import {
   getSeparationTrajectory,
   metersToMiles,
 } from '@/utils/distanceUtils';
-import { Grid } from '@mui/joy';
+
 import { Statistic } from './Statistic';
 
 type ActivityStatsProps = {

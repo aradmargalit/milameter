@@ -1,1 +1,1 @@
-export { GarminFilePicker as default } from './GarminFilePicker';
+export { GarminFilePickerContainer as default } from './GarminFilePickerContainer';

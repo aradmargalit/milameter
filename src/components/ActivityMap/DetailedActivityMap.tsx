@@ -1,18 +1,20 @@
+import polyline from '@mapbox/polyline';
+import { Box, Stack, Typography } from '@mui/joy';
+import { useRef, useState } from 'react';
+import { Layer, LayerProps, MapRef, Marker, Source } from 'react-map-gl';
+
+import { DOG_COLOR, HUMAN_COLOR } from '@/colors';
 import { Activity } from '@/models/activity';
 import { GarminActivity } from '@/models/garminActivity';
-import { swapLatLong } from '@/utils/coordinateUtils';
-import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
-import polyline from '@mapbox/polyline';
-import { useRef, useState } from 'react';
-import { MapRef, Layer, LayerProps, Source, Marker } from 'react-map-gl';
-import { HUMAN_COLOR, DOG_COLOR } from '@/colors';
-import MapboxMap from '../MapboxMap';
-import { Box, Stack, Typography } from '@mui/joy';
 import { Coordinate } from '@/types';
-import { computeActivityDuration, findClosestCoord } from './utils';
-import { MapSlider } from './MapSlider';
+import { swapLatLong } from '@/utils/coordinateUtils';
 import { lawOfCosinesDistance } from '@/utils/distanceUtils';
+import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
+
+import MapboxMap from '../MapboxMap';
 import { LiveSeparation } from './LiveSeparation';
+import { MapSlider } from './MapSlider';
+import { computeActivityDuration, findClosestCoord } from './utils';
 
 type DetailedActivityMapProps = {
   activity: Activity;

@@ -1,6 +1,7 @@
-import { MAPBOX_ACCESS_TOKEN } from '@/config';
 import { MutableRefObject } from 'react';
 import Map, { MapRef } from 'react-map-gl';
+
+import { MAPBOX_ACCESS_TOKEN } from '@/config';
 
 export type MapboxMapProps = {
   children?: React.ReactNode;

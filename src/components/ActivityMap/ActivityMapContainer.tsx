@@ -1,5 +1,7 @@
-import { Activity } from '@/models/activity';
 import { Box } from '@mui/joy';
+
+import { Activity } from '@/models/activity';
+
 import MapboxMap from '../MapboxMap';
 
 type ActivityMapContainerProps = {
