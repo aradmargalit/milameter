@@ -46,7 +46,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Milavision</title>
+        <title>MilaMeter</title>
         <meta name="description" content="Pup runs" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -84,7 +84,7 @@ export default function Home() {
                 letterSpacing: 2,
               }}
             >
-              vision
+              Meter
             </Typography>
           </Box>
           <StravaLoginButtonContainer variant="plain" />

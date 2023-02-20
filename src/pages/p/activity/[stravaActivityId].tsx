@@ -4,7 +4,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
 import { getToken } from 'next-auth/jwt';
 
-import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
+import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
 import { DetailedActivityMap } from '@/components/ActivityMap/DetailedActivityMap';
 import { Legend } from '@/components/ActivityMap/Legend';
@@ -41,8 +41,8 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
     };
   }
 
-  const milavisionAPI = new MilavisionAPI(jwt.accessToken);
-  const activity = await milavisionAPI.getActivityById(stravaActivityId);
+  const milaMeterAPI = new MilaMeterAPI(jwt.accessToken);
+  const activity = await milaMeterAPI.getActivityById(stravaActivityId);
   return {
     props: { data: { activity } },
   };
