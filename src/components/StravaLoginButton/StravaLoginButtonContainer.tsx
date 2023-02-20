@@ -1,9 +1,10 @@
+import { signIn } from 'next-auth/react';
+
 import {
   StravaLoginButton,
   StravaLoginButtonProps,
 } from '@/components/StravaLoginButton/StravaLoginButton';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { signIn } from 'next-auth/react';
 
 type StravaLoginButtonContainerProps = Omit<StravaLoginButtonProps, 'onClick'>;
 

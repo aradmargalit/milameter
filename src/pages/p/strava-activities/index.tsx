@@ -1,16 +1,18 @@
 import { Divider, Sheet } from '@mui/joy';
+import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
+
 import { MilavisionAPI } from '@/apiClients/milavisionAPI/milaVisionAPI';
-import { Activity } from '@/models/activity';
 import ActivityGrid from '@/components/ActivityGrid';
-import GarminFilePicker from '@/components/GarminFilePicker';
-import { useGarminActivities } from '@/contexts/GarminActivityContext';
-import { GarminActivity } from '@/models/garminActivity';
-import { DateTime } from 'luxon';
-import { ActivityPair } from '@/models/activityPair';
-import { Layout } from '@/layout';
 import ErrorAlert from '@/components/ErrorAlert';
+import GarminFilePickerContainer from '@/components/GarminFilePicker';
+import GarminUploadInstructions from '@/components/GarminUploadInstructions';
+import { useGarminActivities } from '@/contexts/GarminActivityContext';
+import { Layout } from '@/layout';
+import { Activity } from '@/models/activity';
+import { ActivityPair } from '@/models/activityPair';
+import { GarminActivity } from '@/models/garminActivity';
 
 type Data = { activities: Activity[] };
 
@@ -117,7 +119,8 @@ export default function StravaActivities({
     <main>
       <Layout>
         <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
-          <GarminFilePicker />
+          <GarminUploadInstructions sx={{ marginBottom: 4 }} />
+          <GarminFilePickerContainer />
           <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />
         </Sheet>

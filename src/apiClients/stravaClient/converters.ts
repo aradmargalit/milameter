@@ -1,7 +1,9 @@
+import { DateTime } from 'luxon';
+
 import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
 import { Coordinates, Record } from '@/types';
 import { floorNearestInterval } from '@/utils/timeUtils';
-import { DateTime } from 'luxon';
+
 import { StravaActivity } from './models';
 import { StravaActivityResponse, StravaStreamsResponse } from './responseTypes';
 

@@ -1,9 +1,10 @@
 import axios from 'axios';
+
 import { convertStravaActivityResponse } from './converters';
 import { StravaActivity } from './models';
 import {
-  StravaActivityResponse,
   AthleteResponse,
+  StravaActivityResponse,
   StravaStreamsResponse,
 } from './responseTypes';
 
