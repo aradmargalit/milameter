@@ -2,10 +2,11 @@ import './globals.css';
 import '@fontsource/public-sans';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+import { CssVarsProvider } from '@mui/joy/styles';
+import { Inter } from '@next/font/google';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
-import { Inter } from '@next/font/google';
-import { CssVarsProvider } from '@mui/joy/styles';
+
 import { GarminActivityProvider } from '@/contexts/GarminActivityContext';
 
 const inter = Inter({ subsets: ['latin'] });

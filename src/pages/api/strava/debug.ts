@@ -1,7 +1,9 @@
-import { StravaClient } from '@/apiClients/stravaClient/stravaClient';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { getToken } from 'next-auth/jwt';
+
+import { StravaClient } from '@/apiClients/stravaClient/stravaClient';
+
 import { authOptions } from '../auth/[...nextauth]';
 
 type Response = {};

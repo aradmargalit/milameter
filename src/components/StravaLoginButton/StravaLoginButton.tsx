@@ -1,6 +1,5 @@
-import Button from '@mui/joy/Button';
-
 import { LoginOutlined } from '@mui/icons-material';
+import Button from '@mui/joy/Button';
 
 export type StravaLoginButtonProps = {
   onClick: React.MouseEventHandler<HTMLButtonElement>;

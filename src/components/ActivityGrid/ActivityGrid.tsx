@@ -1,5 +1,7 @@
-import { ActivityPair } from '@/models/activityPair';
 import { Grid } from '@mui/joy';
+
+import { ActivityPair } from '@/models/activityPair';
+
 import StravaActivityCard from '../StravaActivityCard';
 
 type ActivityGridProps = {

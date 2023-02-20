@@ -1,7 +1,8 @@
-import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
-import { UNIXEpochSeconds } from '@/types';
 import { Box, Slider } from '@mui/joy';
 import { Duration } from 'luxon';
+
+import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
+import { UNIXEpochSeconds } from '@/types';
 
 /**
  * Converts slider value to nice human readable string

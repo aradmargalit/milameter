@@ -5,11 +5,12 @@ import {
   Meters,
   MetersPerSecond,
   Polyline,
+  Record,
   Seconds,
   SummaryPolyline,
-  Record,
   URL,
 } from '@/types';
+
 import { ActivityType } from './responseTypes';
 
 export type Athlete = {

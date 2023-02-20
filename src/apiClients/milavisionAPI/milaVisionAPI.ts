@@ -1,4 +1,5 @@
 import { Activity } from '@/models/activity';
+
 import { MapBoxClient } from '../mapBoxClient/mapBoxClient';
 import { convertStravaActivityResponse } from '../stravaClient/converters';
 import { StravaActivityResponse } from '../stravaClient/responseTypes';

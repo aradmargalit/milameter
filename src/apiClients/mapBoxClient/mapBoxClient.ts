@@ -1,5 +1,7 @@
-import { MAPBOX_ACCESS_TOKEN } from '@/config';
 import axios from 'axios';
+
+import { MAPBOX_ACCESS_TOKEN } from '@/config';
+
 import { ReverseGeocodeResponse } from './responseTypes';
 
 type AxiosInstance = ReturnType<typeof axios.create>;

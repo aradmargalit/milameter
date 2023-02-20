@@ -1,6 +1,7 @@
+import { createContext, useContext, useState } from 'react';
+
 import { GarminActivity } from '@/models/garminActivity';
 import { garminActivityFromFile } from '@/utils/garminUtils';
-import { createContext, useContext, useState } from 'react';
 
 type GarminActivityContextData = {
   garminActivities: GarminActivity[];

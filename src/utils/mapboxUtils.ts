@@ -1,5 +1,6 @@
-import { Coordinates } from '@/types';
 import mapboxgl from 'mapbox-gl';
+
+import { Coordinates } from '@/types';
 
 export function expandBounds(coordinates: Coordinates) {
   // Pass the first coordinates in the LineString to `lngLatBounds` &
