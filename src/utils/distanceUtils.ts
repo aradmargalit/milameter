@@ -2,7 +2,7 @@ import { Activity } from '@/models/activity';
 import { GarminActivity } from '@/models/garminActivity';
 import { Coordinate, Record, UNIXEpochSeconds } from '@/types';
 
-const METERS_PER_MILE = 1609.34;
+export const METERS_PER_MILE = 1609.34;
 const RADIUS_OF_EARTH_IN_KM = 6371;
 
 type Separation = { time: UNIXEpochSeconds; distance: number };
