@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ['latin'] });
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
-      <CssVarsProvider>
+      <CssVarsProvider defaultMode="system">
         <GarminActivityProvider>
           <main className={inter.className}>
             <Component {...pageProps} />
