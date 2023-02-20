@@ -1,4 +1,5 @@
 import { Activity } from '@/models/activity';
+
 import { StravaActivityResponse } from '../stravaClient/responseTypes';
 
 // Keep updated with https://developers.strava.com/docs/reference/#api-models-ActivityType

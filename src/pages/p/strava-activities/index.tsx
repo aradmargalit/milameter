@@ -16,7 +16,8 @@ import { GarminActivity } from '@/models/garminActivity';
 
 type Data = { activities: Activity[] };
 
-const PAGE_SIZE = 9;
+// We want to eventually land on roughly 9, but a few non-GPS activities may get filtered
+const DESIRED_PAGE_SIZE = 9;
 
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   context
@@ -36,7 +37,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   }
 
   const milavisionAPI = new MilavisionAPI(jwt.accessToken);
-  const activities = await milavisionAPI.getActivities(PAGE_SIZE);
+  const activities = await milavisionAPI.getActivities(DESIRED_PAGE_SIZE);
 
   return {
     props: {
