@@ -61,7 +61,9 @@ export default function StravaActivityDetailPage({
       <Sheet sx={{ margin: 4, borderRadius: 12, padding: 2 }}>
         <Stack spacing={2}>
           <Link href="/p/strava-activities" passHref>
-            <Button startDecorator={<ArrowBack />}>Back</Button>
+            <Button startDecorator={<ArrowBack />} variant="outlined">
+              Back
+            </Button>
           </Link>
           <Grid container spacing={1}>
             <Grid xs={8}>

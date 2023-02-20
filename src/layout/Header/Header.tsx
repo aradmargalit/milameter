@@ -36,7 +36,7 @@ export function Header() {
           sx={{
             fontWeight: 'bold',
             letterSpacing: 2,
-            color: 'white',
+            color: 'var(--joy-palette-text-primary)',
           }}
         >
           vision
