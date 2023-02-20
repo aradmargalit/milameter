@@ -4,9 +4,9 @@ import { MapBoxClient } from '../mapBoxClient/mapBoxClient';
 import { convertStravaActivityResponse } from '../stravaClient/converters';
 import { StravaActivityResponse } from '../stravaClient/responseTypes';
 import { StravaClient } from '../stravaClient/stravaClient';
-import { isSupportedActivity } from './milavisionAPIUtils';
+import { isSupportedActivity } from './milaMeterAPIUtils';
 
-export class MilavisionAPI {
+export class MilaMeterAPI {
   stravaClient: StravaClient;
   mapboxClient: MapBoxClient;
 
