@@ -7,8 +7,12 @@ import { DOG_COLOR, HUMAN_COLOR } from '@/colors';
 import { Activity } from '@/models/activity';
 import { GarminActivity } from '@/models/garminActivity';
 import { Coordinate } from '@/types';
+import { buildGradient } from '@/utils/colorUtils';
 import { swapLatLong } from '@/utils/coordinateUtils';
-import { lawOfCosinesDistance } from '@/utils/distanceUtils';
+import {
+  getSeparationTrajectory,
+  lawOfCosinesDistance,
+} from '@/utils/distanceUtils';
 import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
 
 import MapboxMap from '../MapboxMap';
@@ -105,6 +109,13 @@ export function DetailedActivityMap({
       ? lawOfCosinesDistance(humanCoord, garminCoord)
       : null;
 
+  const separationTrajectory =
+    garminActivity && activity.records
+      ? getSeparationTrajectory(activity.records, garminActivity.records)
+      : null;
+
+  const bgGradient = buildGradient(separationTrajectory!, activityDuration);
+
   return (
     <Stack sx={{ height: '100%' }}>
       <MapboxMap
@@ -151,7 +162,21 @@ export function DetailedActivityMap({
           </>
         )}
       </MapboxMap>
-      <Box sx={{ mt: 2, mb: 2 }}>
+      <Stack sx={{ mt: 2, mb: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-around',
+          }}
+        >
+          <Box
+            sx={{
+              width: '80%',
+              height: '10px',
+              background: bgGradient,
+            }}
+          />
+        </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
           <MapSlider
             marks={sliderMarks}
@@ -160,7 +185,7 @@ export function DetailedActivityMap({
           />
         </Box>
         {garminActivity && <LiveSeparation separation={liveSeparation} />}
-      </Box>
+      </Stack>
     </Stack>
   );
 }
