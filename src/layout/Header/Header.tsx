@@ -1,4 +1,4 @@
-import { LogoutOutlined } from '@mui/icons-material';
+import LogoutOutlined from '@mui/icons-material/LogoutOutlined';
 import { Box, Button, Typography } from '@mui/joy';
 import { signOut, useSession } from 'next-auth/react';
 
@@ -37,10 +37,10 @@ export function Header() {
           sx={{
             fontWeight: 'bold',
             letterSpacing: 2,
-            color: 'white',
+            color: 'var(--joy-palette-text-primary)',
           }}
         >
-          vision
+          Meter
         </Typography>
       </Box>
       {isLoggedIn ? (

@@ -44,7 +44,7 @@ export function convertStravaActivityResponse({
     },
   };
 
-  if (streamsResponse) {
+  if (streamsResponse?.time && streamsResponse.latlng) {
     const { time, latlng } = streamsResponse;
     const startTime = DateTime.fromISO(response.start_date);
 

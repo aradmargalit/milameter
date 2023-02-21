@@ -1,4 +1,7 @@
-# Milavision
+# MilaMeter
+
+Pronounced mee-la mee-ter
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Requirements
@@ -10,7 +13,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### Configure your environment file
 
-Copy `env.local.sample` and rename as `env.local`. Update the values with the relevant secrets from Slack.
+Copy `env.development.sample` and rename as `env.development`. Update the values with the relevant secrets from Slack.
 
 ```sh
 npm install # install dependencies

@@ -1,10 +1,10 @@
 import { Box, Typography } from '@mui/joy';
 import { keyframes } from '@mui/system';
 import { GetServerSideProps } from 'next';
-import Head from 'next/head';
 import { getServerSession } from 'next-auth';
 import { signIn } from 'next-auth/react';
 
+import { MilaMeterHead } from '@/components/MilaMeterHead/MilaMeterHead';
 import StravaLoginButtonContainer from '@/components/StravaLoginButton';
 
 import { authOptions } from './api/auth/[...nextauth]';
@@ -45,12 +45,7 @@ const animateBG = keyframes`
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Milavision</title>
-        <meta name="description" content="Pup runs" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <MilaMeterHead />
       <main>
         <Box
           display="flex"
@@ -84,7 +79,7 @@ export default function Home() {
                 letterSpacing: 2,
               }}
             >
-              vision
+              Meter
             </Typography>
           </Box>
           <StravaLoginButtonContainer variant="plain" />

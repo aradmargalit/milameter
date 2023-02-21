@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import { MAPBOX_ACCESS_TOKEN } from '@/config';
-
 import { ReverseGeocodeResponse } from './responseTypes';
 
 type AxiosInstance = ReturnType<typeof axios.create>;
@@ -18,7 +16,7 @@ export class MapBoxClient {
     // always attach the access token
     this.axiosInstance.interceptors.request.use((config) => {
       config.params = {
-        access_token: MAPBOX_ACCESS_TOKEN,
+        access_token: process.env.SECRET_MAPBOX_TOKEN,
         ...config.params,
       };
       return config;
