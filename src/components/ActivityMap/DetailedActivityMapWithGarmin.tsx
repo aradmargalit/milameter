@@ -52,9 +52,6 @@ export function DetailedActivityMapWithGarmin({
   };
 
   const handleSliderChange = (newTargetTime: number): void => {
-    // technically the slider could give us an array of values (but it never will in
-    // this impl, so we just theoretically pull the first value
-
     setHumanCoord(findClosestCoord(activity.records, newTargetTime));
     if (garminActivity) {
       setGarminCoord(findClosestCoord(garminActivity.records, newTargetTime));
@@ -95,55 +92,4 @@ export function DetailedActivityMapWithGarmin({
       }
     />
   );
-  // return (
-  //   <Stack sx={{ height: '100%' }}>
-  //     <MapboxMap
-  //       ref={mapRef}
-  //       onLoad={handleMapLoad}
-  //       initialViewState={{ bounds }}
-  //     >
-  //       <Source id="route" type="geojson" data={geoJSON} lineMetrics>
-  //         <Layer {...routeLayer} />
-  //       </Source>
-
-  //       {humanCoord && (
-  //         <Marker
-  //           longitude={humanCoord[0]}
-  //           latitude={humanCoord[1]}
-  //           anchor="bottom"
-  //           offset={[-5, 0]}
-  //         >
-  //           <Typography level="h4">🏃‍♂️</Typography>
-  //         </Marker>
-  //       )}
-
-  //       {garminCoord && (
-  //         <Marker
-  //           longitude={garminCoord[0]}
-  //           latitude={garminCoord[1]}
-  //           anchor="bottom"
-  //           offset={[5, 0]}
-  //         >
-  //           <Typography level="h4">🐶</Typography>
-  //         </Marker>
-  //       )}
-
-  //       {garminGeoJSON && (
-  //         <>
-
-  //         </>
-  //       )}
-  //     </MapboxMap>
-  //     <Box sx={{ mt: 2, mb: 2 }}>
-  //       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-  //         <MapSlider
-  //           marks={sliderMarks}
-  //           activityDuration={activityDuration}
-  //           onChange={onSliderChange}
-  //         />
-  //       </Box>
-  //       {garminActivity && <LiveSeparation separation={liveSeparation} />}
-  //     </Box>
-  //   </Stack>
-  // );
 }
