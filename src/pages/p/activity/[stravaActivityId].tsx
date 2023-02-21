@@ -7,8 +7,11 @@ import { getToken } from 'next-auth/jwt';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
-import { DetailedActivityMap } from '@/components/ActivityMap/DetailedActivityMap';
+import { DetailedActivityMapBase } from '@/components/ActivityMap/DetailedActivityMapBase';
+import { DetailedActivityMapWithGarmin } from '@/components/ActivityMap/DetailedActivityMapWithGarmin';
 import { Legend } from '@/components/ActivityMap/Legend';
+import { activityHasRecords } from '@/components/ActivityMap/utils';
+import ErrorAlert from '@/components/ErrorAlert';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
@@ -53,11 +56,18 @@ export default function StravaActivityDetailPage({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { selectedGarminActivity } = useGarminActivities();
-  if (!data.activity) {
-    return <p>Could not find activity</p>;
+  const { activity } = data;
+
+  if (!activity) {
+    return (
+      <ErrorAlert errors={["Could not find activity, maybe it's private?"]} />
+    );
   }
 
-  const { activity } = data;
+  if (!activityHasRecords(activity)) {
+    return <ErrorAlert errors={['Activity does not have any GPS data.']} />;
+  }
+
   return (
     <Layout>
       <Sheet sx={{ margin: 4, borderRadius: 12, padding: 2 }}>
@@ -76,10 +86,14 @@ export default function StravaActivityDetailPage({
                 </Typography>
               </Box>
               <Box sx={{ width: '100%', height: 500 }}>
-                <DetailedActivityMap
-                  activity={activity}
-                  garminActivity={selectedGarminActivity}
-                />
+                {selectedGarminActivity ? (
+                  <DetailedActivityMapWithGarmin
+                    activity={activity}
+                    garminActivity={selectedGarminActivity}
+                  />
+                ) : (
+                  <DetailedActivityMapBase activity={activity} />
+                )}
               </Box>
               {selectedGarminActivity && <Legend />}
             </Grid>
