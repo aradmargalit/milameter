@@ -9,33 +9,39 @@ type ActivityGridProps = {
 };
 
 export function ActivityGrid({ activityPairs }: ActivityGridProps) {
-  const noPairs =
-    activityPairs.filter((pair) => pair.garminActivity).length === 0;
+  const hasPairs =
+    activityPairs.filter((pair) => pair.garminActivity).length > 0;
+
+  const activityGrid = (
+    <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+      {activityPairs.map(({ activity, garminActivity }) => (
+        <Grid key={activity.id} xs={12} md={6} lg={4}>
+          <StravaActivityCard
+            activity={activity}
+            matchedGarminActivity={garminActivity}
+          />
+        </Grid>
+      ))}
+    </Grid>
+  );
+
+  if (hasPairs) {
+    return activityGrid;
+  }
 
   return (
     <Stack>
-      {noPairs && (
-        <Alert variant="soft" color="warning" sx={{ mb: 2, padding: 2 }}>
-          <Stack>
-            <Typography fontWeight="lg">
-              No Matching Garmin Activities Found
-            </Typography>
-            <Typography fontSize="sm">
-              Follow the instructions above to upload recent Garmin activities.
-            </Typography>
-          </Stack>
-        </Alert>
-      )}
-      <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-        {activityPairs.map(({ activity, garminActivity }) => (
-          <Grid key={activity.id} xs={12} md={6} lg={4}>
-            <StravaActivityCard
-              activity={activity}
-              matchedGarminActivity={garminActivity}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      <Alert variant="soft" color="warning" sx={{ mb: 2, padding: 2 }}>
+        <Stack>
+          <Typography fontWeight="lg">
+            No Matching Garmin Activities Found
+          </Typography>
+          <Typography fontSize="sm">
+            Follow the instructions above to upload recent Garmin activities.
+          </Typography>
+        </Stack>
+      </Alert>
+      {activityGrid}
     </Stack>
   );
 }
