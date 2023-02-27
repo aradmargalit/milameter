@@ -1,12 +1,12 @@
 import { Activity } from '@/models/activity';
 import { GarminActivity } from '@/models/garminActivity';
-import { Coordinate, Record } from '@/types';
+import { ActivityWithRecords, Coordinate, Record } from '@/types';
 
 type ActivityDuration = { startTime: number; activityDuration: number };
 
 export function computeActivityDuration(
   activity: Activity,
-  garminActivity: GarminActivity | null
+  garminActivity?: GarminActivity
 ): ActivityDuration {
   if (!activity.records) {
     console.error('called computeActivityDuration without records');
@@ -18,7 +18,6 @@ export function computeActivityDuration(
   let endTime = activity.records[activity.records.length - 1].time;
 
   // if we also have the garmin activities, update the start and end times
-
   if (garminActivity) {
     startTime = Math.min(startTime, garminActivity.records[0].time);
     endTime = Math.max(
@@ -40,9 +39,15 @@ export function findClosestCoord(
   records: Record[],
   targetTime: number
 ): Coordinate {
-  const absTimeDiffs = records!.map((record) =>
+  const absTimeDiffs = records.map((record) =>
     Math.abs(record.time - targetTime)
   );
   const argMin = absTimeDiffs.indexOf(Math.min(...absTimeDiffs));
   return records[argMin].coord;
+}
+
+export function activityHasRecords(
+  activity: Activity
+): activity is ActivityWithRecords {
+  return !!activity.records;
 }

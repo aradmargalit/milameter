@@ -1,10 +1,10 @@
-import { Box, Typography } from '@mui/joy';
+import { Box, Stack, Typography } from '@mui/joy';
 
 const TOGETHERNESS_THRESH = 35; // meters
 
-type LiveSeparationProps = { separation: number | null };
+type LiveSeparationProps = { separation: number | null; gradient: str };
 
-export function LiveSeparation({ separation }: LiveSeparationProps) {
+export function LiveSeparation({ separation, gradient }: LiveSeparationProps) {
   const runningTogether =
     separation === null || separation < TOGETHERNESS_THRESH;
   const inner = runningTogether
@@ -17,7 +17,16 @@ export function LiveSeparation({ separation }: LiveSeparationProps) {
         justifyContent: 'space-around',
       }}
     >
-      <Typography level="body3">{inner}</Typography>
+      <Stack>
+        <Box
+          sx={{
+            width: '80%',
+            height: '10px',
+            background: gradient,
+          }}
+        />
+        <Typography level="body3">{inner}</Typography>
+      </Stack>
     </Box>
   );
 }

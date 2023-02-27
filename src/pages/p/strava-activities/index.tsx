@@ -6,8 +6,7 @@ import { getToken } from 'next-auth/jwt';
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import ActivityGrid from '@/components/ActivityGrid';
 import ErrorAlert from '@/components/ErrorAlert';
-import GarminFilePickerContainer from '@/components/GarminFilePicker';
-import GarminUploadInstructions from '@/components/GarminUploadInstructions';
+import GarminUploadSection from '@/components/GarminUploadSection';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
@@ -120,8 +119,7 @@ export default function StravaActivities({
     <main>
       <Layout>
         <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
-          <GarminUploadInstructions sx={{ marginBottom: 4 }} />
-          <GarminFilePickerContainer />
+          <GarminUploadSection />
           <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />
         </Sheet>

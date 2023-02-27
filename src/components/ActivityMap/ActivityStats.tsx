@@ -2,7 +2,11 @@ import { Grid } from '@mui/joy';
 
 import { Activity } from '@/models/activity';
 import { GarminActivity } from '@/models/garminActivity';
-import { getSeparationTrajectory, metersToMiles } from '@/utils/distanceUtils';
+import {
+  computePace,
+  getSeparationTrajectory,
+  metersToMiles,
+} from '@/utils/distanceUtils';
 
 import { Statistic } from './Statistic';
 
@@ -30,8 +34,15 @@ export function ActivityStats({
         <Grid>
           <Statistic
             name="🏃‍♂️ Distance"
-            value={metersToMiles(activity.distance)}
+            value={metersToMiles(activity.distance).toFixed(2)}
             units="mi"
+          />
+        </Grid>
+        <Grid>
+          <Statistic
+            name="🏃‍♂️ Pace"
+            value={computePace(activity)}
+            units="min/mi"
           />
         </Grid>
 
@@ -39,14 +50,27 @@ export function ActivityStats({
           <Grid>
             <Statistic
               name="🐶 Distance"
-              value={metersToMiles(garminActivity.distanceMeters)}
+              value={metersToMiles(garminActivity.distance).toFixed(2)}
               units="mi"
+            />
+          </Grid>
+        )}
+        {garminActivity && (
+          <Grid>
+            <Statistic
+              name="🐶 Pace"
+              value={computePace(garminActivity)}
+              units="min/mi"
             />
           </Grid>
         )}
         {!!maxSeparation && (
           <Grid>
-            <Statistic name="Max Separation" value={maxSeparation} units="m" />
+            <Statistic
+              name="Max Separation"
+              value={maxSeparation.toFixed(0)}
+              units="m"
+            />
           </Grid>
         )}
       </Grid>

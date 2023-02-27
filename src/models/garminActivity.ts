@@ -17,6 +17,7 @@ export type GarminActivityRecord = {
 
 export type GarminActivity = {
   records: Record[];
-  distanceMeters: number; // meters
+  distance: number; // meters
+  elapsedTime: number;
   coordinates: Coordinates;
 };

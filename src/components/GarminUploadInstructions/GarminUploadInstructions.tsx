@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/joy';
-import { SxProps } from '@mui/material';
+import Image from 'next/image';
 
-type GarminUploadInstructionsProps = { sx: SxProps };
+import garminImage from './garmin45s.webp';
 
 function CircledNumber({ num }: { num: number }) {
   return (
@@ -40,22 +40,30 @@ const steps = [
   'Upload recent .fit files. Try finding your Garmin as a removable USB drive, and then navigate to Garmin > Activity.',
 ];
 
-export function GarminUploadInstructions({
-  sx,
-}: GarminUploadInstructionsProps) {
+export function GarminUploadInstructions() {
   return (
-    <Stack direction="row" width="100%" sx={sx}>
-      <Stack
-        spacing={2}
-        border="1px solid var(--joy-palette-neutral-outlinedBorder)"
-        borderRadius="var(--joy-radius-md)"
-        padding={2}
-      >
+    <Stack
+      width="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      paddingRight={6}
+      sx={{
+        flexDirection: { xs: 'column', md: 'row' },
+        padding: { xs: '0', md: '0 6rem 0 0' },
+      }}
+    >
+      <Stack spacing={2}>
         {steps.map((step, idx) => (
           <UploadStep key={idx} idx={idx} instructions={step} />
         ))}
       </Stack>
-      {/* TODO: add some icon or artwork here */}
+      <Image
+        src={garminImage}
+        alt="garmin 45s"
+        width={320}
+        height={320}
+        placeholder="blur"
+      />
     </Stack>
   );
 }
