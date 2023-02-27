@@ -5,7 +5,14 @@ import { Layer, LayerProps, Marker, Source } from 'react-map-gl';
 import { DOG_COLOR } from '@/colors';
 import { GarminActivity } from '@/models/garminActivity';
 import { ActivityWithRecords, Coordinate } from '@/types';
-import { lawOfCosinesDistance } from '@/utils/distanceUtils';
+import {
+  colorGradientStrFromVector,
+  GradientTimePoint,
+} from '@/utils/colorUtils';
+import {
+  getSeparationTrajectory,
+  lawOfCosinesDistance,
+} from '@/utils/distanceUtils';
 import { makeLineFromCoordinates } from '@/utils/mapboxUtils';
 
 import { DetailedActivityMapBase } from './DetailedActivityMapBase';
@@ -59,6 +66,21 @@ export function DetailedActivityMapWithGarmin({
   };
 
   const liveSeparation = lawOfCosinesDistance(humanCoord, garminCoord);
+  const separationTrajectory = getSeparationTrajectory(
+    activity.records,
+    garminActivity.records
+  );
+
+  const timepoints: GradientTimePoint[] = separationTrajectory.map(
+    ({ time, distance }) => ({ time, val: distance })
+  );
+
+  const gradient = colorGradientStrFromVector({
+    timepoints,
+    maxTime: separationTrajectory[0].time + activityDuration,
+    cmapName: 'velocity-blue',
+    invertCmap: true,
+  });
 
   return (
     <DetailedActivityMapBase
@@ -87,7 +109,7 @@ export function DetailedActivityMapWithGarmin({
       }
       sliderChildren={
         <>
-          <LiveSeparation separation={liveSeparation} />
+          <LiveSeparation separation={liveSeparation} gradient={gradient} />
         </>
       }
     />
