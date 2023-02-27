@@ -43,11 +43,14 @@ const steps = [
 export function GarminUploadInstructions() {
   return (
     <Stack
-      direction="row"
       width="100%"
       justifyContent="space-between"
       alignItems="center"
       paddingRight={6}
+      sx={{
+        flexDirection: { xs: 'column', md: 'row' },
+        padding: { xs: '0', md: '0 6rem 0 0' },
+      }}
     >
       <Stack spacing={2}>
         {steps.map((step, idx) => (
