@@ -1,3 +1,4 @@
+import Info from '@mui/icons-material/InfoOutlined';
 import { Box, Stack, Typography } from '@mui/joy';
 import Image from 'next/image';
 
@@ -9,10 +10,10 @@ function CircledNumber({ num }: { num: number }) {
       border="3px solid var(--joy-palette-text-primary)"
       borderRadius="50%"
       textAlign="center"
-      width="32px"
-      minWidth="32px"
-      lineHeight="32px"
-      fontSize="32px"
+      width="30px"
+      minWidth="30px"
+      lineHeight="30px"
+      fontSize="30px"
     >
       <Typography>{num}</Typography>
     </Box>
@@ -38,32 +39,44 @@ const steps = [
   'Plug your watch into your computer',
   'Press the upload button below',
   'Upload recent .fit files. Try finding your Garmin as a removable USB drive, and then navigate to Garmin > Activity.',
+  'Select an activity below to view map and details',
 ];
 
 export function GarminUploadInstructions() {
   return (
-    <Stack
-      width="100%"
-      justifyContent="space-between"
-      alignItems="center"
-      paddingRight={6}
-      sx={{
-        flexDirection: { xs: 'column', md: 'row' },
-        padding: { xs: '0', md: '0 6rem 0 0' },
-      }}
-    >
-      <Stack spacing={2}>
-        {steps.map((step, idx) => (
-          <UploadStep key={idx} idx={idx} instructions={step} />
-        ))}
+    <Stack>
+      <Typography level="h5" startDecorator={<Info />}>
+        Instructions
+      </Typography>
+      <Typography level="body1">
+        Your Strava activities have been automatically imported. To link
+        activities from an external Garmin device, follow these steps.
+      </Typography>
+
+      <Stack
+        width="100%"
+        justifyContent="space-between"
+        alignItems="center"
+        paddingRight={6}
+        sx={{
+          mt: 3,
+          flexDirection: { xs: 'column', md: 'row' },
+          padding: { xs: '0', md: '0 6rem 0 0' },
+        }}
+      >
+        <Stack spacing={2}>
+          {steps.map((step, idx) => (
+            <UploadStep key={idx} idx={idx} instructions={step} />
+          ))}
+        </Stack>
+        <Image
+          src={garminImage}
+          alt="garmin 45s"
+          width={320}
+          height={320}
+          placeholder="blur"
+        />
       </Stack>
-      <Image
-        src={garminImage}
-        alt="garmin 45s"
-        width={320}
-        height={320}
-        placeholder="blur"
-      />
     </Stack>
   );
 }
