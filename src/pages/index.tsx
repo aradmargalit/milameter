@@ -55,11 +55,11 @@ export default function Home() {
           height="70vh"
           sx={{ margin: 4 }}
         >
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" maxWidth="75vw">
             <Typography
               level="display1"
               sx={{
-                fontSize: 'clamp(3rem, 25vmin, 8rem)',
+                fontSize: 'clamp(3rem, 12vmin, 8rem)',
                 fontWeight: 'bold',
                 letterSpacing: 2,
                 // fancy animation
@@ -74,7 +74,7 @@ export default function Home() {
             </Typography>
             <Typography
               sx={{
-                fontSize: 'clamp(3rem, 25vmin, 8rem)',
+                fontSize: 'clamp(3rem, 12vmin, 8rem)',
                 fontWeight: 'bold',
                 letterSpacing: 2,
               }}
