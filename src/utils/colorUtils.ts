@@ -12,7 +12,7 @@ export function buildGradient(
   const maxTime = separationTrajectory[0].time + activityDuration;
 
   const colors = colormap({
-    colormap: 'inferno',
+    colormap: 'velocity-blue',
     nshades: separationTrajectory.length,
     format: 'hex',
     alpha: 1,
@@ -21,7 +21,7 @@ export function buildGradient(
   const finalStr = separationTrajectory.reduce(function (prev, curr) {
     const normalizedSep = curr.distance / maxSep;
     const colorIdx = Math.floor(
-      normalizedSep * (separationTrajectory.length - 1)
+      (1 - normalizedSep) * (separationTrajectory.length - 1)
     );
     const color = colors[colorIdx];
     const timeUntilEnd = maxTime - curr.time;
