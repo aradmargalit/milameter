@@ -18,6 +18,9 @@ export function StravaLoginButton({
       sx={{
         color: 'var(--strava-orange)',
         borderColor: 'var(--strava-orange)',
+        ':hover': {
+          backgroundColor: 'var(--joy-palette-danger-200)',
+        },
       }}
     >
       Login with Strava
