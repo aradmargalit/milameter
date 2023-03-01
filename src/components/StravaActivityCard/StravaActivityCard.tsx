@@ -33,16 +33,18 @@ export function StravaActivityCard({
     <Card
       variant="outlined"
       orientation="horizontal"
-      sx={{
+      sx={(theme) => ({
         borderColor,
         width: '100%',
         height: 200,
         gap: 2,
+        transition: 'transform 0.3s, border 0.3s',
         '&:hover': {
           boxShadow: 'md',
-          borderColor,
+          borderColor: theme.vars.palette.primary.outlinedHoverBorder,
+          transform: 'translateY(-2px)',
         },
-      }}
+      })}
     >
       <div>
         <Typography level="h2" fontSize="lg" id="card-description" mb={0.5}>
