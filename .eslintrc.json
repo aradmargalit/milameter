@@ -15,6 +15,10 @@
         "args": "after-used",
         "argsIgnorePattern": "^_"
       }
-    ]
+    ],
+    "no-restricted-imports": ["error", {
+      "name": "@mui/icons-material",
+      "message": "Please import your icon directly from @mui/icons-material/YourIconName instead"
+    }]
   }
 }
