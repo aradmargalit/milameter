@@ -8,7 +8,7 @@ import {
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 type StravaLoginButtonContainerProps = Omit<StravaLoginButtonProps, 'onClick'>;
-import { LogoutOutlined } from '@mui/icons-material';
+import LogoutOutlined from '@mui/icons-material/LogoutOutlined';
 import { useSession } from 'next-auth/react';
 
 export function StravaLoginButtonContainer(
