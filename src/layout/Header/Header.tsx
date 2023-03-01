@@ -1,16 +1,11 @@
-import LogoutOutlined from '@mui/icons-material/LogoutOutlined';
-import { Box, Button, Typography } from '@mui/joy';
-import { signOut, useSession } from 'next-auth/react';
+import { Box, Typography } from '@mui/joy';
 
-import StravaLoginButton from '@/components/StravaLoginButton';
+import { StravaLoginButtonContainer } from '@/components/StravaLoginButton/StravaLoginButtonContainer';
 
 /**
  * Persistent header across pages for things like logout
  */
 export function Header() {
-  const { data } = useSession();
-
-  const isLoggedIn = !!data?.user;
   const colorOne = 'hsl(15 90% 55%)';
 
   return (
@@ -43,18 +38,7 @@ export function Header() {
           Meter
         </Typography>
       </Box>
-      {isLoggedIn ? (
-        <Button
-          startDecorator={<LogoutOutlined />}
-          variant="soft"
-          onClick={() => signOut()}
-          color="danger"
-        >
-          Log Out
-        </Button>
-      ) : (
-        <StravaLoginButton />
-      )}
+      <StravaLoginButtonContainer />
     </Box>
   );
 }
