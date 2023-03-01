@@ -1,6 +1,5 @@
 import { Button } from '@mui/joy';
 import { signIn, signOut } from 'next-auth/react';
-import { useEffect, useState } from 'react';
 
 import {
   StravaLoginButton,
@@ -16,8 +15,6 @@ export function StravaLoginButtonContainer(
   props: StravaLoginButtonContainerProps
 ) {
   const { status } = useSession();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
 
   const isLoggedIn = status === 'authenticated';
 
@@ -27,7 +24,7 @@ export function StravaLoginButtonContainer(
     throw new Error('Strava should be the only provider configured.');
   }
 
-  if (!mounted || status === 'loading') {
+  if (status === 'loading') {
     return null;
   }
 
