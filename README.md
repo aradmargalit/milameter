@@ -1,6 +1,19 @@
 # MilaMeter
 
-Pronounced mee-la mee-ter
+_Pronounced mee-la mee-ter_
+
+This is Mila.
+
+
+ ![Mila the GSP](mila.png)
+
+
+She's a _very_ active German Shorthaired Pointer who loves to run.
+
+This site was designed to allow our dad to attach a Garmin GPS to Mila, and analyze her activity on runs where she's allowed to explore off leash.
+MilaMeter syncs with the primary user's Strava account, and allows .fit files from a Garmin device to be manually uploaded and compared with existing Strava activities from the same date and time.
+
+
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
