@@ -1,6 +1,16 @@
-import { Box, Typography } from '@mui/joy';
+import { Box, Stack, Typography } from '@mui/joy';
 
+import AboutButton from '@/components/AboutButton';
 import { StravaLoginButtonContainer } from '@/components/StravaLoginButton/StravaLoginButtonContainer';
+
+function ButtonBox() {
+  return (
+    <Stack direction="row" display="flex" justifyContent="flex-end" spacing={1}>
+      <AboutButton />
+      <StravaLoginButtonContainer />
+    </Stack>
+  );
+}
 
 /**
  * Persistent header across pages for things like logout
@@ -38,7 +48,7 @@ export function Header() {
           Meter
         </Typography>
       </Box>
-      <StravaLoginButtonContainer />
+      <ButtonBox />
     </Box>
   );
 }
