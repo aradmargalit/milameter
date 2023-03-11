@@ -25,11 +25,7 @@ export function StravaLoginButtonContainer(
   }
 
   if (status === 'loading') {
-    return (
-      <Button variant="outlined" color="neutral" disabled>
-        Loading...
-      </Button>
-    );
+    return null;
   }
 
   if (isLoggedIn) {
