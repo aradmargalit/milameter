@@ -19,15 +19,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <CssVarsProvider defaultMode="system">
-        {loading ? (
-          <FullPageLoader />
-        ) : (
-          <GarminActivityProvider>
-            <main className={inter.className}>
-              <Component {...pageProps} />
-            </main>
-          </GarminActivityProvider>
-        )}
+        <GarminActivityProvider>
+          <main className={inter.className}>
+            {loading ? <FullPageLoader /> : <Component {...pageProps} />}
+          </main>
+        </GarminActivityProvider>
       </CssVarsProvider>
     </SessionProvider>
   );
