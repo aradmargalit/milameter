@@ -61,14 +61,8 @@ export function DetailedActivityMapBase({
     },
   };
 
-  const handleSliderChange = (
-    _event: Event,
-    value: number | number[],
-    _activeThumb: number
-  ): void => {
-    // technically the slider could give us an array of values (but it never will in
-    // this impl, so we just theoretically pull the first value
-    const targetTime = startTime + (Array.isArray(value) ? value[0] : value);
+  const handleSliderChange = (newValue: number): void => {
+    const targetTime = startTime + newValue;
     setHumanCoord(findClosestCoord(activity.records, targetTime));
 
     onSliderChange && onSliderChange(targetTime);
