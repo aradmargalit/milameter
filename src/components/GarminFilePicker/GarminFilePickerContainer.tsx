@@ -24,7 +24,13 @@ export function GarminFilePickerContainer() {
     const fileList = Array.from(files);
 
     // send files to context
-    uploadActivities(fileList);
+    // this can fail if local storage is full
+    // TODO: make local storage evict keys
+    try {
+      await uploadActivities(fileList);
+    } catch (e) {
+      setErrors(['Upload failed. Try clearing activities and trying again.']);
+    }
   };
 
   return <GarminFilePicker onChange={handleChange} errors={errors} />;
