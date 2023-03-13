@@ -1,4 +1,4 @@
-import { Coordinates, Record } from '@/types';
+import { Coordinates, Meters, Record } from '@/types';
 
 export type GarminActivityRecord = {
   timestamp: string;
@@ -17,7 +17,8 @@ export type GarminActivityRecord = {
 
 export type GarminActivity = {
   records: Record[];
-  distance: number; // meters
+  distance: Meters;
   elapsedTime: number;
   coordinates: Coordinates;
+  totalElevationGain: Meters;
 };
