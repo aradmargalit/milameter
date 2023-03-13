@@ -2,6 +2,7 @@ import { Box } from '@mui/system';
 
 import { GarminFilePickerContainer } from '../GarminFilePicker/GarminFilePickerContainer';
 import GarminUploadInstructions from '../GarminUploadInstructions';
+import StoredActivityIndicator from '../StoredActivityIndicator';
 
 export function GarminUploadSection() {
   return (
@@ -12,6 +13,8 @@ export function GarminUploadSection() {
     >
       <GarminUploadInstructions />
       <GarminFilePickerContainer />
+      <Box mt={2} mb={2} />
+      <StoredActivityIndicator />
     </Box>
   );
 }

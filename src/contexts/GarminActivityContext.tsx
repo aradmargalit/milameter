@@ -43,7 +43,8 @@ export function GarminActivityProvider({ children }: { children: ReactNode }) {
     useState<GarminActivity | null>(null);
 
   // When the stored activities hydrate, we want to update this context
-  // TODO: will this be problematic when we clear stored activities?
+  // I don't like this implicit dependency, but so far storedActivities only changes once,
+  // when the app hydrates and local storage is queried
   useEffect(() => {
     setGarminActivities(storedActivities);
   }, [storedActivities]);
