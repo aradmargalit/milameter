@@ -1,3 +1,4 @@
+// Keep in sync with https://docs.mapbox.com/api/maps/styles/
 export const mapStyles = [
   { label: 'Streets', value: 'mapbox://styles/mapbox/streets-v12' },
   { label: 'Outdoors', value: 'mapbox://styles/mapbox/outdoors-v12' },
