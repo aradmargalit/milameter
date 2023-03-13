@@ -3,6 +3,7 @@ import { GarminActivity } from '@/models/garminActivity';
 import { Coordinate, Record, UNIXEpochSeconds } from '@/types';
 
 export const METERS_PER_MILE = 1609.34;
+export const METERS_PER_FOOT = 0.3048;
 const RADIUS_OF_EARTH_IN_KM = 6371;
 
 type Separation = { time: UNIXEpochSeconds; distance: number };
@@ -10,6 +11,10 @@ export type SeparationTrajectory = Separation[];
 
 export function metersToMiles(meters: number): number {
   return meters / METERS_PER_MILE;
+}
+
+export function metersToFeet(meters: number): number {
+  return meters / METERS_PER_FOOT;
 }
 
 // https://www.movable-type.co.uk/scripts/latlong.html

@@ -7,7 +7,7 @@ export function Legend() {
     <Card
       sx={{
         position: 'relative',
-        bottom: '80%',
+        bottom: '70%',
         left: '80%',
         width: 115,
         height: 70,
