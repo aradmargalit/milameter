@@ -1,7 +1,10 @@
+import { Box, Stack } from '@mui/joy';
 import { ChangeEventHandler, useState } from 'react';
 
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 
+import ErrorAlert from '../ErrorAlert';
+import StoredActivityIndicator from '../StoredActivityIndicator';
 import { GarminFilePicker } from './GarminFilePicker';
 
 export function GarminFilePickerContainer() {
@@ -33,5 +36,17 @@ export function GarminFilePickerContainer() {
     }
   };
 
-  return <GarminFilePicker onChange={handleChange} errors={errors} />;
+  return (
+    <Stack gap={2}>
+      <Stack direction="row" gap={2}>
+        <GarminFilePicker onChange={handleChange} />
+        <StoredActivityIndicator />
+      </Stack>
+      {errors.length ? (
+        <Box maxWidth="50%">
+          <ErrorAlert errors={errors} />
+        </Box>
+      ) : null}
+    </Stack>
+  );
 }

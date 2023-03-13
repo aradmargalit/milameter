@@ -1,3 +1,4 @@
+import ClearOutlined from '@mui/icons-material/ClearOutlined';
 import { Button, Typography } from '@mui/joy';
 import { Box } from '@mui/system';
 
@@ -12,14 +13,16 @@ export function StoredActivityIndicator() {
       <Typography>
         {storedActivities.length} Garmin activities uploaded
       </Typography>
-      <Button
-        variant="soft"
-        color="danger"
-        onClick={clearStoredGarminActivities}
-        disabled={storedActivities.length === 0}
-      >
-        Clear saved Garmin activities
-      </Button>
+      {storedActivities.length !== 0 && (
+        <Button
+          variant="outlined"
+          color="danger"
+          onClick={clearStoredGarminActivities}
+          startDecorator={<ClearOutlined />}
+        >
+          Clear saved Garmin activities
+        </Button>
+      )}
     </Box>
   );
 }
