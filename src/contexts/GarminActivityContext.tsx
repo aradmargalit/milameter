@@ -1,7 +1,9 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 import { GarminActivity } from '@/models/garminActivity';
 import { garminActivityFromFile } from '@/utils/garminUtils';
+
+import { useGarminActivityStorage } from './GarminActivityStorageContext';
 
 type GarminActivityContextData = {
   garminActivities: GarminActivity[];
@@ -21,20 +23,27 @@ const GarminActivityContext = createContext<
   GarminActivityContextValue | undefined
 >(undefined);
 
-export function GarminActivityProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [garminActivities, setGarminActivities] = useState<GarminActivity[]>(
-    []
-  );
+export function GarminActivityProvider({ children }: { children: ReactNode }) {
+  const {
+    clearStoredGarminActivities,
+    storeGarminActivities,
+    storedActivities,
+  } = useGarminActivityStorage();
+
+  const [garminActivities, setGarminActivities] =
+    useState<GarminActivity[]>(storedActivities);
+
   const [selectedGarminActivity, setSelectedGarminActivity] =
     useState<GarminActivity | null>(null);
 
-  const clearActivities = () => setGarminActivities([]);
+  const clearActivities = () => {
+    setGarminActivities([]);
+    clearStoredGarminActivities();
+  };
+
   const uploadActivities = async (fitFiles: File[]) => {
     const activities = await Promise.all(fitFiles.map(garminActivityFromFile));
+    storeGarminActivities(activities);
     setGarminActivities(activities);
   };
 

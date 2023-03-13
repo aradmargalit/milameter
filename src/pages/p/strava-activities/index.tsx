@@ -16,7 +16,7 @@ import { GarminActivity } from '@/models/garminActivity';
 type Data = { activities: Activity[] };
 
 // We want to eventually land on roughly 9, but a few non-GPS activities may get filtered
-const DESIRED_PAGE_SIZE = 9;
+const DESIRED_PAGE_SIZE = 12;
 
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   context
@@ -84,6 +84,7 @@ export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { garminActivities } = useGarminActivities();
+  console.log(garminActivities);
 
   if (!data.activities.length) {
     return (
