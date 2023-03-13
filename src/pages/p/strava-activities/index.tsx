@@ -84,7 +84,6 @@ export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { garminActivities } = useGarminActivities();
-  console.log(garminActivities);
 
   if (!data.activities.length) {
     return (

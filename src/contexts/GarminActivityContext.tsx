@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import { GarminActivity } from '@/models/garminActivity';
 import { garminActivityFromFile } from '@/utils/garminUtils';
@@ -35,6 +41,12 @@ export function GarminActivityProvider({ children }: { children: ReactNode }) {
 
   const [selectedGarminActivity, setSelectedGarminActivity] =
     useState<GarminActivity | null>(null);
+
+  // When the stored activities hydrate, we want to update this context
+  // TODO: will this be problematic when we clear stored activities?
+  useEffect(() => {
+    setGarminActivities(storedActivities);
+  }, [storedActivities]);
 
   const clearActivities = () => {
     setGarminActivities([]);
