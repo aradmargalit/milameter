@@ -13,11 +13,9 @@ export function getStoredGarminActivites(): GarminActivity[] {
 }
 
 export function storeGarminActivities(garminActivites: GarminActivity[]): void {
-  const existingActivities = getStoredGarminActivites();
-  const allActivitiesToStore = [...garminActivites, ...existingActivities];
   window.localStorage.setItem(
     GARMIN_STORAGE_KEY,
-    JSON.stringify(allActivitiesToStore)
+    JSON.stringify(garminActivites)
   );
 }
 

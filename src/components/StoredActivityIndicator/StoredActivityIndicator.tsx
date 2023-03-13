@@ -10,12 +10,13 @@ export function StoredActivityIndicator() {
   return (
     <Box display="flex" alignItems="center" gap={1}>
       <Typography>
-        The app loaded with {storedActivities.length} saved Garmin activities
+        {storedActivities.length} Garmin activities uploaded
       </Typography>
       <Button
         variant="soft"
         color="danger"
         onClick={clearStoredGarminActivities}
+        disabled={storedActivities.length === 0}
       >
         Clear saved Garmin activities
       </Button>
