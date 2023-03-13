@@ -13,6 +13,8 @@ import {
   storeGarminActivities as localStorageStoreGarminActivities,
 } from '@/storage/garminActivityLocalStorage';
 
+import { uniqBy } from '../utils/listUtils';
+
 type GarminActivityStorageContextData = {
   storedActivities: GarminActivity[];
 };
@@ -28,15 +30,6 @@ type GarminActivityStorageContextValue = GarminActivityStorageContextData &
 const GarminActivityStorageContext = createContext<
   GarminActivityStorageContextValue | undefined
 >(undefined);
-
-// TODO: move to a generic util
-function uniqBy<T extends any[]>(a: T, keyFn: (_t: T) => string) {
-  var seen: Record<string, boolean> = {};
-  return a.filter((item) => {
-    var k = keyFn(item);
-    return seen.hasOwnProperty(k) ? false : (seen[k] = true);
-  });
-}
 
 export function GarminActivityStorageProvider({
   children,
