@@ -1,7 +1,10 @@
-export function uniqBy<T extends any[]>(a: T, keyFn: (_t: T) => string) {
-  var seen: Record<string, boolean> = {};
+export function uniqBy<T extends any[], V extends string | number | symbol>(
+  a: T,
+  keyFn: (_t: T) => V
+) {
+  const seen: { [_key in V]?: boolean } = {};
   return a.filter((item) => {
-    var k = keyFn(item);
+    const k = keyFn(item);
     return seen.hasOwnProperty(k) ? false : (seen[k] = true);
   });
 }
