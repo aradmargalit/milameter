@@ -23,7 +23,9 @@ function convertGarminRecord(garminRecord: GarminActivityRecord): Record {
   ];
   const dt = DateTime.fromJSDate(new Date(garminRecord.timestamp));
   const time = floorNearestInterval(dt, DEFAULT_TIME_SNAP_INTERVAL);
-  return { time, coord };
+  const altitude = garminRecord.altitude;
+  console.log(altitude);
+  return { time, coord, altitude };
 }
 
 export async function garminActivityFromFile(
@@ -55,5 +57,11 @@ export async function garminActivityFromFile(
   const elapsedTime = sessionData.totalElapsedTime;
   const totalElevationGain = sessionData.totalAscent;
 
-  return { records, distance, coordinates, elapsedTime, totalElevationGain };
+  return {
+    records,
+    distance,
+    coordinates,
+    elapsedTime,
+    totalElevationGain,
+  };
 }
