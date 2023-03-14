@@ -45,7 +45,7 @@ export function convertStravaActivityResponse({
   };
 
   if (streamsResponse?.time && streamsResponse.latlng) {
-    const { time, latlng } = streamsResponse;
+    const { time, latlng, altitude } = streamsResponse;
     const startTime = DateTime.fromISO(response.start_date);
 
     const times = time.data.map((t) => startTime.plus({ seconds: t }).toISO());
@@ -61,7 +61,10 @@ export function convertStravaActivityResponse({
       ),
       coord: coordinates[i],
     }));
-    return { ...core, records };
+
+    const altitudeStream = altitude.data;
+
+    return { ...core, records, altitudeStream };
   }
 
   return core;

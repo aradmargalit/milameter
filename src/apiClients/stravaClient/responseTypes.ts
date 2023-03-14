@@ -129,4 +129,7 @@ export type StravaStreamsResponse = {
   time: {
     data: number[];
   };
+  altitude: {
+    data: number[];
+  };
 };
