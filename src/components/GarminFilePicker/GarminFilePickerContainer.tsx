@@ -1,7 +1,10 @@
+import { Box, Stack } from '@mui/joy';
 import { ChangeEventHandler, useState } from 'react';
 
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 
+import ErrorAlert from '../ErrorAlert';
+import StoredActivityIndicator from '../StoredActivityIndicator';
 import { GarminFilePicker } from './GarminFilePicker';
 
 export function GarminFilePickerContainer() {
@@ -24,8 +27,26 @@ export function GarminFilePickerContainer() {
     const fileList = Array.from(files);
 
     // send files to context
-    uploadActivities(fileList);
+    // this can fail if local storage is full
+    // TODO: make local storage evict keys
+    try {
+      await uploadActivities(fileList);
+    } catch (e) {
+      setErrors(['Upload failed. Try clearing activities and trying again.']);
+    }
   };
 
-  return <GarminFilePicker onChange={handleChange} errors={errors} />;
+  return (
+    <Stack gap={2}>
+      <Stack direction="row" gap={2}>
+        <GarminFilePicker onChange={handleChange} />
+        <StoredActivityIndicator />
+      </Stack>
+      {errors.length ? (
+        <Box maxWidth="50%">
+          <ErrorAlert errors={errors} />
+        </Box>
+      ) : null}
+    </Stack>
+  );
 }
