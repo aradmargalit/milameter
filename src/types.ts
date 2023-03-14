@@ -18,6 +18,7 @@ export type Coordinates = Coordinate[];
 export type Record = {
   time: UNIXEpochSeconds;
   coord: Coordinate;
+  altitude: Meters;
 };
 
 export type ActivityWithRecords = WithRequired<Activity, 'records'>;

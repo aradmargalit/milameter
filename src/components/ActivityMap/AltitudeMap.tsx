@@ -3,21 +3,23 @@ import { Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
 import { GarminActivity } from '@/models/garminActivity';
+import { Record } from '@/types';
 
 type AltitudeMapProps = {
   activity: StravaActivity;
   garminActivity: GarminActivity | null;
 };
 
-function makeData(num: number): { altitude: number } {
+function trimAltitude(record: Record): Record {
   return {
-    altitude: parseFloat(num.toFixed(1)),
+    ...record,
+    altitude: parseFloat(record.altitude.toFixed(1)),
   };
 }
 
 export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
-  const stravaData = activity.altitudeStream?.map(makeData);
-  const garminData = garminActivity?.altitudeStream.map(makeData);
+  const stravaData = activity.records?.map(trimAltitude);
+  const garminData = garminActivity?.records.map(trimAltitude);
 
   if (!stravaData) {
     return null;

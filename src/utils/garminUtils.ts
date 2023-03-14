@@ -23,7 +23,9 @@ function convertGarminRecord(garminRecord: GarminActivityRecord): Record {
   ];
   const dt = DateTime.fromJSDate(new Date(garminRecord.timestamp));
   const time = floorNearestInterval(dt, DEFAULT_TIME_SNAP_INTERVAL);
-  return { time, coord };
+  const altitude = garminRecord.altitude;
+  console.log(altitude);
+  return { time, coord, altitude };
 }
 
 export async function garminActivityFromFile(
@@ -45,10 +47,6 @@ export async function garminActivityFromFile(
   // convert GarminActivityRecord to plain Record
   const records: Record[] = garminRecords.map((garminRecord) =>
     convertGarminRecord(garminRecord)
-  );
-
-  const altitudeStream: number[] = garminRecords.map(
-    ({ altitude }) => altitude
   );
 
   // expose coordinates more easily
