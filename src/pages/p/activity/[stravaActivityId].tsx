@@ -104,7 +104,7 @@ export default function StravaActivityDetailPage({
                 garminActivity={selectedGarminActivity}
               />
             </Grid>
-            <Grid xs={4}>
+            <Grid xs={8}>
               <AltitudeMap
                 activity={activity}
                 garminActivity={selectedGarminActivity}

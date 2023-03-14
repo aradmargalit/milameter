@@ -1,5 +1,5 @@
 import { Box } from '@mui/joy';
-import { Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import { Label, Line, LineChart, Tooltip, YAxis } from 'recharts';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
 import { GarminActivity } from '@/models/garminActivity';
@@ -17,6 +17,40 @@ function trimAltitude(record: Record): Record {
   };
 }
 
+type AltitudeChartProps = {
+  data: Record[];
+  strokeColor: string;
+};
+function AltitudeChart({ data, strokeColor }: AltitudeChartProps) {
+  return (
+    <LineChart
+      data={data}
+      width={800}
+      height={300}
+      syncId="sync"
+      margin={{ bottom: 10, top: 10, left: 10, right: 10 }}
+    >
+      <YAxis>
+        <Label
+          angle={-90}
+          value="Meters"
+          position="insideLeft"
+          style={{ textAnchor: 'middle' }}
+        />
+      </YAxis>
+      <Tooltip />
+
+      <Line
+        type="monotone"
+        dot={false}
+        dataKey="altitude"
+        stroke={strokeColor}
+        strokeWidth={4}
+      />
+    </LineChart>
+  );
+}
+
 export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
   const stravaData = activity.records?.map(trimAltitude);
   const garminData = garminActivity?.records.map(trimAltitude);
@@ -26,20 +60,9 @@ export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
   }
 
   return (
-    <Box width={500} height={300}>
-      <LineChart data={stravaData} width={500} height={150} syncId="sync">
-        <XAxis />
-        <YAxis />
-        <Tooltip />
-
-        <Line type="natural" dataKey="altitude" stroke="red" />
-      </LineChart>
-      <LineChart data={garminData} width={500} height={150} syncId="sync">
-        <XAxis />
-        <YAxis />
-        <Tooltip />
-        <Line type="natural" dataKey="altitude" stroke="red" />
-      </LineChart>
+    <Box width={800} height={700}>
+      <AltitudeChart data={stravaData} strokeColor="red" />
+      {garminData && <AltitudeChart data={garminData} strokeColor="blue" />}
     </Box>
   );
 }
