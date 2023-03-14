@@ -21,4 +21,5 @@ export type GarminActivity = {
   elapsedTime: number;
   coordinates: Coordinates;
   totalElevationGain: Meters;
+  altitudeStream: Meters[];
 };

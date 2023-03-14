@@ -47,6 +47,10 @@ export async function garminActivityFromFile(
     convertGarminRecord(garminRecord)
   );
 
+  const altitudeStream: number[] = garminRecords.map(
+    ({ altitude }) => altitude
+  );
+
   // expose coordinates more easily
   const coordinates = records.map((record) => record.coord);
 
@@ -55,5 +59,12 @@ export async function garminActivityFromFile(
   const elapsedTime = sessionData.totalElapsedTime;
   const totalElevationGain = sessionData.totalAscent;
 
-  return { records, distance, coordinates, elapsedTime, totalElevationGain };
+  return {
+    records,
+    distance,
+    coordinates,
+    elapsedTime,
+    totalElevationGain,
+    altitudeStream,
+  };
 }
