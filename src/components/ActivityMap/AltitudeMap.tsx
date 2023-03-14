@@ -1,26 +1,43 @@
+import { Box } from '@mui/joy';
 import { Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
+import { GarminActivity } from '@/models/garminActivity';
 
 type AltitudeMapProps = {
   activity: StravaActivity;
+  garminActivity: GarminActivity | null;
 };
 
-export function AltitudeMap({ activity }: AltitudeMapProps) {
-  const data = activity.altitudeStream?.map((a) => ({ a }));
+function makeData(num: number): { altitude: number } {
+  return {
+    altitude: parseFloat(num.toFixed(1)),
+  };
+}
 
-  console.log(data);
+export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
+  const stravaData = activity.altitudeStream?.map(makeData);
+  const garminData = garminActivity?.altitudeStream.map(makeData);
 
-  if (!data) {
+  if (!stravaData) {
     return null;
   }
 
   return (
-    <LineChart width={400} height={400} data={data}>
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Line type="natural" dataKey="a" stroke="red" />
-    </LineChart>
+    <Box width={500} height={300}>
+      <LineChart data={stravaData} width={500} height={150} syncId="sync">
+        <XAxis />
+        <YAxis />
+        <Tooltip />
+
+        <Line type="natural" dataKey="altitude" stroke="red" />
+      </LineChart>
+      <LineChart data={garminData} width={500} height={150} syncId="sync">
+        <XAxis />
+        <YAxis />
+        <Tooltip />
+        <Line type="natural" dataKey="altitude" stroke="red" />
+      </LineChart>
+    </Box>
   );
 }
