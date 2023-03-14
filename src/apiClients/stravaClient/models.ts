@@ -84,5 +84,4 @@ export type StravaActivity = {
   // hasKudoed: boolean;
   // sufferScore: number;
   records?: Record[];
-  altitudeStream?: Meters[];
 };

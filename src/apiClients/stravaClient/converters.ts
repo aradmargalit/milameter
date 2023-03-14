@@ -60,11 +60,10 @@ export function convertStravaActivityResponse({
         DEFAULT_TIME_SNAP_INTERVAL
       ),
       coord: coordinates[i],
+      altitude: altitude.data[i],
     }));
 
-    const altitudeStream = altitude.data;
-
-    return { ...core, records, altitudeStream };
+    return { ...core, records };
   }
 
   return core;
