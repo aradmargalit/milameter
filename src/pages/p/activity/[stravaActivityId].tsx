@@ -86,7 +86,7 @@ export default function StravaActivityDetailPage({
                   {activity.locationName}
                 </Typography>
               </Box>
-              <Box sx={{ width: '100%', height: 500 }}>
+              <Box width="100%" height="800">
                 {selectedGarminActivity ? (
                   <DetailedActivityMapWithGarmin
                     activity={activity}
