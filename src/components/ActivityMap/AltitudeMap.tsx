@@ -1,9 +1,11 @@
 import { Box } from '@mui/joy';
-import { Label, Line, LineChart, Tooltip, YAxis } from 'recharts';
+import { Label, Legend, Line, LineChart, Tooltip, YAxis } from 'recharts';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
+import { DOG_COLOR } from '@/colors';
 import { GarminActivity } from '@/models/garminActivity';
 import { Record } from '@/types';
+import { metersToFeet } from '@/utils/distanceUtils';
 
 type AltitudeMapProps = {
   activity: StravaActivity;
@@ -17,11 +19,18 @@ function trimAltitude(record: Record): Record {
   };
 }
 
-type AltitudeChartProps = {
-  data: Record[];
-  strokeColor: string;
+type ChartOption = {
+  dataKey: string;
+  color: string;
+  label: string;
 };
-function AltitudeChart({ data, strokeColor }: AltitudeChartProps) {
+
+type AltitudeChartProps = {
+  data: Array<{ stravaAltitude: number; garminAltitude?: number }>;
+  chartOptions: ChartOption[];
+};
+
+function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
   return (
     <LineChart
       data={data}
@@ -38,15 +47,26 @@ function AltitudeChart({ data, strokeColor }: AltitudeChartProps) {
           style={{ textAnchor: 'middle' }}
         />
       </YAxis>
-      <Tooltip />
-
-      <Line
-        type="monotone"
-        dot={false}
-        dataKey="altitude"
-        stroke={strokeColor}
-        strokeWidth={4}
+      <Tooltip
+        formatter={(value) => [
+          `${metersToFeet(value as number).toFixed(2)} ft`,
+          '',
+        ]}
+        animationDuration={300}
       />
+      {chartOptions.map(({ dataKey, color, label }, idx) => (
+        <Line
+          key={dataKey}
+          type="monotone"
+          dot={false}
+          dataKey={dataKey}
+          stroke={color}
+          strokeWidth={idx === 0 ? 6 : 4}
+          label={label}
+          strokeDasharray={idx === 0 ? undefined : '5 5'}
+        />
+      ))}
+      <Legend />
     </LineChart>
   );
 }
@@ -55,14 +75,39 @@ export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
   const stravaData = activity.records?.map(trimAltitude);
   const garminData = garminActivity?.records.map(trimAltitude);
 
-  if (!stravaData) {
+  // const garminData = garminActivity?.records
+  //   .map(trimAltitude)
+  //   .map((x, idx) => ({
+  //     ...x,
+  //     altitude:
+  //       idx % 100 === 0
+  //         ? x.altitude + (Math.random() > 0.5 ? 50 : -25)
+  //         : x.altitude,
+  //   }));
+  const stitched = stravaData?.map((stravaDatum, i) => {
+    return {
+      stravaAltitude: stravaDatum.altitude,
+      garminAltitude: garminData ? garminData[i].altitude : undefined,
+    };
+  });
+
+  if (!stitched) {
     return null;
   }
 
   return (
     <Box width={800} height={700}>
-      <AltitudeChart data={stravaData} strokeColor="red" />
-      {garminData && <AltitudeChart data={garminData} strokeColor="blue" />}
+      <AltitudeChart
+        data={stitched}
+        chartOptions={[
+          {
+            label: 'Human Altitude',
+            dataKey: 'stravaAltitude',
+            color: DOG_COLOR,
+          },
+          { label: 'Dog Altitude', dataKey: 'garminAltitude', color: 'green' },
+        ]}
+      />
     </Box>
   );
 }
