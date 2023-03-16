@@ -1,7 +1,7 @@
 import { GarminActivity } from '@/models/garminActivity';
 
 import { clearInvalidVersions } from './cacheInvalidation';
-import { getItem, removeItem, setItem } from './localeStorage';
+import { getItem, removeItem, setItem } from './localStorage';
 import { keyString, StorageKey } from './storageKey';
 
 /**

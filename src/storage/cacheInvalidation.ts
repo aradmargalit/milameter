@@ -1,4 +1,4 @@
-import { removeItem } from './localeStorage';
+import { removeItem } from './localStorage';
 import { keyString, StorageKey } from './storageKey';
 
 export function clearInvalidVersions(currentKey: StorageKey): void {
@@ -14,7 +14,6 @@ export function clearInvalidVersions(currentKey: StorageKey): void {
       version: i - 1,
     };
 
-    console.log('removing: ', keyString(expiredKey));
     removeItem(keyString(expiredKey));
   }
 }
