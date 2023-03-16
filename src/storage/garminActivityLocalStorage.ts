@@ -5,13 +5,12 @@ import { getItem, removeItem, setItem } from './localStorage';
 import { keyString, StorageKey } from './storageKey';
 
 /**
- * The storage key serves as a breaking version indicator
- * It should always be formatted with a trailing ".{version}"
- * e.g. STORED_GARMIN_ACTIVITIES.1
+ * This storage key serves as a breaking version indicator
+ * increment the version every time the GarminActivity model changes
  */
 const garminStorageKey: StorageKey = {
   key: 'STORED_GARMIN_ACTIVITIES',
-  version: 2,
+  version: 1,
 };
 
 const garminStorageKeyString = keyString(garminStorageKey);
