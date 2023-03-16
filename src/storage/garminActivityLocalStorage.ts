@@ -1,6 +1,7 @@
 import { GarminActivity } from '@/models/garminActivity';
 
 import { clearInvalidVersions } from './cacheInvalidation';
+import { getItem, removeItem, setItem } from './localeStorage';
 import { keyString, StorageKey } from './storageKey';
 
 /**
@@ -16,9 +17,7 @@ const garminStorageKey: StorageKey = {
 const garminStorageKeyString = keyString(garminStorageKey);
 
 export function getStoredGarminActivites(): GarminActivity[] {
-  const jsonStringifiedActivites = window.localStorage.getItem(
-    garminStorageKeyString
-  );
+  const jsonStringifiedActivites = getItem(garminStorageKeyString);
   if (!jsonStringifiedActivites) {
     return [];
   }
@@ -27,14 +26,11 @@ export function getStoredGarminActivites(): GarminActivity[] {
 }
 
 export function storeGarminActivities(garminActivites: GarminActivity[]): void {
-  window.localStorage.setItem(
-    garminStorageKeyString,
-    JSON.stringify(garminActivites)
-  );
+  setItem(garminStorageKeyString, JSON.stringify(garminActivites));
 }
 
 export function clearStoredGarminActivities() {
-  window.localStorage.removeItem(garminStorageKeyString);
+  removeItem(garminStorageKeyString);
 }
 
 export function removeInvalidGarminActivities() {
