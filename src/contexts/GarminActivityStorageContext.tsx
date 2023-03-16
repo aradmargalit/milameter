@@ -10,6 +10,7 @@ import { GarminActivity } from '@/models/garminActivity';
 import {
   clearStoredGarminActivities,
   getStoredGarminActivites,
+  removeInvalidGarminActivities,
   storeGarminActivities as localStorageStoreGarminActivities,
 } from '@/storage/garminActivityLocalStorage';
 
@@ -43,6 +44,8 @@ export function GarminActivityStorageProvider({
 
   // We need to hydrate this value once the client hydrates, otherwise there's no localStorage on the server
   useEffect(() => {
+    // before pulling activities from storage, remove expired ones
+    removeInvalidGarminActivities();
     setStoredActivities(getStoredGarminActivites());
   }, []);
 

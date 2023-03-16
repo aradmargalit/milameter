@@ -15,6 +15,11 @@ export type GarminActivityRecord = {
   enhancedSpeed: number;
 };
 
+/**
+ * Represents a parsed Garmin activity
+ * note: when updating this model with breaking changes
+ * increment the cache version in src/storage/garminActivityLocalStorage
+ */
 export type GarminActivity = {
   records: Record[];
   distance: Meters;
