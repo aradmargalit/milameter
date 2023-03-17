@@ -1,4 +1,4 @@
-import { Coordinates, Meters, Record } from '@/types';
+import { Coordinates, Meters, MetersPerSecond, Record } from '@/types';
 
 export type GarminActivityRecord = {
   timestamp: string;
@@ -13,6 +13,7 @@ export type GarminActivityRecord = {
   fractionalCadence: number;
   enhancedAltitude: number;
   enhancedSpeed: number;
+  enhancedMaxSpeed: number;
 };
 
 /**
@@ -26,4 +27,5 @@ export type GarminActivity = {
   elapsedTime: number;
   coordinates: Coordinates;
   totalElevationGain: Meters;
+  maxSpeed: MetersPerSecond;
 };

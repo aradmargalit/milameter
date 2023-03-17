@@ -54,6 +54,14 @@ export async function garminActivityFromFile(
 
   const elapsedTime = sessionData.totalElapsedTime;
   const totalElevationGain = sessionData.totalAscent;
+  const maxSpeed = sessionData.enhancedMaxSpeed;
 
-  return { records, distance, coordinates, elapsedTime, totalElevationGain };
+  return {
+    records,
+    distance,
+    coordinates,
+    elapsedTime,
+    totalElevationGain,
+    maxSpeed,
+  };
 }
