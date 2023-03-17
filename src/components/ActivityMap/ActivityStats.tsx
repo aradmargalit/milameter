@@ -56,8 +56,8 @@ export function ActivityStats({
         </Grid>
         <Grid>
           <Statistic
-            name="🏃‍♂️ Total Elevation Gain"
-            value={metersToFeet(activity.totalElevationGain).toFixed(2)}
+            name="🏃‍♂️ Elevation Gain"
+            value={metersToFeet(activity.totalElevationGain).toFixed(0)}
             units="ft"
           />
         </Grid>
@@ -73,6 +73,13 @@ export function ActivityStats({
             </Grid>
             <Grid>
               <Statistic
+                name="🐶 Pace"
+                value={computePace(garminActivity)}
+                units="min/mi"
+              />
+            </Grid>
+            <Grid>
+              <Statistic
                 name="🐶 Max Pace"
                 value={paceFromSpeed(garminActivity.maxSpeed)}
                 units="min/mi"
@@ -80,18 +87,11 @@ export function ActivityStats({
             </Grid>
             <Grid>
               <Statistic
-                name="🐶 Total Elevation Gain"
+                name="🐶 Elevation Gain"
                 value={metersToFeet(garminActivity.totalElevationGain).toFixed(
-                  2
+                  0
                 )}
                 units="ft"
-              />
-            </Grid>
-            <Grid>
-              <Statistic
-                name="🐶 Pace"
-                value={computePace(garminActivity)}
-                units="min/mi"
               />
             </Grid>
           </>
