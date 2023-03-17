@@ -48,8 +48,7 @@ export function DetailedActivityMapWithGarmin({
     source: 'garminRoute',
     paint: {
       'line-color': DOG_COLOR,
-      'line-dasharray': [3.5, 2],
-      'line-width': 4,
+      'line-width': 2,
       'line-opacity': 0.75,
     },
     layout: {
