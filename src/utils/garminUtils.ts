@@ -32,8 +32,8 @@ export async function garminActivityFromFile(
   const buffer = await file.arrayBuffer();
   const stream = Stream.fromBuffer(new Uint8Array(buffer));
   const decoder = new Decoder(stream);
-  const garminRecords: GarminActivityRecord[] =
-    decoder.read().messages.recordMesgs;
+  const messages = decoder.read().messages;
+  const garminRecords: GarminActivityRecord[] = messages.recordMesgs;
 
   // TODO: update these
   // @ts-ignore
@@ -50,8 +50,10 @@ export async function garminActivityFromFile(
   // expose coordinates more easily
   const coordinates = records.map((record) => record.coord);
 
-  // get elapsed time
-  const elapsedTime = records[records.length - 1].time - records[0].time;
+  const sessionData = messages.sessionMesgs[0];
 
-  return { records, distance, coordinates, elapsedTime };
+  const elapsedTime = sessionData.totalElapsedTime;
+  const totalElevationGain = sessionData.totalAscent;
+
+  return { records, distance, coordinates, elapsedTime, totalElevationGain };
 }
