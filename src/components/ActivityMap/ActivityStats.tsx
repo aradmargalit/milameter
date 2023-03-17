@@ -48,7 +48,7 @@ export function ActivityStats({
         </Grid>
         <Grid>
           <Statistic
-            name="🏃‍♂️ Total Elevation Gain"
+            name="🏃‍♂️ Elevation Gain"
             value={metersToFeet(activity.totalElevationGain).toFixed(0)}
             units="ft"
           />
@@ -72,7 +72,7 @@ export function ActivityStats({
             </Grid>
             <Grid>
               <Statistic
-                name="🐶 Total Elevation Gain"
+                name="🐶 Elevation Gain"
                 value={metersToFeet(garminActivity.totalElevationGain).toFixed(
                   0
                 )}
