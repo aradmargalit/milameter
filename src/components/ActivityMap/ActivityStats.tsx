@@ -7,6 +7,7 @@ import {
   getSeparationTrajectory,
   metersToFeet,
   metersToMiles,
+  paceFromSpeed,
 } from '@/utils/distanceUtils';
 
 import { Statistic } from './Statistic';
@@ -48,6 +49,13 @@ export function ActivityStats({
         </Grid>
         <Grid>
           <Statistic
+            name="🏃‍♂️ Max Pace"
+            value={paceFromSpeed(activity.maxSpeed)}
+            units="min/mi"
+          />
+        </Grid>
+        <Grid>
+          <Statistic
             name="🏃‍♂️ Total Elevation Gain"
             value={metersToFeet(activity.totalElevationGain).toFixed(2)}
             units="ft"
@@ -61,6 +69,13 @@ export function ActivityStats({
                 name="🐶 Distance"
                 value={metersToMiles(garminActivity.distance).toFixed(2)}
                 units="mi"
+              />
+            </Grid>
+            <Grid>
+              <Statistic
+                name="🐶 Max Pace"
+                value={paceFromSpeed(garminActivity.maxSpeed)}
+                units="min/mi"
               />
             </Grid>
             <Grid>
