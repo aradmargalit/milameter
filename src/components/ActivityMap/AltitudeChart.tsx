@@ -31,7 +31,7 @@ const AXIS_PADDING_FEET = 20;
 
 export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
   return (
-    <ResponsiveContainer width="100%" aspect={3.5}>
+    <ResponsiveContainer minWidth={300} width="100%" aspect={3.5}>
       <LineChart
         data={data}
         margin={{ bottom: 10, top: 10, left: 10, right: 10 }}
@@ -39,7 +39,7 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
         <XAxis
           dataKey="secondsSinceStart"
           tickFormatter={(value) => secondsToDuration(value)}
-          interval={10}
+          interval={30}
         />
         <YAxis
           domain={[

@@ -10,7 +10,7 @@ import { keyString, StorageKey } from './storageKey';
  */
 const garminStorageKey: StorageKey = {
   key: 'STORED_GARMIN_ACTIVITIES',
-  version: 3,
+  version: 4,
 };
 
 const garminStorageKeyString = keyString(garminStorageKey);
