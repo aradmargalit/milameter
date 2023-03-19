@@ -13,6 +13,9 @@ type AltitudeMapProps = {
 };
 
 const BRAND_ORANGE = '#FF4500';
+
+// Rendering every data point results in a pretty choppy graph
+// this controls how many points are skipped before rendering another
 const SAMPLING_RATE = 10;
 
 function makeChartData(
@@ -68,12 +71,7 @@ export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
   const sampledData = data.filter((_, idx) => idx % SAMPLING_RATE === 0);
 
   return (
-    <Box
-      sx={{
-        borderWidth: '2px',
-        borderRadius: '5%',
-      }}
-    >
+    <Box>
       <AltitudeChart data={sampledData} chartOptions={chartOptions} />
     </Box>
   );
