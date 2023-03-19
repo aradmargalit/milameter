@@ -1,4 +1,4 @@
-import { Box } from '@mui/joy';
+import { Box, useTheme } from '@mui/joy';
 import { DateTime } from 'luxon';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
@@ -44,6 +44,7 @@ function makeChartData(
 }
 
 export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
+  const theme = useTheme();
   const data = makeChartData(activity, garminActivity);
 
   if (!data) {
@@ -54,7 +55,7 @@ export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
     {
       label: 'Human Altitude',
       dataKey: 'stravaAltitude',
-      color: 'black',
+      color: theme.palette.text.primary,
       strokeWidthPx: 5,
     },
   ];
