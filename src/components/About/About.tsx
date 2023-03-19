@@ -17,6 +17,11 @@ export function About() {
         width={320}
         height={320}
         placeholder="blur"
+        style={{
+          borderRadius: '15%',
+          overflow: 'hidden',
+          marginBottom: 20,
+        }}
       />
       <Typography level="body1">
         This is Mila. She&apos;s a very active German Shorthaired Pointer who
