@@ -29,7 +29,7 @@ function makeChartData(
 
     const stravaAltitude = metersToFeet(stravaDatum.altitude);
     const garminAltitude = garminActivity?.records
-      ? metersToFeet(garminActivity?.records[i].altitude)
+      ? metersToFeet(garminActivity?.records[i]?.altitude)
       : undefined;
 
     return {
