@@ -23,7 +23,7 @@ function convertGarminRecord(garminRecord: GarminActivityRecord): Record {
   ];
   const dt = DateTime.fromJSDate(new Date(garminRecord.timestamp));
   const time = floorNearestInterval(dt, DEFAULT_TIME_SNAP_INTERVAL);
-  const altitude = garminRecord.altitude;
+  const altitude = garminRecord.enhancedAltitude ?? garminRecord.altitude;
   return { time, coord, altitude };
 }
 
