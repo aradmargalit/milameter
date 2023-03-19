@@ -28,5 +28,4 @@ export type GarminActivity = {
   coordinates: Coordinates;
   totalElevationGain: Meters;
   maxSpeed: MetersPerSecond;
-  altitudeStream: Meters[];
 };

@@ -1,4 +1,5 @@
 import { Box } from '@mui/joy';
+import { DateTime } from 'luxon';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
 import { GarminActivity } from '@/models/garminActivity';
@@ -14,15 +15,33 @@ type AltitudeMapProps = {
 const BRAND_ORANGE = '#FF4500';
 const SAMPLING_RATE = 10;
 
-export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
-  const data = activity.records?.map((stravaDatum, i) => {
+function makeChartData(
+  activity: StravaActivity,
+  garminActivity: GarminActivity | null
+) {
+  const startTime = DateTime.fromISO(activity.startDate);
+
+  return activity.records?.map((stravaDatum, i) => {
+    const secondsSinceStart = DateTime.fromSeconds(stravaDatum.time).diff(
+      startTime,
+      'seconds'
+    ).seconds;
+
+    const stravaAltitude = metersToFeet(stravaDatum.altitude);
+    const garminAltitude = garminActivity?.records
+      ? metersToFeet(garminActivity?.records[i].altitude)
+      : undefined;
+
     return {
-      stravaAltitude: metersToFeet(stravaDatum.altitude),
-      garminAltitude: garminActivity?.records
-        ? metersToFeet(garminActivity?.records[i].altitude)
-        : undefined,
+      secondsSinceStart,
+      stravaAltitude,
+      garminAltitude,
     };
   });
+}
+
+export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
+  const data = makeChartData(activity, garminActivity);
 
   if (!data) {
     return null;
@@ -32,7 +51,8 @@ export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
     {
       label: 'Human Altitude',
       dataKey: 'stravaAltitude',
-      color: BRAND_ORANGE,
+      color: 'black',
+      strokeWidthPx: 5,
     },
   ];
 
@@ -40,7 +60,8 @@ export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
     chartOptions.push({
       label: 'Dog Altitude',
       dataKey: 'garminAltitude',
-      color: 'green',
+      color: BRAND_ORANGE,
+      strokeWidthPx: 2,
     });
   }
 

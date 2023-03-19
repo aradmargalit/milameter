@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 
 /**
  * floorNearestInterval converts the datetime to unix epoch time, rounded down to nearest
@@ -17,4 +17,9 @@ export function floorNearestInterval(dt: DateTime, interval: number): number {
   }
   const remainder = unixEpochSeconds % interval;
   return unixEpochSeconds - remainder;
+}
+
+export function secondsToDuration(seconds: number): string {
+  const format = seconds > 60 * 60 ? 'hh:mm:ss' : 'mm:ss';
+  return Duration.fromObject({ seconds }).toFormat(format);
 }

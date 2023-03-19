@@ -65,6 +65,5 @@ export async function garminActivityFromFile(
     elapsedTime,
     totalElevationGain,
     maxSpeed,
-    altitudeStream,
   };
 }

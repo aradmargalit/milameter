@@ -5,17 +5,25 @@ import {
   LineChart,
   ResponsiveContainer,
   Tooltip,
+  XAxis,
   YAxis,
 } from 'recharts';
+
+import { secondsToDuration } from '@/utils/timeUtils';
 
 export type AltitudeChartOption = {
   dataKey: string;
   color: string;
   label: string;
+  strokeWidthPx: number;
 };
 
 type AltitudeChartProps = {
-  data: Array<{ stravaAltitude: number; garminAltitude?: number }>;
+  data: Array<{
+    stravaAltitude: number;
+    garminAltitude?: number;
+    secondsSinceStart: number;
+  }>;
   chartOptions: AltitudeChartOption[];
 };
 
@@ -23,11 +31,16 @@ const AXIS_PADDING_FEET = 20;
 
 export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
   return (
-    <ResponsiveContainer width="100%" aspect={2}>
+    <ResponsiveContainer width="100%" aspect={3.5}>
       <LineChart
         data={data}
         margin={{ bottom: 10, top: 10, left: 10, right: 10 }}
       >
+        <XAxis
+          dataKey="secondsSinceStart"
+          tickFormatter={(value) => secondsToDuration(value)}
+          interval={10}
+        />
         <YAxis
           domain={[
             (dataMin: number) => Math.max(dataMin - AXIS_PADDING_FEET, 0),
@@ -44,19 +57,19 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
         </YAxis>
         <Tooltip
           formatter={(value) => [`${(value as number).toFixed(2)} ft`]}
+          labelFormatter={(label) => secondsToDuration(label)}
           animationDuration={200}
         />
-        {chartOptions.map(({ dataKey, color, label }, idx) => (
+        {chartOptions.map(({ dataKey, color, label, strokeWidthPx }) => (
           <Line
             key={dataKey}
             type="monotone"
             dot={false}
             dataKey={dataKey}
             stroke={color}
-            strokeWidth={idx === 0 ? 6 : 4}
+            strokeWidth={strokeWidthPx}
             label={label}
             name={label}
-            strokeDasharray={idx === 0 ? undefined : '5 5'}
           />
         ))}
         <Legend />
