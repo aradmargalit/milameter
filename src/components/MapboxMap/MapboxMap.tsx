@@ -1,6 +1,6 @@
 import { Box, Option, Select, SelectProps, Typography } from '@mui/joy';
 import { MutableRefObject, useState } from 'react';
-import Map, { MapRef } from 'react-map-gl';
+import Map, { FullscreenControl, MapRef } from 'react-map-gl';
 
 import { MAPBOX_ACCESS_TOKEN } from '@/config';
 
@@ -49,6 +49,7 @@ export function MapboxMap({ children, ...rest }: MapboxMapProps) {
           reuseMaps
           {...rest}
         >
+          <FullscreenControl />
           {children}
         </Map>
       </Box>
