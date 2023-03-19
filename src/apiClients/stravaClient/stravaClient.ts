@@ -69,7 +69,20 @@ export class StravaClient {
         `/activities/${id}/streams`,
         {
           params: {
-            keys: 'time,latlng',
+            /**
+             * time: An instance of TimeStream.
+             * distance: An instance of DistanceStream.
+             * latlng: An instance of LatLngStream.
+             * altitude: An instance of AltitudeStream.
+             * velocity_smooth: An instance of SmoothVelocityStream.
+             * heartrate: An instance of HeartrateStream.
+             * cadence: An instance of CadenceStream.
+             * watts: An instance of PowerStream.
+             * temp: An instance of TemperatureStream.
+             * moving: An instance of MovingStream.
+             * grade_smooth: An instance of SmoothGradeStream.
+             */
+            keys: 'time,latlng,altitude',
             key_by_type: true,
           },
         }

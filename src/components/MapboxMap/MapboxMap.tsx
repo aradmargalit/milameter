@@ -30,7 +30,7 @@ export function MapboxMap({ children, ...rest }: MapboxMapProps) {
   const selectedStyleURI = mapStyles.find((x) => x.label === mapStyle)!.value;
 
   return (
-    <Box display="flex" flexDirection="column" gap={2} height="100%">
+    <Box display="flex" flexDirection="column" gap={2} height={600}>
       <Box width="50%" display="flex" gap={1} alignItems="center">
         <Typography>Map Style</Typography>
         <Select value={mapStyle} onChange={handleChange}>
@@ -41,7 +41,7 @@ export function MapboxMap({ children, ...rest }: MapboxMapProps) {
           ))}
         </Select>
       </Box>
-      <Box height="100%">
+      <Box height={500}>
         <Map
           mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
           attributionControl={false}

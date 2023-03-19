@@ -76,7 +76,7 @@ export function DetailedActivityMapBase({
   ];
 
   return (
-    <Stack sx={{ height: '100%' }}>
+    <Stack height="100%">
       <MapboxMap
         ref={mapRef}
         onLoad={handleMapLoad}

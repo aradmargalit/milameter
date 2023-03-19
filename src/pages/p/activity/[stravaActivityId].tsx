@@ -7,6 +7,7 @@ import { getToken } from 'next-auth/jwt';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
+import { AltitudeMap } from '@/components/ActivityMap/AltitudeMap';
 import { DetailedActivityMapBase } from '@/components/ActivityMap/DetailedActivityMapBase';
 import { DetailedActivityMapWithGarmin } from '@/components/ActivityMap/DetailedActivityMapWithGarmin';
 import { Legend } from '@/components/ActivityMap/Legend';
@@ -85,7 +86,7 @@ export default function StravaActivityDetailPage({
                   {activity.locationName}
                 </Typography>
               </Box>
-              <Box sx={{ width: '100%', height: 500 }}>
+              <Box width="100%" height="800">
                 {selectedGarminActivity ? (
                   <DetailedActivityMapWithGarmin
                     activity={activity}
@@ -99,6 +100,12 @@ export default function StravaActivityDetailPage({
             </Grid>
             <Grid xs={4}>
               <ActivityStats
+                activity={activity}
+                garminActivity={selectedGarminActivity}
+              />
+            </Grid>
+            <Grid xs={8}>
+              <AltitudeMap
                 activity={activity}
                 garminActivity={selectedGarminActivity}
               />
