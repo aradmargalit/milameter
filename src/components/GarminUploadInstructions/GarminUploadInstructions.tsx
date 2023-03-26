@@ -45,7 +45,7 @@ const steps = [
 
 export function GarminUploadInstructions() {
   return (
-    <SmartCollapse approxHeightPx={400}>
+    <SmartCollapse approxHeightPx={400} id="garminInstructions">
       <Stack>
         <Typography level="h5" startDecorator={<Info />}>
           Instructions

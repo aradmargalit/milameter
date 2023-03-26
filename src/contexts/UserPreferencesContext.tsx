@@ -6,6 +6,10 @@ import {
   useState,
 } from 'react';
 
+import {
+  SmartCollapseKey,
+  smartCollapses,
+} from '@/components/SmartCollapse/smartCollapses';
 import { UserPreferences } from '@/models/userPreferences';
 import {
   getStoredPreferences,
@@ -29,6 +33,10 @@ const UserPrefsContext = createContext<UserPrefsContextValue | undefined>(
 
 const defaultUserPrefs: UserPreferences = {
   mapTheme: 'Satellite',
+  collapsedSections: smartCollapses.reduce((acc, curr) => {
+    acc[curr.key] = curr.isDefaultCollapsed;
+    return acc;
+  }, {} as Record<SmartCollapseKey, boolean>),
 };
 
 export function UserPrefsProvider({ children }: { children: ReactNode }) {
