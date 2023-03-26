@@ -1,8 +1,12 @@
 import Info from '@mui/icons-material/InfoOutlined';
 import { Box, Stack, Typography } from '@mui/joy';
+import { setCookie } from 'cookies-next';
 import Image from 'next/image';
+import { useState } from 'react';
 
-import SmartCollapse from '../SmartCollapse';
+import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
+
+import Collapse from '../Collapse';
 import garminImage from './garmin45s.webp';
 
 function CircledNumber({ num }: { num: number }) {
@@ -43,9 +47,20 @@ const steps = [
   'Select an activity below to view map and details',
 ];
 
-export function GarminUploadInstructions() {
+export function GarminUploadInstructions({
+  instructionsOpen,
+}: {
+  instructionsOpen: boolean;
+}) {
+  const [open, setOpen] = useState(instructionsOpen);
+  const toggle = () => {
+    const newValue = !open;
+    setOpen(newValue);
+    setCookie(GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE, newValue);
+  };
+
   return (
-    <SmartCollapse approxHeightPx={400} id="garminInstructions">
+    <Collapse approxHeightPx={400} open={open} toggle={toggle}>
       <Stack>
         <Typography level="h5" startDecorator={<Info />}>
           Instructions
@@ -80,6 +95,6 @@ export function GarminUploadInstructions() {
           />
         </Stack>
       </Stack>
-    </SmartCollapse>
+    </Collapse>
   );
 }

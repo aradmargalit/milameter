@@ -1,4 +1,5 @@
 import { Divider, Sheet } from '@mui/joy';
+import { getCookie } from 'cookies-next';
 import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
@@ -12,18 +13,18 @@ import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { ActivityPair } from '@/models/activityPair';
 import { GarminActivity } from '@/models/garminActivity';
+import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
 
-type Data = { activities: Activity[] };
+type Data = { activities: Activity[]; instructionsOpen: boolean };
 
 // We want to eventually land on roughly 9, but a few non-GPS activities may get filtered
 const DESIRED_PAGE_SIZE = 9;
 
-export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
-  context
-) => {
-  const jwt = await getToken({
-    req: context.req,
-  });
+export const getServerSideProps: GetServerSideProps<{ data: Data }> = async ({
+  req,
+  res,
+}) => {
+  const jwt = await getToken({ req });
 
   // This should never happen, but what can ya do
   if (!jwt?.accessToken) {
@@ -38,10 +39,18 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   const milaMeterAPI = new MilaMeterAPI(jwt.accessToken);
   const activities = await milaMeterAPI.getActivities(DESIRED_PAGE_SIZE);
 
+  // get preferences from cookies
+  const instructionsOpen = Boolean(
+    getCookie(GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE, { req, res })
+  );
+
+  //todo: extract collapse preference, drill to page, make into local context
+
   return {
     props: {
       data: {
         activities,
+        instructionsOpen,
       },
     },
   };
@@ -119,7 +128,7 @@ export default function StravaActivities({
     <main>
       <Layout>
         <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
-          <GarminUploadSection />
+          <GarminUploadSection instructionsOpen={data.instructionsOpen} />
           <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />
         </Sheet>
