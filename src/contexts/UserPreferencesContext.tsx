@@ -9,6 +9,7 @@ import {
 import { UserPreferences } from '@/models/userPreferences';
 import {
   getStoredPreferences,
+  removeInvalidUserPrefs,
   storeUserPreferences,
 } from '@/storage/userPreferencesLocalStorage';
 
@@ -35,6 +36,7 @@ export function UserPrefsProvider({ children }: { children: ReactNode }) {
   const [userPrefs, setUserPrefs] = useState<UserPreferences>(defaultUserPrefs);
 
   useEffect(() => {
+    removeInvalidUserPrefs();
     const storedPrefs = getStoredPreferences();
     setUserPrefs({
       ...defaultUserPrefs,

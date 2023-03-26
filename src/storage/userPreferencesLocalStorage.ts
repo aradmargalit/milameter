@@ -1,5 +1,6 @@
 import { UserPreferences } from '@/models/userPreferences';
 
+import { clearInvalidVersions } from './cacheInvalidation';
 import { getItem, removeItem, setItem } from './localStorage';
 import { keyString, StorageKey } from './storageKey';
 
@@ -29,4 +30,8 @@ export function storeUserPreferences(userPrefs: UserPreferences): void {
 
 export function clearStoredPreferences() {
   removeItem(userPrefsKey);
+}
+
+export function removeInvalidUserPrefs() {
+  clearInvalidVersions(userPreferencesStorageKey);
 }
