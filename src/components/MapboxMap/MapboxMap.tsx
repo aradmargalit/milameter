@@ -1,8 +1,9 @@
 import { Box, Option, Select, SelectProps, Typography } from '@mui/joy';
-import { MutableRefObject, useState } from 'react';
+import { MutableRefObject } from 'react';
 import Map, { FullscreenControl, MapRef } from 'react-map-gl';
 
 import { MAPBOX_ACCESS_TOKEN } from '@/config';
+import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 
 import { MapStyle, mapStyles } from './mapStyles';
 
@@ -16,24 +17,29 @@ export type MapboxMapProps = {
  * Renders a Mapbox GL JS Map with our access key and sensible defaults
  */
 export function MapboxMap({ children, ...rest }: MapboxMapProps) {
-  const [mapStyle, setMapStyle] = useState<MapStyle>('Outdoors');
+  const {
+    userPrefs: { mapTheme },
+    updateUserPrefs,
+  } = useUserPreferences();
 
   const handleChange: SelectProps<MapStyle>['onChange'] = (_e, value) => {
     if (value === null) {
       return;
     }
 
-    setMapStyle(value);
+    updateUserPrefs({
+      mapTheme: value,
+    });
   };
 
   // This is safe to assert since we use the same config to power the dropdown
-  const selectedStyleURI = mapStyles.find((x) => x.label === mapStyle)!.value;
+  const selectedStyleURI = mapStyles.find((x) => x.label === mapTheme)!.value;
 
   return (
     <Box display="flex" flexDirection="column" gap={2} height={600}>
       <Box width="50%" display="flex" gap={1} alignItems="center">
         <Typography>Map Style</Typography>
-        <Select value={mapStyle} onChange={handleChange}>
+        <Select value={mapTheme} onChange={handleChange}>
           {mapStyles.map(({ label }) => (
             <Option key={label} value={label}>
               {label}

@@ -10,6 +10,7 @@ import { SessionProvider } from 'next-auth/react';
 import FullPageLoader from '@/components/FullPageLoader';
 import { GarminActivityProvider } from '@/contexts/GarminActivityContext';
 import { GarminActivityStorageProvider } from '@/contexts/GarminActivityStorageContext';
+import { UserPrefsProvider } from '@/contexts/UserPreferencesContext';
 import { useAppLoading } from '@/hooks/useAppLoading';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -20,13 +21,15 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <CssVarsProvider defaultMode="system">
-        <GarminActivityStorageProvider>
-          <GarminActivityProvider>
-            <main className={inter.className}>
-              {loading ? <FullPageLoader /> : <Component {...pageProps} />}
-            </main>
-          </GarminActivityProvider>
-        </GarminActivityStorageProvider>
+        <UserPrefsProvider>
+          <GarminActivityStorageProvider>
+            <GarminActivityProvider>
+              <main className={inter.className}>
+                {loading ? <FullPageLoader /> : <Component {...pageProps} />}
+              </main>
+            </GarminActivityProvider>
+          </GarminActivityStorageProvider>
+        </UserPrefsProvider>
       </CssVarsProvider>
     </SessionProvider>
   );
