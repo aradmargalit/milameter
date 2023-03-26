@@ -2,6 +2,7 @@ import Info from '@mui/icons-material/InfoOutlined';
 import { Box, Stack, Typography } from '@mui/joy';
 import Image from 'next/image';
 
+import SmartCollapse from '../SmartCollapse';
 import garminImage from './garmin45s.webp';
 
 function CircledNumber({ num }: { num: number }) {
@@ -44,39 +45,41 @@ const steps = [
 
 export function GarminUploadInstructions() {
   return (
-    <Stack>
-      <Typography level="h5" startDecorator={<Info />}>
-        Instructions
-      </Typography>
-      <Typography level="body1">
-        Your Strava activities have been automatically imported. To link
-        activities from an external Garmin device, follow these steps.
-      </Typography>
+    <SmartCollapse approxHeightPx={400}>
+      <Stack>
+        <Typography level="h5" startDecorator={<Info />}>
+          Instructions
+        </Typography>
+        <Typography level="body1">
+          Your Strava activities have been automatically imported. To link
+          activities from an external Garmin device, follow these steps.
+        </Typography>
 
-      <Stack
-        width="100%"
-        justifyContent="space-between"
-        alignItems="center"
-        paddingRight={6}
-        sx={{
-          mt: 3,
-          flexDirection: { xs: 'column', md: 'row' },
-          padding: { xs: '0', md: '0 6rem 0 0' },
-        }}
-      >
-        <Stack spacing={2}>
-          {steps.map((step, idx) => (
-            <UploadStep key={idx} idx={idx} instructions={step} />
-          ))}
+        <Stack
+          width="100%"
+          justifyContent="space-between"
+          alignItems="center"
+          paddingRight={6}
+          sx={{
+            mt: 3,
+            flexDirection: { xs: 'column', md: 'row' },
+            padding: { xs: '0', md: '0 6rem 0 0' },
+          }}
+        >
+          <Stack spacing={2}>
+            {steps.map((step, idx) => (
+              <UploadStep key={idx} idx={idx} instructions={step} />
+            ))}
+          </Stack>
+          <Image
+            src={garminImage}
+            alt="garmin 45s"
+            width={320}
+            height={320}
+            placeholder="blur"
+          />
         </Stack>
-        <Image
-          src={garminImage}
-          alt="garmin 45s"
-          width={320}
-          height={320}
-          placeholder="blur"
-        />
       </Stack>
-    </Stack>
+    </SmartCollapse>
   );
 }
