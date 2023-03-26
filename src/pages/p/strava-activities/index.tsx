@@ -44,8 +44,6 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async ({
     getCookie(GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE, { req, res })
   );
 
-  //todo: extract collapse preference, drill to page, make into local context
-
   return {
     props: {
       data: {
