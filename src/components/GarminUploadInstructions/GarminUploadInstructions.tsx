@@ -60,16 +60,16 @@ export function GarminUploadInstructions({
   };
 
   return (
-    <Collapse approxHeightPx={400} open={open} toggle={toggle}>
-      <Stack>
-        <Typography level="h5" startDecorator={<Info />}>
-          Instructions
-        </Typography>
+    <Stack>
+      <Typography level="h5" startDecorator={<Info />}>
+        Instructions
+      </Typography>
+
+      <Collapse approxHeightPx={400} open={open} toggle={toggle}>
         <Typography level="body1">
           Your Strava activities have been automatically imported. To link
           activities from an external Garmin device, follow these steps.
         </Typography>
-
         <Stack
           width="100%"
           justifyContent="space-between"
@@ -94,7 +94,7 @@ export function GarminUploadInstructions({
             placeholder="blur"
           />
         </Stack>
-      </Stack>
-    </Collapse>
+      </Collapse>
+    </Stack>
   );
 }
