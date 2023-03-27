@@ -60,7 +60,7 @@ export function GarminUploadInstructions({
   };
 
   return (
-    <Stack>
+    <Stack spacing={1}>
       <Typography level="h5" startDecorator={<Info />}>
         Instructions
       </Typography>
