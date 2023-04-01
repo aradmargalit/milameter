@@ -51,7 +51,7 @@ export class StravaClient {
         }
       );
 
-      if (process.env.NEXT_PUBLIC_INCLUDE_TEST_ITEM) {
+      if (process.env.NEXT_PUBLIC_INCLUDE_TEST_ITEM === 'true') {
         response.data.unshift(
           mockStravaActivity as unknown as StravaActivityResponse
         );
@@ -69,7 +69,7 @@ export class StravaClient {
    */
   async getActivityById(id: string): Promise<StravaActivity | null> {
     if (
-      process.env.NEXT_PUBLIC_INCLUDE_TEST_ITEM &&
+      process.env.NEXT_PUBLIC_INCLUDE_TEST_ITEM === 'true' &&
       id === mockStravaActivity.id.toString()
     ) {
       return mockStravaActivity as unknown as StravaActivity;
