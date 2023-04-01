@@ -16,31 +16,50 @@ const BRAND_ORANGE = '#FF4500';
 
 // Rendering every data point results in a pretty choppy graph
 // this controls how many points are skipped before rendering another
-const SAMPLING_RATE = 10;
+const SAMPLING_RATE = 2;
 
 function makeChartData(
   activity: StravaActivity,
   garminActivity: GarminActivity | null
 ) {
+  if (!activity.records?.length) return;
+
   const startTime = DateTime.fromISO(activity.startDate);
+  const endTime = DateTime.fromSeconds(
+    activity.records[activity.records.length - 1].time
+  );
 
-  return activity.records?.map((stravaDatum, i) => {
-    const secondsSinceStart = DateTime.fromSeconds(stravaDatum.time).diff(
-      startTime,
-      'seconds'
-    ).seconds;
+  const start = startTime.toSeconds();
+  const end = endTime.toSeconds();
 
-    const stravaAltitude = metersToFeet(stravaDatum.altitude);
-    const garminAltitude = garminActivity?.records
-      ? metersToFeet(garminActivity?.records[i]?.altitude)
-      : undefined;
-
-    return {
-      secondsSinceStart,
-      stravaAltitude,
-      garminAltitude,
+  // Init an array with one element for every second between Strava start and end
+  const sparseArray = new Array(end - start);
+  for (let i = 0; i < sparseArray.length; i++) {
+    sparseArray[i] = {
+      secondsSinceStart: null,
+      stravaAltitude: null,
+      garminAltitude: null,
     };
+  }
+
+  activity.records.forEach((rec) => {
+    if (rec.time >= start && rec.time < end) {
+      const idx = rec.time - start;
+      sparseArray[idx].secondsSinceStart = rec.time - start;
+      sparseArray[idx].stravaAltitude = metersToFeet(rec.altitude);
+    }
   });
+
+  garminActivity?.records.forEach((rec) => {
+    if (rec.time >= start && rec.time < end) {
+      sparseArray[rec.time - start].garminAltitude = metersToFeet(rec.altitude);
+    }
+  });
+
+  // complete records only
+  return sparseArray.filter(
+    (x) => x.secondsSinceStart && x.stravaAltitude && x.garminAltitude
+  );
 }
 
 export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
