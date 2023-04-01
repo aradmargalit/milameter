@@ -1,5 +1,5 @@
 import { Box, Option, Select, SelectProps, Typography } from '@mui/joy';
-import { MutableRefObject } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import Map, { FullscreenControl, MapRef } from 'react-map-gl';
 
 import { MAPBOX_ACCESS_TOKEN } from '@/config';
@@ -9,14 +9,16 @@ import { MapStyle, mapStyles } from './mapStyles';
 
 export type MapboxMapProps = {
   children?: React.ReactNode;
-  ref?: MutableRefObject<MapRef | null>;
   // kind of ugly, but "MapProps" has a small bug which makes it unusable
 } & Partial<React.ComponentProps<typeof Map>>;
 
 /**
  * Renders a Mapbox GL JS Map with our access key and sensible defaults
  */
-export function MapboxMap({ children, ...rest }: MapboxMapProps) {
+export const MapboxMap = forwardRef(function MapboxMap(
+  { children, ...rest }: MapboxMapProps,
+  ref: ForwardedRef<MapRef>
+) {
   const {
     userPrefs: { mapTheme },
     updateUserPrefs,
@@ -52,7 +54,7 @@ export function MapboxMap({ children, ...rest }: MapboxMapProps) {
           mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
           attributionControl={false}
           mapStyle={selectedStyleURI}
-          reuseMaps
+          ref={ref}
           {...rest}
         >
           <FullscreenControl />
@@ -61,4 +63,4 @@ export function MapboxMap({ children, ...rest }: MapboxMapProps) {
       </Box>
     </Box>
   );
-}
+});
