@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
 import { GarminActivity } from '@/models/garminActivity';
+import { metersToFeet } from '@/utils/distanceUtils';
 
 import { AltitudeChart, AltitudeChartOption } from './AltitudeChart';
 
@@ -32,7 +33,7 @@ function makeChartData(
   const end = endTime.toSeconds();
 
   // Init an array with one element for every second between Strava start and end
-  const sparseArray = [...new Array(end - start)];
+  const sparseArray = new Array(end - start);
   for (let i = 0; i < sparseArray.length; i++) {
     sparseArray[i] = {
       secondsSinceStart: null,
@@ -45,14 +46,14 @@ function makeChartData(
     if (rec.time >= start && rec.time < end) {
       const idx = rec.time - start;
       sparseArray[idx].secondsSinceStart = rec.time - start;
-      sparseArray[idx].stravaAltitude = rec.altitude;
+      sparseArray[idx].stravaAltitude = metersToFeet(rec.altitude);
     }
   });
 
   garminActivity?.records.forEach((rec) => {
     // check bounds
     if (rec.time >= start && rec.time < end) {
-      sparseArray[rec.time - start].garminAltitude = rec.altitude;
+      sparseArray[rec.time - start].garminAltitude = metersToFeet(rec.altitude);
     }
   });
 
