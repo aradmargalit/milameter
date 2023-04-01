@@ -15,7 +15,6 @@ export type MapboxMapProps = {
 /**
  * Renders a Mapbox GL JS Map with our access key and sensible defaults
  */
-//const MyInput = forwardRef(function MyInput(props, ref) {
 export const MapboxMap = forwardRef(function MapboxMap(
   { children, ...rest }: MapboxMapProps,
   ref: ForwardedRef<MapRef>
