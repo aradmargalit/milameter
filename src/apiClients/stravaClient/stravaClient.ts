@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import mockStravaActivity from '@/mockData/mockStravaActivity.json';
+
 import { convertStravaActivityResponse } from './converters';
 import { StravaActivity } from './models';
 import {
@@ -49,6 +51,11 @@ export class StravaClient {
         }
       );
 
+      if (process.env.NEXT_PUBLIC_INCLUDE_TEST_ITEM) {
+        response.data.unshift(
+          mockStravaActivity as unknown as StravaActivityResponse
+        );
+      }
       return response.data;
     } catch (e) {
       console.error(e);
@@ -61,6 +68,13 @@ export class StravaClient {
    * @param id the strava activity ID
    */
   async getActivityById(id: string): Promise<StravaActivity | null> {
+    if (
+      process.env.NEXT_PUBLIC_INCLUDE_TEST_ITEM &&
+      id === mockStravaActivity.id.toString()
+    ) {
+      return mockStravaActivity as unknown as StravaActivity;
+    }
+
     try {
       const activityReq = this.axiosInstance.get<StravaActivityResponse>(
         `/activities/${id}`

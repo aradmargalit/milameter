@@ -44,6 +44,9 @@ You can use the NextJS server as an API. Any files under `pages/api` which expor
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
+## Mock Data
+Not all of us have a GSP. In order to test with prodlike data, set `NEXT_PUBLIC_INCLUDE_TEST_ITEM` to `true` in your environment. It is true by default for your convenience. This puts a test activity at the front of your list. If you'd like to test Garmin functionality, select the `.fit` file in [`src/mockData`](./src/mockData/).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
