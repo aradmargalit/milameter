@@ -5,7 +5,11 @@ import { StravaActivity } from '@/apiClients/stravaClient/models';
 import { GarminActivity } from '@/models/garminActivity';
 import { metersToFeet } from '@/utils/distanceUtils';
 
-import { AltitudeChart, AltitudeChartOption } from './AltitudeChart';
+import {
+  AltitudeChart,
+  AltitudeChartOption,
+  AltitudePoint,
+} from './AltitudeChart';
 
 type AltitudeMapProps = {
   activity: StravaActivity;
@@ -33,7 +37,7 @@ function makeChartData(
   const end = endTime.toSeconds();
 
   // Init an array with one element for every second between Strava start and end
-  const sparseArray = new Array(end - start);
+  const sparseArray = new Array<AltitudePoint>(end - start);
   for (let i = 0; i < sparseArray.length; i++) {
     sparseArray[i] = {
       secondsSinceStart: null,
@@ -56,10 +60,14 @@ function makeChartData(
     }
   });
 
-  // complete records only
-  return sparseArray.filter(
-    (x) => x.secondsSinceStart && x.stravaAltitude && x.garminAltitude
-  );
+  // if there's a garmin activity, enforce that the records are complete
+  // otherwise everything passes
+  const filterFn = garminActivity
+    ? (el: AltitudePoint) =>
+        el.secondsSinceStart && el.stravaAltitude && el.garminAltitude
+    : (el: AltitudePoint) => el.secondsSinceStart && el.stravaAltitude;
+
+  return sparseArray.filter(filterFn);
 }
 
 export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
