@@ -51,7 +51,6 @@ function makeChartData(
   });
 
   garminActivity?.records.forEach((rec) => {
-    // check bounds
     if (rec.time >= start && rec.time < end) {
       sparseArray[rec.time - start].garminAltitude = metersToFeet(rec.altitude);
     }
