@@ -20,7 +20,7 @@ const BRAND_ORANGE = '#FF4500';
 
 // Rendering every data point results in a pretty choppy graph
 // this controls how many points are skipped before rendering another
-const SAMPLING_RATE = 2;
+const SAMPLING_RATE = 5;
 
 function makeChartData(
   activity: StravaActivity,
@@ -60,14 +60,7 @@ function makeChartData(
     }
   });
 
-  // if there's a garmin activity, enforce that the records are complete
-  // otherwise everything passes
-  const filterFn = garminActivity
-    ? (el: AltitudePoint) =>
-        el.secondsSinceStart && el.stravaAltitude && el.garminAltitude
-    : (el: AltitudePoint) => el.secondsSinceStart && el.stravaAltitude;
-
-  return sparseArray.filter(filterFn);
+  return sparseArray.filter((x) => x.secondsSinceStart);
 }
 
 export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {

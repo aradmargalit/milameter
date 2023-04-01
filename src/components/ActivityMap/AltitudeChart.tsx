@@ -79,6 +79,7 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
             strokeWidth={strokeWidthPx}
             label={label}
             name={label}
+            connectNulls
           />
         ))}
         <Legend />
