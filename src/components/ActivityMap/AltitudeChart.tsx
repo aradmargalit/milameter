@@ -19,12 +19,14 @@ export type AltitudeChartOption = {
   strokeWidthPx: number;
 };
 
+export type AltitudePoint = {
+  secondsSinceStart: number | null;
+  stravaAltitude: number | null;
+  garminAltitude: number | null;
+};
+
 type AltitudeChartProps = {
-  data: Array<{
-    stravaAltitude: number;
-    garminAltitude?: number;
-    secondsSinceStart: number;
-  }>;
+  data: Array<AltitudePoint>;
   chartOptions: AltitudeChartOption[];
 };
 
