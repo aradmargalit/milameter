@@ -33,7 +33,7 @@
     "luxon": "^3.2.1",
     "mapbox-gl": "^2.12.1",
     "next": "13.1.6",
-    "next-auth": "^4.19.2",
+    "next-auth": "^4.20.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-map-gl": "^7.0.21",
