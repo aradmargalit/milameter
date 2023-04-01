@@ -1,4 +1,4 @@
-import { Grid } from '@mui/joy';
+import { Divider, Grid, Stack } from '@mui/joy';
 
 import { Activity } from '@/models/activity';
 import { GarminActivity } from '@/models/garminActivity';
@@ -31,39 +31,40 @@ export function ActivityStats({
     Math.max(...separationTrajectory.map((separation) => separation.distance));
 
   return (
-    <div>
-      <Grid container spacing={1}>
-        <Grid>
-          <Statistic
-            name="🏃‍♂️ Distance"
-            value={metersToMiles(activity.distance).toFixed(2)}
-            units="mi"
-          />
+    <Stack>
+      <Stack direction="row">
+        <Grid container spacing={1}>
+          <Grid>
+            <Statistic
+              name="🏃‍♂️ Distance"
+              value={metersToMiles(activity.distance).toFixed(2)}
+              units="mi"
+            />
+          </Grid>
+          <Grid>
+            <Statistic
+              name="🏃‍♂️ Pace"
+              value={computePace(activity)}
+              units="min/mi"
+            />
+          </Grid>
+          <Grid>
+            <Statistic
+              name="🏃‍♂️ Max Pace"
+              value={paceFromSpeed(activity.maxSpeed)}
+              units="min/mi"
+            />
+          </Grid>
+          <Grid>
+            <Statistic
+              name="🏃‍♂️ Elevation Gain"
+              value={metersToFeet(activity.totalElevationGain).toFixed(0)}
+              units="ft"
+            />
+          </Grid>
         </Grid>
-        <Grid>
-          <Statistic
-            name="🏃‍♂️ Pace"
-            value={computePace(activity)}
-            units="min/mi"
-          />
-        </Grid>
-        <Grid>
-          <Statistic
-            name="🏃‍♂️ Max Pace"
-            value={paceFromSpeed(activity.maxSpeed)}
-            units="min/mi"
-          />
-        </Grid>
-        <Grid>
-          <Statistic
-            name="🏃‍♂️ Elevation Gain"
-            value={metersToFeet(activity.totalElevationGain).toFixed(0)}
-            units="ft"
-          />
-        </Grid>
-
         {garminActivity && (
-          <>
+          <Grid container spacing={1}>
             <Grid>
               <Statistic
                 name="🐶 Distance"
@@ -94,18 +95,19 @@ export function ActivityStats({
                 units="ft"
               />
             </Grid>
-          </>
-        )}
-        {!!maxSeparation && (
-          <Grid>
-            <Statistic
-              name="Max Separation"
-              value={maxSeparation.toFixed(0)}
-              units="m"
-            />
           </Grid>
         )}
-      </Grid>
-    </div>
+      </Stack>
+      <Divider />
+      {!!maxSeparation && (
+        <Grid>
+          <Statistic
+            name="Max Separation"
+            value={maxSeparation.toFixed(0)}
+            units="m"
+          />
+        </Grid>
+      )}
+    </Stack>
   );
 }
