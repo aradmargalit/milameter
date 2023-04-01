@@ -18,7 +18,7 @@ import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
 type Data = { activities: Activity[]; instructionsOpen: boolean };
 
 // We want to eventually land on roughly 9, but a few non-GPS activities may get filtered
-const DESIRED_PAGE_SIZE = 15;
+const DESIRED_PAGE_SIZE = 9;
 
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async ({
   req,
