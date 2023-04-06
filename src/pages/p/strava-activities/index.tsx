@@ -2,7 +2,7 @@ import { Divider, Sheet } from '@mui/joy';
 import { getCookie } from 'cookies-next';
 import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { getToken } from 'next-auth/jwt';
+import { getServerSession } from 'next-auth';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import ActivityGrid from '@/components/ActivityGrid';
@@ -13,6 +13,7 @@ import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { ActivityPair } from '@/models/activityPair';
 import { GarminActivity } from '@/models/garminActivity';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
 
 type Data = { activities: Activity[]; instructionsOpen: boolean };
@@ -24,10 +25,10 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async ({
   req,
   res,
 }) => {
-  const jwt = await getToken({ req });
+  const session = await getServerSession(req, res, authOptions);
 
   // This should never happen, but what can ya do
-  if (!jwt?.accessToken) {
+  if (!session?.accessToken) {
     return {
       redirect: {
         destination: '/',
@@ -36,7 +37,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async ({
     };
   }
 
-  const milaMeterAPI = new MilaMeterAPI(jwt.accessToken);
+  const milaMeterAPI = new MilaMeterAPI(session.accessToken);
   const activities = await milaMeterAPI.getActivities(DESIRED_PAGE_SIZE);
 
   // get preferences from cookies

@@ -7,12 +7,13 @@ declare module 'next-auth/jwt' {
     accessToken: string;
     refreshToken: string;
     expiresAt: number;
-    error?: "RefreshAccessTokenError"
+    error?: 'RefreshAccessTokenError';
   }
 }
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
-    error?: "RefreshAccessTokenError"
+    accessToken: string;
+    error?: 'TokenFetchError' | 'RefreshAccessTokenError';
   }
 }

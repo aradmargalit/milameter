@@ -1,6 +1,9 @@
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth, { AuthOptions, TokenSet } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import StravaProvider from 'next-auth/providers/strava';
+
+import prisma from '../../../../prisma/prisma';
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
@@ -36,34 +39,41 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 }
 
 export const authOptions: AuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: 'database',
+  },
   // Configure one or more authentication providers
   providers: [
     StravaProvider({
       clientId: process.env.STRAVA_CLIENT_ID || '',
       clientSecret: process.env.STRAVA_CLIENT_SECRET || '',
       authorization: { params: { scope: 'activity:read_all' } },
+      token: {
+        async request({ client, params, checks, provider }) {
+          const { token_type, expires_at, refresh_token, access_token } =
+            await client.oauthCallback(provider.callbackUrl, params, checks);
+          return {
+            tokens: { token_type, expires_at, refresh_token, access_token },
+          };
+        },
+      },
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
-      // Persist the OAuth access_token and or the user id to the token right after signin
-      if (account) {
-        token.accessToken = account.access_token!;
-        token.refreshToken = account.refresh_token!;
-        token.expiresAt = account.expires_at!; // UNIX epoch
-        return token;
+    async session({ user, session }) {
+      const token = await prisma.account.findFirst({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      if (!token || !token.access_token) {
+        session.error = 'TokenFetchError';
+        return session;
       }
 
-      if (Date.now() < token.expiresAt) {
-        // If the access token has not expired yet, return it
-        return token;
-      } else {
-        // If the access token has expired, try to refresh it
-        return refreshAccessToken(token);
-      }
-    },
-    async session({ session, token }) {
-      session.error = token.error;
+      session.accessToken = token.access_token;
       return session;
     },
   },

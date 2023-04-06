@@ -3,7 +3,7 @@ import Place from '@mui/icons-material/Place';
 import { Box, Button, Grid, Sheet, Stack, Typography } from '@mui/joy';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
-import { getToken } from 'next-auth/jwt';
+import { getServerSession } from 'next-auth';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
@@ -16,6 +16,7 @@ import ErrorAlert from '@/components/ErrorAlert';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 type Data = {
   activity: Activity | null;
@@ -32,12 +33,10 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
     };
   }
 
-  const jwt = await getToken({
-    req: context.req,
-  });
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   // This should never happen, but what can ya do
-  if (!jwt?.accessToken) {
+  if (!session?.accessToken) {
     return {
       redirect: {
         destination: '/',
@@ -46,7 +45,7 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
     };
   }
 
-  const milaMeterAPI = new MilaMeterAPI(jwt.accessToken);
+  const milaMeterAPI = new MilaMeterAPI(session.accessToken);
   const activity = await milaMeterAPI.getActivityById(stravaActivityId);
   return {
     props: { data: { activity } },
