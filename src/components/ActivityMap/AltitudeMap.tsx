@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import { StravaActivity } from '@/apiClients/stravaClient/models';
 import { GarminActivity } from '@/models/garminActivity';
 import { metersToFeet } from '@/utils/distanceUtils';
+import { mean } from '@/utils/mathUtils';
 
 import {
   AltitudeChart,
@@ -21,6 +22,29 @@ const BRAND_ORANGE = '#FF4500';
 // Rendering every data point results in a pretty choppy graph
 // this controls how many points are skipped before rendering another
 const SAMPLING_RATE = 5;
+
+function matchMeanElevation(data: AltitudePoint[]): AltitudePoint[] {
+  const stravaMean = mean(
+    data.flatMap(({ stravaAltitude }) =>
+      !!stravaAltitude ? stravaAltitude : []
+    )
+  );
+
+  const garminMean = mean(
+    data.flatMap(({ garminAltitude }) =>
+      !!garminAltitude ? garminAltitude : []
+    )
+  );
+
+  const meanDiff = stravaMean - garminMean;
+
+  return data.map((point) => ({
+    ...point,
+    stravaAltitude: point.stravaAltitude
+      ? point.stravaAltitude - meanDiff
+      : null,
+  }));
+}
 
 function makeChartData(
   activity: StravaActivity,
@@ -60,7 +84,10 @@ function makeChartData(
     }
   });
 
-  return sparseArray.filter((x) => x.secondsSinceStart);
+  const filtered = sparseArray.filter((x) => x.secondsSinceStart);
+
+  // adjust strava data so that mean elevation is matched
+  return matchMeanElevation(filtered);
 }
 
 export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
