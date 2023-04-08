@@ -36,7 +36,7 @@ function matchMeanElevation(data: AltitudePoint[]): AltitudePoint[] {
     )
   );
 
-  const meanDiff = stravaMean - garminMean;
+  const meanDiff = stravaMean - garminMean || 0;
 
   return data.map((point) => ({
     ...point,
