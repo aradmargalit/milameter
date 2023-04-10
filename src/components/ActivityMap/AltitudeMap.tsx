@@ -23,18 +23,16 @@ const BRAND_ORANGE = '#FF4500';
 // this controls how many points are skipped before rendering another
 const SAMPLING_RATE = 5;
 
-function matchMeanElevation(data: AltitudePoint[]): AltitudePoint[] {
-  const stravaMean = mean(
-    data.flatMap(({ stravaAltitude }) =>
-      !!stravaAltitude ? stravaAltitude : []
-    )
-  );
+function getMeanElevation(
+  data: AltitudePoint[],
+  key: keyof AltitudePoint
+): number {
+  return mean(data.map((x) => x[key]).filter((x): x is number => x !== null));
+}
 
-  const garminMean = mean(
-    data.flatMap(({ garminAltitude }) =>
-      !!garminAltitude ? garminAltitude : []
-    )
-  );
+function matchMeanElevation(data: AltitudePoint[]): AltitudePoint[] {
+  const stravaMean = getMeanElevation(data, 'stravaAltitude');
+  const garminMean = getMeanElevation(data, 'garminAltitude');
 
   const meanDiff = stravaMean - garminMean || 0;
 
