@@ -3,6 +3,8 @@ import { Divider, Grid, Stack } from '@mui/joy';
 import { Activity } from '@/models/activity';
 import { GarminActivity } from '@/models/garminActivity';
 import {
+  computeMaxAccel,
+  computeMaxDecel,
   computePace,
   getSeparationTrajectory,
   metersToFeet,
@@ -57,6 +59,28 @@ export function ActivityStats({
           </Grid>
           <Grid>
             <Statistic
+              name="🏃‍♂️ Max Acceleration"
+              value={
+                activity.records
+                  ? computeMaxAccel(activity.records).toFixed(1)
+                  : 'NaN'
+              }
+              units="m/s^2"
+            />
+          </Grid>
+          <Grid>
+            <Statistic
+              name="🏃‍♂️ Max Deceleration"
+              value={
+                activity.records
+                  ? computeMaxDecel(activity.records).toFixed(1)
+                  : 'NaN'
+              }
+              units="m/s^2"
+            />
+          </Grid>
+          <Grid>
+            <Statistic
               name="🏃‍♂️ Elevation Gain"
               value={metersToFeet(activity.totalElevationGain).toFixed(0)}
               units="ft"
@@ -84,6 +108,20 @@ export function ActivityStats({
                 name="🐶 Max Pace"
                 value={paceFromSpeed(garminActivity.maxSpeed)}
                 units="min/mi"
+              />
+            </Grid>
+            <Grid>
+              <Statistic
+                name="🐶 Max Acceleration"
+                value={computeMaxAccel(garminActivity.records).toFixed(1)}
+                units="m/s^2"
+              />
+            </Grid>
+            <Grid>
+              <Statistic
+                name="🐶 Max Deceleration"
+                value={computeMaxDecel(garminActivity.records).toFixed(1)}
+                units="m/s^2"
               />
             </Grid>
             <Grid>
