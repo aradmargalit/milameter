@@ -90,7 +90,6 @@ export function DetailedActivityMapBase({
           longitude={humanCoord[0]}
           latitude={humanCoord[1]}
           anchor="bottom"
-          offset={[-5, 0]}
         >
           <Typography level="h4">🏃‍♂️</Typography>
         </Marker>
