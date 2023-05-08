@@ -11,8 +11,8 @@ import { DateTime, Duration } from 'luxon';
 export function floorNearestInterval(dt: DateTime, interval: number): number {
   const unixEpochSeconds = dt.toUnixInteger();
 
-  // we can't do anything with intervals
-  if (interval < 1 || !Number.isSafeInteger(interval)) {
+  // we can't do anything with intervals smaller than 2 or NaN
+  if (interval < 2 || !Number.isSafeInteger(interval)) {
     return unixEpochSeconds;
   }
   const remainder = unixEpochSeconds % interval;

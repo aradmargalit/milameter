@@ -92,7 +92,6 @@ export function DetailedActivityMapWithGarmin({
             longitude={garminCoord[0]}
             latitude={garminCoord[1]}
             anchor="bottom"
-            offset={[5, 0]}
           >
             <Typography level="h4">🐶</Typography>
           </Marker>
