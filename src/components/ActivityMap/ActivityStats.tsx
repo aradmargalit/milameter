@@ -57,17 +57,15 @@ export function ActivityStats({
               units="min/mi"
             />
           </Grid>
-          <Grid>
-            <Statistic
-              name="🏃‍♂️ Max Acceleration"
-              value={
-                activity.records
-                  ? computeMaxAccel(activity.records).toFixed(1)
-                  : 'NaN'
-              }
-              units="m/s^2"
-            />
-          </Grid>
+          {activity.records && (
+            <Grid>
+              <Statistic
+                name="🏃‍♂️ Max Acceleration"
+                value={computeMaxAccel(activity.records).toFixed(1)}
+                units="m/s^2"
+              />
+            </Grid>
+          )}
           <Grid>
             <Statistic
               name="🏃‍♂️ Max Deceleration"
