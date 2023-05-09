@@ -97,11 +97,11 @@ export default function StravaActivities({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [activities, setActivities] = useState<Activity[]>(data.activities);
 
-  const fetchMore: FetchMore = async ({ pageSize, pageNumber }) => {
+  const fetchMore: FetchMore = async ({ pageSize, currentPageNumber }) => {
     try {
       const res = await fetch(
         `/api/milameter/getActivities?pageSize=${pageSize}&pageNumber=${
-          pageNumber + 1
+          currentPageNumber + 1
         }`
       );
 

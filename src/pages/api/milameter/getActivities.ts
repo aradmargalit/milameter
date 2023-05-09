@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { getToken } from 'next-auth/jwt';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
+import { parseQueryParamToInt } from '@/utils/queryParsing';
 
 import { authOptions } from '../auth/[...nextauth]';
 
@@ -28,18 +29,8 @@ export default async function handler(
   let pageNumber: number;
 
   try {
-    pageSize = parseInt(
-      req.query.pageSize instanceof Array
-        ? req.query.pageSize[0]
-        : req.query.pageSize,
-      10
-    );
-    pageNumber = parseInt(
-      req.query.pageNumber instanceof Array
-        ? req.query.pageNumber[0]
-        : req.query.pageNumber,
-      10
-    );
+    pageSize = parseQueryParamToInt(req.query.pageSize);
+    pageNumber = parseQueryParamToInt(req.query.pageNumber);
   } catch (e) {
     return res
       .status(400)

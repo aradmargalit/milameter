@@ -4,7 +4,7 @@ import { useIsVisible } from './useIsVisible';
 
 type FetchMoreOpts = {
   pageSize: number;
-  pageNumber: number;
+  currentPageNumber: number;
 };
 /**
  * fetchMore should fetch more results
@@ -61,7 +61,7 @@ export function useInfiniteScroll<T extends Element>({
         const { itemsFetched, hasNextPage: fetchHasNextPage } = await fetchMore(
           {
             pageSize,
-            pageNumber,
+            currentPageNumber: pageNumber,
           }
         );
         const isLimitReached = totalItemsLoaded + itemsFetched >= itemLimit;
