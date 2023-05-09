@@ -38,7 +38,10 @@ export class StravaClient {
    * Returns athlete activities
    * https://developers.strava.com/docs/reference/#api-Activities-getLoggedInAthleteActivities
    */
-  async getAthleteActivities(per_page = 5): Promise<StravaActivityResponse[]> {
+  async getAthleteActivities(
+    per_page = 5,
+    page: number
+  ): Promise<StravaActivityResponse[]> {
     try {
       const response = await this.axiosInstance.get<StravaActivityResponse[]>(
         '/athlete/activities',
@@ -47,6 +50,7 @@ export class StravaClient {
             // before: '1', // An epoch timestamp to use for filtering activities that have taken place before a certain time.
             // after: '2', // An epoch timestamp to use for filtering activities that have taken place after a certain time.
             per_page, // Number of items per page. Defaults to 30.
+            page,
           },
         }
       );

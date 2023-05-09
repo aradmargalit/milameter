@@ -39,11 +39,15 @@ export class MilaMeterAPI {
    *
    * @param page_size the number of activities to return
    */
-  async getActivities(desiredPageSize: number): Promise<Activity[]> {
+  async getActivities(
+    desiredPageSize: number,
+    pageNumber = 1
+  ): Promise<Activity[]> {
     // overfetch by 25% to increase odds of getting desired page size after filtering
     const fetchPageSize = Math.ceil(desiredPageSize * 1.25);
     const latestActivities = await this.stravaClient.getAthleteActivities(
-      fetchPageSize
+      fetchPageSize,
+      pageNumber
     );
 
     const filteredActivities = latestActivities

@@ -3,6 +3,7 @@ import { getCookie } from 'cookies-next';
 import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { useState } from 'react';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import ActivityGrid from '@/components/ActivityGrid';
@@ -94,24 +95,39 @@ function activityDistance(
 export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const fetchMore: FetchMore = ({ pageSize }) => {
-    return Promise.resolve({
-      itemsFetched: 50,
+  const [activities, setActivities] = useState<Activity[]>(data.activities);
+
+  const fetchMore: FetchMore = async ({ pageSize, pageNumber }) => {
+    const res = await fetch(
+      `/api/milameter/getActivities?pageSize=${pageSize}&pageNumber=${
+        pageNumber + 1
+      }`
+    );
+
+    const { message } = await res.json();
+    const newActivities = message.activities;
+
+    setActivities([...activities, ...newActivities]);
+
+    return {
+      itemsFetched: newActivities.length,
+      // TODO: add logic to check somehow
       hasNextPage: false,
-    });
+    };
   };
 
   const { garminActivities } = useGarminActivities();
-  const { scrollTriggerRef, hasNextPage } = useInfiniteScroll<HTMLDivElement>({
-    fetchMore,
-    pageSize: DESIRED_PAGE_SIZE,
-    initialItemsLoaded: data.activities.length,
-    itemLimit: ITEM_LIMIT,
-    // TODO
-    initialHasNextPage: true,
-  });
+  const { scrollTriggerRef, hasNextPage, limitReached } =
+    useInfiniteScroll<HTMLDivElement>({
+      fetchMore,
+      pageSize: DESIRED_PAGE_SIZE,
+      initialItemsLoaded: data.activities.length,
+      itemLimit: ITEM_LIMIT,
+      // TODO
+      initialHasNextPage: true,
+    });
 
-  if (!data.activities.length) {
+  if (!activities.length) {
     return (
       <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
         <ErrorAlert
@@ -126,7 +142,7 @@ export default function StravaActivities({
   // for each activity, find the garmin activity with the lowest dissimilarity. If that
   // dissimilarity is above an arbitrarily threshold (0.5 for now), assume there's no
   // good match
-  const activityPairs: ActivityPair[] = data.activities.map((activity) => {
+  const activityPairs: ActivityPair[] = activities.map((activity) => {
     const distances = garminActivities.map((gA) =>
       activityDistance(gA, activity)
     );
@@ -148,14 +164,16 @@ export default function StravaActivities({
           <GarminUploadSection instructionsOpen={data.instructionsOpen} />
           <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />
-          {/* @ts-ignore ref is complaining that it could be null */}
-          <div ref={scrollTriggerRef}>
-            {hasNextPage ? (
+
+          {hasNextPage && (
+            // @ts-ignore ref is complaining that it could be null
+            <div ref={scrollTriggerRef}>
               <LoadingIndicator variant="soft" size="lg" />
-            ) : (
-              <NoMoreResults limit={ITEM_LIMIT} />
-            )}
-          </div>
+            </div>
+          )}
+          {!hasNextPage && (
+            <NoMoreResults limit={limitReached ? ITEM_LIMIT : undefined} />
+          )}
         </Sheet>
       </Layout>
     </main>

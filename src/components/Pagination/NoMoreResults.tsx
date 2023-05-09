@@ -1,12 +1,9 @@
 import { Typography } from '@mui/joy';
 
 type NoMoreResultsProps = {
-  limit: number;
+  limit?: number | undefined;
 };
 export function NoMoreResults({ limit }: NoMoreResultsProps) {
-  return (
-    <Typography>
-      You&apos;ve reached the end or hit the {limit} item limit.
-    </Typography>
-  );
+  const message = limit ? `You hit the ${limit} item limit` : 'No more results';
+  return <Typography>{message}</Typography>;
 }
