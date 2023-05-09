@@ -1,4 +1,4 @@
-import { CircularProgress, Divider, Sheet } from '@mui/joy';
+import { Divider, Sheet } from '@mui/joy';
 import { getCookie } from 'cookies-next';
 import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -8,8 +8,10 @@ import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import ActivityGrid from '@/components/ActivityGrid';
 import ErrorAlert from '@/components/ErrorAlert';
 import GarminUploadSection from '@/components/GarminUploadSection';
+import { LoadingIndicator } from '@/components/Pagination/LoadingIndicator';
+import { NoMoreResults } from '@/components/Pagination/NoMoreResults';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { FetchMore, useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { ActivityPair } from '@/models/activityPair';
@@ -92,8 +94,16 @@ function activityDistance(
 export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const fetchMore: FetchMore = ({ pageSize }) => {
+    return Promise.resolve({
+      itemsFetched: 50,
+      hasNextPage: false,
+    });
+  };
+
   const { garminActivities } = useGarminActivities();
-  const { scrollTriggerRef } = useInfiniteScroll<HTMLDivElement>({
+  const { scrollTriggerRef, hasNextPage } = useInfiniteScroll<HTMLDivElement>({
+    fetchMore,
     pageSize: DESIRED_PAGE_SIZE,
     initialItemsLoaded: data.activities.length,
     itemLimit: ITEM_LIMIT,
@@ -140,7 +150,11 @@ export default function StravaActivities({
           <ActivityGrid activityPairs={activityPairs} />
           {/* @ts-ignore ref is complaining that it could be null */}
           <div ref={scrollTriggerRef}>
-            <CircularProgress variant="soft" size="lg" />
+            {hasNextPage ? (
+              <LoadingIndicator variant="soft" size="lg" />
+            ) : (
+              <NoMoreResults limit={ITEM_LIMIT} />
+            )}
           </div>
         </Sheet>
       </Layout>
