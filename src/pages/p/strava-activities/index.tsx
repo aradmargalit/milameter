@@ -9,7 +9,7 @@ import ActivityGrid from '@/components/ActivityGrid';
 import ErrorAlert from '@/components/ErrorAlert';
 import GarminUploadSection from '@/components/GarminUploadSection';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
-import { useIsVisible } from '@/hooks/useIsVisible';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { ActivityPair } from '@/models/activityPair';
@@ -20,6 +20,7 @@ type Data = { activities: Activity[]; instructionsOpen: boolean };
 
 // We want to eventually land on roughly 9, but a few non-GPS activities may get filtered
 const DESIRED_PAGE_SIZE = 9;
+const ITEM_LIMIT = 100;
 
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async ({
   req,
@@ -92,7 +93,13 @@ export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { garminActivities } = useGarminActivities();
-  const { isVisible, ref } = useIsVisible<HTMLDivElement>({});
+  const { scrollTriggerRef } = useInfiniteScroll<HTMLDivElement>({
+    pageSize: DESIRED_PAGE_SIZE,
+    initialItemsLoaded: data.activities.length,
+    itemLimit: ITEM_LIMIT,
+    // TODO
+    initialHasNextPage: true,
+  });
 
   if (!data.activities.length) {
     return (
@@ -132,7 +139,7 @@ export default function StravaActivities({
           <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />
           {/* @ts-ignore ref is complaining that it could be null */}
-          <div ref={ref}>
+          <div ref={scrollTriggerRef}>
             <CircularProgress variant="soft" size="lg" />
           </div>
         </Sheet>
