@@ -1,4 +1,4 @@
-import { Divider, Sheet } from '@mui/joy';
+import { CircularProgress, Divider, Sheet } from '@mui/joy';
 import { getCookie } from 'cookies-next';
 import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -9,6 +9,7 @@ import ActivityGrid from '@/components/ActivityGrid';
 import ErrorAlert from '@/components/ErrorAlert';
 import GarminUploadSection from '@/components/GarminUploadSection';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
+import { useIsVisible } from '@/hooks/useIsVisible';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { ActivityPair } from '@/models/activityPair';
@@ -91,6 +92,7 @@ export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { garminActivities } = useGarminActivities();
+  const { isVisible, ref } = useIsVisible<HTMLDivElement>({});
 
   if (!data.activities.length) {
     return (
@@ -129,6 +131,10 @@ export default function StravaActivities({
           <GarminUploadSection instructionsOpen={data.instructionsOpen} />
           <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />
+          {/* @ts-ignore ref is complaining that it could be null */}
+          <div ref={ref}>
+            <CircularProgress variant="soft" size="lg" />
+          </div>
         </Sheet>
       </Layout>
     </main>
