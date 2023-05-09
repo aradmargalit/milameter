@@ -64,10 +64,11 @@ export function useInfiniteScroll<T extends Element>({
             pageNumber,
           }
         );
-        setPageNumber((curr) => curr++);
-        setHasNextPage(fetchHasNextPage);
-        setTotalItemsLoaded((curr) => (curr += itemsFetched));
-        setLimitReached(totalItemsLoaded + itemsFetched >= itemLimit);
+        const isLimitReached = totalItemsLoaded + itemsFetched >= itemLimit;
+        setPageNumber((curr) => curr + 1);
+        setHasNextPage(fetchHasNextPage && !isLimitReached);
+        setTotalItemsLoaded((curr) => curr + itemsFetched);
+        setLimitReached(isLimitReached);
       }
     }
     fetchMoreIfVisible();

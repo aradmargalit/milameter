@@ -1,4 +1,4 @@
-import { Divider, Sheet } from '@mui/joy';
+import { Divider, Sheet, Stack } from '@mui/joy';
 import { getCookie } from 'cookies-next';
 import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -98,22 +98,28 @@ export default function StravaActivities({
   const [activities, setActivities] = useState<Activity[]>(data.activities);
 
   const fetchMore: FetchMore = async ({ pageSize, pageNumber }) => {
-    const res = await fetch(
-      `/api/milameter/getActivities?pageSize=${pageSize}&pageNumber=${
-        pageNumber + 1
-      }`
-    );
+    try {
+      const res = await fetch(
+        `/api/milameter/getActivities?pageSize=${pageSize}&pageNumber=${
+          pageNumber + 1
+        }`
+      );
 
-    const { message } = await res.json();
-    const newActivities = message.activities;
+      const { message } = await res.json();
+      const newActivities = message.activities;
 
-    setActivities([...activities, ...newActivities]);
+      setActivities([...activities, ...newActivities]);
 
-    return {
-      itemsFetched: newActivities.length,
-      // TODO: add logic to check somehow
-      hasNextPage: false,
-    };
+      return {
+        itemsFetched: newActivities.length,
+        hasNextPage: true,
+      };
+    } catch (e) {
+      return {
+        itemsFetched: 0,
+        hasNextPage: false,
+      };
+    }
   };
 
   const { garminActivities } = useGarminActivities();
@@ -123,7 +129,6 @@ export default function StravaActivities({
       pageSize: DESIRED_PAGE_SIZE,
       initialItemsLoaded: data.activities.length,
       itemLimit: ITEM_LIMIT,
-      // TODO
       initialHasNextPage: true,
     });
 
@@ -164,16 +169,17 @@ export default function StravaActivities({
           <GarminUploadSection instructionsOpen={data.instructionsOpen} />
           <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />
-
-          {hasNextPage && (
-            // @ts-ignore ref is complaining that it could be null
-            <div ref={scrollTriggerRef}>
-              <LoadingIndicator variant="soft" size="lg" />
-            </div>
-          )}
-          {!hasNextPage && (
-            <NoMoreResults limit={limitReached ? ITEM_LIMIT : undefined} />
-          )}
+          <Stack direction="row" justifyContent="center" marginTop={2}>
+            {hasNextPage && (
+              // @ts-ignore ref is complaining that it could be null
+              <div ref={scrollTriggerRef}>
+                <LoadingIndicator variant="soft" size="lg" />
+              </div>
+            )}
+            {!hasNextPage && (
+              <NoMoreResults limit={limitReached ? ITEM_LIMIT : undefined} />
+            )}
+          </Stack>
         </Sheet>
       </Layout>
     </main>
