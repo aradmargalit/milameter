@@ -1,14 +1,18 @@
-import { Divider, Sheet } from '@mui/joy';
+import { Divider, Sheet, Stack } from '@mui/joy';
 import { getCookie } from 'cookies-next';
 import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { useState } from 'react';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import ActivityGrid from '@/components/ActivityGrid';
 import ErrorAlert from '@/components/ErrorAlert';
 import GarminUploadSection from '@/components/GarminUploadSection';
+import { LoadingIndicator } from '@/components/Pagination/LoadingIndicator';
+import { NoMoreResults } from '@/components/Pagination/NoMoreResults';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
+import { FetchMore, useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { ActivityPair } from '@/models/activityPair';
@@ -19,6 +23,7 @@ type Data = { activities: Activity[]; instructionsOpen: boolean };
 
 // We want to eventually land on roughly 9, but a few non-GPS activities may get filtered
 const DESIRED_PAGE_SIZE = 9;
+const ITEM_LIMIT = 100;
 
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async ({
   req,
@@ -90,9 +95,44 @@ function activityDistance(
 export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { garminActivities } = useGarminActivities();
+  const [activities, setActivities] = useState<Activity[]>(data.activities);
 
-  if (!data.activities.length) {
+  const fetchMore: FetchMore = async ({ pageSize, currentPageNumber }) => {
+    try {
+      const res = await fetch(
+        `/api/milameter/getActivities?pageSize=${pageSize}&pageNumber=${
+          currentPageNumber + 1
+        }`
+      );
+
+      const { message } = await res.json();
+      const newActivities = message.activities;
+
+      setActivities([...activities, ...newActivities]);
+
+      return {
+        itemsFetched: newActivities.length,
+        hasNextPage: newActivities.length > 0,
+      };
+    } catch (e) {
+      return {
+        itemsFetched: 0,
+        hasNextPage: false,
+      };
+    }
+  };
+
+  const { garminActivities } = useGarminActivities();
+  const { scrollTriggerRef, hasNextPage, limitReached } =
+    useInfiniteScroll<HTMLDivElement>({
+      fetchMore,
+      pageSize: DESIRED_PAGE_SIZE,
+      initialItemsLoaded: data.activities.length,
+      itemLimit: ITEM_LIMIT,
+      initialHasNextPage: true,
+    });
+
+  if (!activities.length) {
     return (
       <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
         <ErrorAlert
@@ -107,7 +147,7 @@ export default function StravaActivities({
   // for each activity, find the garmin activity with the lowest dissimilarity. If that
   // dissimilarity is above an arbitrarily threshold (0.5 for now), assume there's no
   // good match
-  const activityPairs: ActivityPair[] = data.activities.map((activity) => {
+  const activityPairs: ActivityPair[] = activities.map((activity) => {
     const distances = garminActivities.map((gA) =>
       activityDistance(gA, activity)
     );
@@ -129,6 +169,17 @@ export default function StravaActivities({
           <GarminUploadSection instructionsOpen={data.instructionsOpen} />
           <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />
+          <Stack direction="row" justifyContent="center" marginTop={2}>
+            {hasNextPage && (
+              // @ts-ignore ref is complaining that it could be null
+              <div ref={scrollTriggerRef}>
+                <LoadingIndicator variant="soft" size="lg" />
+              </div>
+            )}
+            {!hasNextPage && (
+              <NoMoreResults limit={limitReached ? ITEM_LIMIT : undefined} />
+            )}
+          </Stack>
         </Sheet>
       </Layout>
     </main>
