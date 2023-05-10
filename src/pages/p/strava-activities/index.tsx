@@ -112,7 +112,7 @@ export default function StravaActivities({
 
       return {
         itemsFetched: newActivities.length,
-        hasNextPage: true,
+        hasNextPage: newActivities.length > 0,
       };
     } catch (e) {
       return {

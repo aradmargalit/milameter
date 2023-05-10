@@ -1,6 +1,7 @@
 import { Ref, useEffect, useState } from 'react';
 
 import { useIsVisible } from './useIsVisible';
+import { usePrevious } from './usePrevious';
 
 type FetchMoreOpts = {
   pageSize: number;
@@ -46,18 +47,13 @@ export function useInfiniteScroll<T extends Element>({
   const [limitReached, setLimitReached] = useState(
     initialItemsLoaded >= itemLimit
   );
-  const [fetchedPageMap, setFetchedPageMap] = useState(
-    new Map<number, boolean>()
-  );
+
+  const previousVisible = usePrevious(isVisible);
 
   // When the trigger transitions to visible, fetch more items
   useEffect(() => {
     async function fetchMoreIfVisible() {
-      // fetchedPageMap is a hack to make sure we don't fetch the same page more than once
-      if (isVisible && !fetchedPageMap.get(pageNumber)) {
-        fetchedPageMap.set(pageNumber, true);
-        setFetchedPageMap(fetchedPageMap);
-
+      if (isVisible && !previousVisible) {
         const { itemsFetched, hasNextPage: fetchHasNextPage } = await fetchMore(
           {
             pageSize,
@@ -74,11 +70,11 @@ export function useInfiniteScroll<T extends Element>({
     fetchMoreIfVisible();
   }, [
     fetchMore,
-    fetchedPageMap,
     isVisible,
     itemLimit,
     pageNumber,
     pageSize,
+    previousVisible,
     totalItemsLoaded,
   ]);
 
