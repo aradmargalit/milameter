@@ -7,9 +7,10 @@ type FetchMoreOpts = {
   pageSize: number;
   currentPageNumber: number;
 };
+
 /**
- * fetchMore should fetch more results
- * returns show many items it fetched and if there is a next page
+ * fetchMore should fetch more results and update any state tied to your UI
+ * returns how many items it fetched and if there is a next page
  */
 export type FetchMore = (_opts: FetchMoreOpts) => Promise<{
   itemsFetched: number;
@@ -25,7 +26,12 @@ export type UseInfiniteScrollOpts = {
 };
 
 export type UseInfiniteScrollResult<T extends Element> = {
-  /** A ref to the element which triggers another page fetch */
+  /**
+   * A ref to a "trigger" element
+   * Whenever the trigger element is visible (i.e. in the viewport)
+   * this hook will automatically fetch another page
+   * Often assigned to a loading indicator underneath your results
+   */
   scrollTriggerRef: Ref<T | null>;
   hasNextPage: boolean;
   pageNumber: number;
@@ -50,8 +56,8 @@ export function useInfiniteScroll<T extends Element>({
 
   const previousVisible = usePrevious(isVisible);
 
-  // When the trigger transitions to visible, fetch more items
   useEffect(() => {
+    // When the trigger transitions to visible, fetch more items
     async function fetchMoreIfVisible() {
       if (isVisible && !previousVisible) {
         const { itemsFetched, hasNextPage: fetchHasNextPage } = await fetchMore(
