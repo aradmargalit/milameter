@@ -106,9 +106,7 @@ export function DetailedActivityMapWithGarmin({
         </>
       }
       sliderChildren={
-        <>
-          <LiveSeparation separation={liveSeparation} gradient={gradient} />
-        </>
+        <LiveSeparation separation={liveSeparation} gradient={gradient} />
       }
     />
   );
