@@ -11,7 +11,11 @@ export function FullPageLoader() {
         alignItems: 'center',
       }}
     >
-      <CircularProgress variant="soft" size="lg" />
+      <CircularProgress
+        variant="soft"
+        size="lg"
+        aria-label="full page loader"
+      />
     </Box>
   );
 }

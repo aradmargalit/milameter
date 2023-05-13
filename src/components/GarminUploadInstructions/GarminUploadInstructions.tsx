@@ -61,11 +61,16 @@ export function GarminUploadInstructions({
 
   return (
     <Stack spacing={1}>
-      <Typography level="h5" startDecorator={<Info />}>
+      <Typography level="h4" component="h1" startDecorator={<Info />}>
         Instructions
       </Typography>
 
-      <Collapse approxHeightPx={400} open={open} toggle={toggle}>
+      <Collapse
+        approxHeightPx={400}
+        open={open}
+        toggle={toggle}
+        buttonAriaLabel="Toggle Garmin activities instructions"
+      >
         <Typography level="body1">
           Your Strava activities have been automatically imported. To link
           activities from an external Garmin device, follow these steps.
