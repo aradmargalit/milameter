@@ -29,6 +29,7 @@ export function StravaActivityCard({
   };
 
   const borderColor = matchedGarminActivity ? DOG_COLOR : null;
+  const title = truncateTitle(activity.name, MAX_TITLE_LEN);
   return (
     <Card
       variant="outlined"
@@ -47,18 +48,28 @@ export function StravaActivityCard({
       })}
     >
       <div>
-        <Typography level="h2" fontSize="lg" id="card-description" mb={0.5}>
-          <Link
-            onClick={onClickHandler}
-            sx={{ color: 'text.tertiary' }}
-            href="#"
-            overlay
-            underline="none"
+        <Link
+          onClick={onClickHandler}
+          sx={{ color: 'text.tertiary' }}
+          href="#"
+          overlay
+          underline="none"
+        >
+          <Typography
+            level="h2"
+            fontSize="lg"
+            aria-label={title}
+            id={`${title}-description`}
+            mb={0.5}
           >
-            {truncateTitle(activity.name, MAX_TITLE_LEN)}
-          </Link>
-        </Typography>
-        <Typography fontSize="sm" aria-describedby="card-description" mb={1}>
+            {title}
+          </Typography>
+        </Link>
+        <Typography
+          fontSize="sm"
+          aria-describedby={`${title}-description`}
+          mb={1}
+        >
           {metersToMiles(activity.distance).toFixed(2)} mi
         </Typography>
         <Typography fontSize="sm" startDecorator={<Place />} mb={1}>

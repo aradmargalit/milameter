@@ -10,6 +10,7 @@ export type CollapseProps = {
   approxHeightPx: number;
   open: boolean;
   toggle: () => void;
+  buttonAriaLabel: string;
 };
 
 export function Collapse({
@@ -17,10 +18,11 @@ export function Collapse({
   approxHeightPx,
   open,
   toggle,
+  buttonAriaLabel,
 }: CollapseProps) {
   return (
     <Stack direction="row" spacing={2}>
-      <Button variant="outlined" onClick={toggle}>
+      <Button variant="outlined" onClick={toggle} aria-label={buttonAriaLabel}>
         <ChevronRightOutlined
           sx={{
             transform: open ? 'rotate(0deg)' : 'rotate(90deg)',

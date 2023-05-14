@@ -11,7 +11,9 @@ export function GarminFilePicker({ onChange }: GarminFilePickerProps) {
   return (
     <Stack spacing={2} direction="row" alignItems="center">
       <label htmlFor="file-picker">
-        <Typography level="h5">Please select your .fit files</Typography>
+        <Typography level="h5" component="h2">
+          Please select your .fit files
+        </Typography>
       </label>
       <FilePicker
         id="file-picker"
