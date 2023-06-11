@@ -55,13 +55,10 @@ export function isDistancePossible(
   const previousCoordinates = records[index - 1]?.coord;
   const currentCoordinates = record.coord;
 
-  console.log(previousCoordinates, currentCoordinates);
   const distance = lawOfCosinesDistance(
     previousCoordinates,
     currentCoordinates
   );
-
-  console.log(distance);
 
   return distance <= IMPOSSIBLE_INCREMENTAL_DISTANCE_METERS;
 }
