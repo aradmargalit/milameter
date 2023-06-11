@@ -52,13 +52,10 @@ export function isDistancePossible(
     return true;
   }
 
-  const previousCoordinates = records[index - 1]?.coord;
+  // Assume the first coordinate is good
+  const goodCoordinate = records[0].coord;
   const currentCoordinates = record.coord;
-
-  const distance = lawOfCosinesDistance(
-    previousCoordinates,
-    currentCoordinates
-  );
+  const distance = lawOfCosinesDistance(goodCoordinate, currentCoordinates);
 
   return distance <= IMPOSSIBLE_INCREMENTAL_DISTANCE_METERS;
 }
