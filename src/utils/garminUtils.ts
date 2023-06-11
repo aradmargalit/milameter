@@ -6,11 +6,13 @@ import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
 import { GarminActivity, GarminActivityRecord } from '@/models/garminActivity';
 import { Coordinate, Record } from '@/types';
 
+import { lawOfCosinesDistance } from './distanceUtils';
 import { floorNearestInterval } from './timeUtils';
 
 const TICKS_PER_GLOBE = Math.pow(2, 32);
 const DEGREES_PER_GLOBE = 360;
 export const TEST_OFFSET = 0;
+const IMPOSSIBLE_INCREMENTAL_DISTANCE_METERS = 1_000;
 
 export function convertGarminCoord(gc: number): number {
   return (gc / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE;
@@ -27,6 +29,43 @@ function convertGarminRecord(garminRecord: GarminActivityRecord): Record {
   return { time, coord, altitude };
 }
 
+function isValidRecord(
+  record: Record,
+  index: number,
+  records: Record[]
+): boolean {
+  return (
+    true && isDistancePossible(record, index, records)
+    // add new checks here
+  );
+}
+
+export function isDistancePossible(
+  record: Record,
+  index: number,
+  records: Record[]
+): boolean {
+  // impossible means that this point is too far from the previous point
+  // to be possible for anybody (e.g. i = 0 in America, i = 1 in Spain, i >= 2 in America)
+  // Special case: first point is always possible
+  if (index === 0) {
+    return true;
+  }
+
+  const previousCoordinates = records[index - 1]?.coord;
+  const currentCoordinates = record.coord;
+
+  console.log(previousCoordinates, currentCoordinates);
+  const distance = lawOfCosinesDistance(
+    previousCoordinates,
+    currentCoordinates
+  );
+
+  console.log(distance);
+
+  return distance <= IMPOSSIBLE_INCREMENTAL_DISTANCE_METERS;
+}
+
 export async function garminActivityFromFile(
   file: File
 ): Promise<GarminActivity> {
@@ -36,17 +75,15 @@ export async function garminActivityFromFile(
   const messages = decoder.read().messages;
   const garminRecords: GarminActivityRecord[] = messages.recordMesgs;
 
-  // TODO: update these
-  // @ts-ignore
   const distance =
     garminRecords.length > 0
       ? garminRecords[garminRecords.length - 1].distance
       : 0;
 
   // convert GarminActivityRecord to plain Record
-  const records: Record[] = garminRecords.map((garminRecord) =>
-    convertGarminRecord(garminRecord)
-  );
+  const records: Record[] = garminRecords
+    .map(convertGarminRecord)
+    .filter(isValidRecord);
 
   // expose coordinates more easily
   const coordinates = records.map((record) => record.coord);

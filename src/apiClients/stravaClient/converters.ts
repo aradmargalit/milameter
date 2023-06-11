@@ -48,7 +48,10 @@ export function convertStravaActivityResponse({
     const { time, latlng, altitude } = streamsResponse;
     const startTime = DateTime.fromISO(response.start_date);
 
-    const times = time.data.map((t) => startTime.plus({ seconds: t }).toISO());
+    const times = time.data
+      .map((t) => startTime.plus({ seconds: t }).toISO())
+      .filter((x): x is string => Boolean(x));
+
     const coordinates: Coordinates = latlng.data.map((coord) => [
       coord[1],
       coord[0],
