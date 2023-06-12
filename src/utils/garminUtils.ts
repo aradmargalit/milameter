@@ -45,8 +45,9 @@ export function isDistancePossible(
   index: number,
   records: Record[]
 ): boolean {
-  // impossible means that this point is too far from the previous point
-  // to be possible for anybody (e.g. i = 0 in America, i = 1 in Spain, i >= 2 in America)
+  // impossible means that this point is too far from the first point
+  // to be possible for anybody to cover
+  // e.g. i = 0 in America, i = 9 in Spain, the 9th indexed item is impossible
   // Special case: first point is always possible
   if (index === 0) {
     return true;
