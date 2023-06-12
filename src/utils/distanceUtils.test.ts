@@ -16,6 +16,8 @@ describe('computePace', () => {
           elapsedTime: minutes * 60 + 1,
           coordinates: [],
           records: [],
+          totalElevationGain: 0,
+          maxSpeed: 10,
         })
       ).toBe(expectedPace);
     }

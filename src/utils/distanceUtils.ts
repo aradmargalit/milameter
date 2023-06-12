@@ -18,6 +18,9 @@ export function metersToFeet(meters: number): number {
 }
 
 // https://www.movable-type.co.uk/scripts/latlong.html
+/**
+ * @returns distance between coordinates in meters
+ */
 export function lawOfCosinesDistance(
   [lat1, lon1]: number[],
   [lat2, lon2]: number[]
