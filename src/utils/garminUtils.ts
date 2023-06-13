@@ -12,7 +12,7 @@ import { floorNearestInterval } from './timeUtils';
 const TICKS_PER_GLOBE = Math.pow(2, 32);
 const DEGREES_PER_GLOBE = 360;
 export const TEST_OFFSET = 0;
-const IMPOSSIBLE_INCREMENTAL_DISTANCE_METERS = 1_000;
+const IMPOSSIBLE_MAX_DISTANCE_FROM_START_METERS = 500 * 1_000; // 500km
 
 export function convertGarminCoord(gc: number): number {
   return (gc / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE;
@@ -58,7 +58,7 @@ export function isDistancePossible(
   const currentCoordinates = record.coord;
   const distance = lawOfCosinesDistance(goodCoordinate, currentCoordinates);
 
-  return distance <= IMPOSSIBLE_INCREMENTAL_DISTANCE_METERS;
+  return distance <= IMPOSSIBLE_MAX_DISTANCE_FROM_START_METERS;
 }
 
 export async function garminActivityFromFile(

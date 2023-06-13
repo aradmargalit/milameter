@@ -16,7 +16,7 @@ describe('garminUtils', () => {
 
     it('returns true when records are reasonably close', () => {
       const first: Coordinate = [37.709008223518005, -121.92952352047195]; // Chuck-e-cheese Dublin CA
-      const second: Coordinate = [37.706358213369164, -121.92775663545241]; // Super Cuts Dublin CA
+      const second: Coordinate = [37.32351496896695, -121.95168433930172]; // Winchester Mystery House San Jose CA
       expect(
         isDistancePossible(makeMockRecord({ coord: second }), 1, [
           makeMockRecord({ coord: first }),
@@ -27,7 +27,7 @@ describe('garminUtils', () => {
 
     it('returns false when records are too far ', () => {
       const first: Coordinate = [37.709008223518005, -121.92952352047195]; // Chuck-e-cheese Dublin CA
-      const second: Coordinate = [37.32351496896695, -121.95168433930172]; // Winchester Mystery House San Jose CA
+      const second: Coordinate = [48.86198768434477, 2.294847260380136]; // Eiffel tower
       expect(
         isDistancePossible(makeMockRecord({ coord: second }), 1, [
           makeMockRecord({ coord: first }),
