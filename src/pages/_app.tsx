@@ -3,8 +3,8 @@ import '@fontsource/public-sans';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { CssVarsProvider } from '@mui/joy/styles';
-import { Inter } from '@next/font/google';
 import type { AppProps } from 'next/app';
+import { Inter } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 
 import FullPageLoader from '@/components/FullPageLoader';
