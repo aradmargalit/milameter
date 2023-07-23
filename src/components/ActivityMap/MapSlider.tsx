@@ -40,6 +40,7 @@ export function MapSlider({
   autoPlay = true,
 }: MapSliderProps) {
   const [value, setValue] = useState<number>(0);
+  // Use a ref to keep track of current value to keep the effect stable
   const valueRef = useRef<number>(value);
   const [playing, setPlaying] = useState(autoPlay);
 
@@ -47,34 +48,31 @@ export function MapSlider({
 
   const goForward = useCallback(
     (val: number, stepOverride = step) => {
-      const newValue = (val + stepOverride) % activityDuration;
-      onChange(newValue);
-      setValue(newValue);
+      setValue((val + stepOverride) % activityDuration);
     },
-    [activityDuration, onChange, step]
+    [activityDuration, step]
   );
-  const goBack = () => {
-    const newValue = Math.max(0, value - step);
-    setValue(newValue);
-    onChange(newValue);
-  };
+
+  const goBack = () => setValue(Math.max(0, value - step));
   const togglePlay = () => setPlaying(!playing);
 
+  // When the value is updated (either automatically or manually) update our ref value
   useEffect(() => {
+    onChange(value);
     valueRef.current = value;
-  }, [value]);
+  }, [onChange, value]);
 
   useEffect(() => {
+    // This effect will only run when "playing" changes since the other 2 dependencies are stable
+    // when playing is switched to false, the cleanup is run and removes the interval
     if (playing) {
       const interval = setInterval(() => {
         goForward(valueRef.current, 1);
       }, 15_000 / activityDuration);
 
-      return () => {
-        clearInterval(interval);
-      };
+      return () => clearInterval(interval);
     }
-  }, [activityDuration, goForward, playing]);
+  }, [playing, activityDuration, goForward]);
 
   const handleChange: SliderProps['onChange'] = (
     _event,
@@ -83,9 +81,7 @@ export function MapSlider({
   ) => {
     // technically the slider could give us an array of values (but it never will in
     // this impl, so we just theoretically pull the first value
-    const firstValue = Array.isArray(newVal) ? newVal[0] : newVal;
-    setValue(firstValue);
-    onChange(firstValue);
+    setValue(Array.isArray(newVal) ? newVal[0] : newVal);
   };
 
   return (
