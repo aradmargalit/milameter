@@ -20,6 +20,7 @@
     "@mui/icons-material": "^5.14.1",
     "@mui/joy": "^5.0.0-alpha.88",
     "@mui/material": "^5.14.1",
+    "@next/font": "13.4.12",
     "@sentry/nextjs": "^7.60.0",
     "@types/node": "20.4.4",
     "@types/react": "18.2.15",
