@@ -6,9 +6,10 @@ const { withSentryConfig } = require('@sentry/nextjs');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: false,
-  },
+  // Disable app dir until we're ready to adopt React Server Components
+  // experimental: {
+  //   appDir: true,
+  // },
   images: {
     remotePatterns: [
       {
