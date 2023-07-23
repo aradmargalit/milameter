@@ -67,6 +67,7 @@ export function MapSlider({
     // when playing is switched to false, the cleanup is run and removes the interval
     if (playing) {
       const interval = setInterval(() => {
+        // override the default step with 1 for smoother playback
         goForward(valueRef.current, 1);
       }, 15_000 / activityDuration);
 
