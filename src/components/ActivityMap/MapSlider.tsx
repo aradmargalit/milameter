@@ -33,6 +33,21 @@ type MapSliderProps = {
   autoPlay?: boolean;
 };
 
+/**
+ *
+ * @param targetPlaybackMs how long you want playback to take in milliseconds
+ * @param activitySteps how many intervals exist in the activity
+ * @returns the interval, expressed in millseconds to set in your setInterval
+ */
+function getIntervalFromDuration(
+  targetPlaybackMs: number,
+  activitySteps: number
+) {
+  return targetPlaybackMs / activitySteps;
+}
+
+const DESIRED_PLAYBACK_LENGTH_MS = 15_000;
+
 export function MapSlider({
   marks,
   activityDuration,
@@ -66,10 +81,15 @@ export function MapSlider({
     // This effect will only run when "playing" changes since the other 2 dependencies are stable
     // when playing is switched to false, the cleanup is run and removes the interval
     if (playing) {
+      const intervalMs = getIntervalFromDuration(
+        DESIRED_PLAYBACK_LENGTH_MS,
+        activityDuration
+      );
+
       const interval = setInterval(() => {
         // override the default step with 1 for smoother playback
         goForward(valueRef.current, 1);
-      }, 15_000 / activityDuration);
+      }, intervalMs);
 
       return () => clearInterval(interval);
     }
