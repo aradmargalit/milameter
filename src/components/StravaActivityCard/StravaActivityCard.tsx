@@ -50,7 +50,7 @@ export function StravaActivityCard({
       <div>
         <Link
           onClick={onClickHandler}
-          sx={{ color: 'text.tertiary' }}
+          sx={{ color: 'text.primary' }}
           href="#"
           overlay
           underline="none"
@@ -72,7 +72,12 @@ export function StravaActivityCard({
         >
           {metersToMiles(activity.distance).toFixed(2)} mi
         </Typography>
-        <Typography fontSize="sm" startDecorator={<Place />} mb={1}>
+        <Typography
+          fontSize="sm"
+          startDecorator={<Place />}
+          mb={1}
+          sx={{ color: 'text.secondary' }}
+        >
           {activity.locationName}
         </Typography>
         <Chip
