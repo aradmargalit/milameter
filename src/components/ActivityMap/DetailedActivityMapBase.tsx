@@ -1,7 +1,7 @@
 import polyline from '@mapbox/polyline';
-import { Box, Stack, Typography } from '@mui/joy';
+import { Box, Stack } from '@mui/joy';
 import { useRef, useState } from 'react';
-import { Layer, LayerProps, MapRef, Marker, Source } from 'react-map-gl';
+import { Layer, LayerProps, MapRef, Source } from 'react-map-gl';
 
 import { HUMAN_COLOR } from '@/colors';
 import { ActivityWithRecords, Coordinate } from '@/types';
@@ -9,6 +9,7 @@ import { swapLatLong } from '@/utils/coordinateUtils';
 import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
 
 import MapboxMap from '../MapboxMap';
+import { MapMarker } from './MapMarker';
 import { MapSlider } from './MapSlider';
 import { computeActivityDuration, findClosestCoord } from './utils';
 
@@ -86,15 +87,7 @@ export function DetailedActivityMapBase({
           <Layer {...routeLayer} />
         </Source>
 
-        <Marker
-          longitude={humanCoord[0]}
-          latitude={humanCoord[1]}
-          anchor="center"
-        >
-          <Typography level="h4" textColor={HUMAN_COLOR}>
-            ○
-          </Typography>
-        </Marker>
+        <MapMarker coordinate={humanCoord} color={HUMAN_COLOR} />
         {mapChildren}
       </MapboxMap>
       <Box sx={{ mt: 2, mb: 2 }}>

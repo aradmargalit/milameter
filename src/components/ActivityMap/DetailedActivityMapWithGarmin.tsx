@@ -1,6 +1,5 @@
-import { Typography } from '@mui/joy';
 import { useState } from 'react';
-import { Layer, LayerProps, Marker, Source } from 'react-map-gl';
+import { Layer, LayerProps, Source } from 'react-map-gl';
 
 import { DOG_COLOR } from '@/colors';
 import { GarminActivity } from '@/models/garminActivity';
@@ -17,6 +16,7 @@ import { makeLineFromCoordinates } from '@/utils/mapboxUtils';
 
 import { DetailedActivityMapBase } from './DetailedActivityMapBase';
 import { LiveSeparation } from './LiveSeparation';
+import { MapMarker } from './MapMarker';
 import { computeActivityDuration, findClosestCoord } from './utils';
 
 type DetailedActivityMapProps = {
@@ -88,15 +88,7 @@ export function DetailedActivityMapWithGarmin({
       onSliderChange={handleSliderChange}
       mapChildren={
         <>
-          <Marker
-            longitude={garminCoord[0]}
-            latitude={garminCoord[1]}
-            anchor="center"
-          >
-            <Typography level="h4" textColor={DOG_COLOR}>
-              ○
-            </Typography>
-          </Marker>
+          <MapMarker coordinate={garminCoord} color={DOG_COLOR} />
           <Source
             id="garminRoute"
             type="geojson"
