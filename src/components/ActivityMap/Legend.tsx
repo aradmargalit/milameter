@@ -24,13 +24,13 @@ export function Legend() {
             border: '1px solid black',
           }}
         >
-          🏃‍♂️ Human
+          Human
         </Chip>
         <Chip
           size="sm"
           sx={{ backgroundColor: DOG_COLOR, border: '1px solid black' }}
         >
-          🐶 Dog
+          Dog
         </Chip>
       </Stack>
     </Card>

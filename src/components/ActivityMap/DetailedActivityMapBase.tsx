@@ -52,7 +52,7 @@ export function DetailedActivityMapBase({
     source: 'route',
     paint: {
       'line-color': HUMAN_COLOR,
-      'line-width': 5,
+      'line-width': 3,
       'line-opacity': 0.75,
     },
     layout: {
@@ -89,9 +89,11 @@ export function DetailedActivityMapBase({
         <Marker
           longitude={humanCoord[0]}
           latitude={humanCoord[1]}
-          anchor="bottom"
+          anchor="center"
         >
-          <Typography level="h4">🏃‍♂️</Typography>
+          <Typography level="h4" textColor={HUMAN_COLOR}>
+            ○
+          </Typography>
         </Marker>
         {mapChildren}
       </MapboxMap>

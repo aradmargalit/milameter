@@ -48,7 +48,7 @@ export function DetailedActivityMapWithGarmin({
     source: 'garminRoute',
     paint: {
       'line-color': DOG_COLOR,
-      'line-width': 2,
+      'line-width': 3,
       'line-opacity': 0.75,
     },
     layout: {
@@ -91,9 +91,11 @@ export function DetailedActivityMapWithGarmin({
           <Marker
             longitude={garminCoord[0]}
             latitude={garminCoord[1]}
-            anchor="bottom"
+            anchor="center"
           >
-            <Typography level="h4">🐶</Typography>
+            <Typography level="h4" textColor={DOG_COLOR}>
+              ○
+            </Typography>
           </Marker>
           <Source
             id="garminRoute"
