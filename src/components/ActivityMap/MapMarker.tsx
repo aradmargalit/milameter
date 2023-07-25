@@ -7,6 +7,7 @@ type MapMarkerProps = {
   coordinate: Coordinate;
   color: string;
 };
+
 export function MapMarker({ coordinate, color }: MapMarkerProps) {
   return (
     <Marker longitude={coordinate[0]} latitude={coordinate[1]} anchor="center">
