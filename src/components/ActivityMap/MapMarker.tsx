@@ -1,5 +1,6 @@
 import { Typography } from '@mui/joy';
 import { Marker } from 'react-map-gl';
+
 import { Coordinate } from '@/types';
 
 type MapMarkerProps = {
