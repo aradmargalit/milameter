@@ -1,7 +1,7 @@
 import { Ref, useCallback, useEffect, useRef, useState } from 'react';
 
 export type UseIsVisibleResult<T extends Element> = {
-  ref: Ref<T | null>;
+  ref: Ref<T>;
   isVisible: boolean | null;
 };
 
@@ -22,7 +22,7 @@ const observerOptions: IntersectionObserverInit = {
 export function useIsVisible<T extends Element>({
   onObserve,
 }: UseIsVisibleOpts): UseIsVisibleResult<T> {
-  const ref = useRef<T | null>(null);
+  const ref = useRef<T>(null);
   const [isVisible, setIsVisible] = useState<boolean | null>(null);
 
   const handleObserved: IntersectionObserverCallback = useCallback(

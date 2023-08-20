@@ -3,7 +3,7 @@ import { Ref, useEffect, useState } from 'react';
 import { useIsVisible } from './useIsVisible';
 import { usePrevious } from './usePrevious';
 
-type FetchMoreOpts = {
+export type FetchMoreOpts = {
   pageSize: number;
   currentPageNumber: number;
 };
@@ -12,17 +12,18 @@ type FetchMoreOpts = {
  * fetchMore should fetch more results and update any state tied to your UI
  * returns how many items it fetched and if there is a next page
  */
-export type FetchMore = (_opts: FetchMoreOpts) => Promise<{
+export type FetchMore<T> = (_opts: FetchMoreOpts) => Promise<{
   itemsFetched: number;
   hasNextPage: boolean;
+  data: T | null;
 }>;
 
-export type UseInfiniteScrollOpts = {
+export type UseInfiniteScrollOpts<T> = {
   pageSize: number;
   itemLimit: number;
   initialItemsLoaded: number;
   initialHasNextPage?: boolean;
-  fetchMore: FetchMore;
+  fetchMore: FetchMore<T>;
 };
 
 export type UseInfiniteScrollResult<T extends Element> = {
@@ -32,20 +33,20 @@ export type UseInfiniteScrollResult<T extends Element> = {
    * this hook will automatically fetch another page
    * Often assigned to a loading indicator underneath your results
    */
-  scrollTriggerRef: Ref<T | null>;
+  scrollTriggerRef: Ref<T>;
   hasNextPage: boolean;
   pageNumber: number;
   totalItemsLoaded: number;
   limitReached: boolean;
 };
 
-export function useInfiniteScroll<T extends Element>({
+export function useInfiniteScroll<T extends Element, D>({
   pageSize,
   itemLimit,
   fetchMore,
   initialItemsLoaded,
   initialHasNextPage = true,
-}: UseInfiniteScrollOpts): UseInfiniteScrollResult<T> {
+}: UseInfiniteScrollOpts<D>): UseInfiniteScrollResult<T> {
   const { isVisible, ref } = useIsVisible<T>({});
   const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
   const [pageNumber, setPageNumber] = useState(1);
