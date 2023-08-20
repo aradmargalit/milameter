@@ -11,7 +11,7 @@ import GarminUploadSection from '@/components/GarminUploadSection';
 import { LoadingIndicator } from '@/components/Pagination/LoadingIndicator';
 import { NoMoreResults } from '@/components/Pagination/NoMoreResults';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
-import { FetchMoreOpts, useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
@@ -65,22 +65,19 @@ export default function StravaActivities({
   const [activities, setActivities] = useState<Activity[]>(data.activities);
   const { garminActivities } = useGarminActivities();
 
-  // Wraps fetchMore to commit the result to our UI
-  async function fetchMoreAndUpdate(opts: FetchMoreOpts) {
-    const result = await fetchMore(opts);
-    result.data && setActivities([...activities, ...result.data]);
-    return result;
-  }
+  const onFetchSuccess = (newActivities: Activity[]) =>
+    setActivities([...activities, ...newActivities]);
 
   const { scrollTriggerRef, hasNextPage, limitReached } = useInfiniteScroll<
     HTMLDivElement,
     Activity[]
   >({
-    fetchMore: fetchMoreAndUpdate,
+    fetchMore,
     pageSize: DESIRED_PAGE_SIZE,
     initialItemsLoaded: data.activities.length,
     itemLimit: ITEM_LIMIT,
     initialHasNextPage: true,
+    onFetchSuccess,
   });
 
   if (!activities.length) {

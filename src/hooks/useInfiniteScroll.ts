@@ -12,18 +12,19 @@ export type FetchMoreOpts = {
  * fetchMore should fetch more results and update any state tied to your UI
  * returns how many items it fetched and if there is a next page
  */
-export type FetchMore<T> = (_opts: FetchMoreOpts) => Promise<{
+export type FetchMore<Data> = (_opts: FetchMoreOpts) => Promise<{
   itemsFetched: number;
   hasNextPage: boolean;
-  data: T | null;
+  data: Data | null;
 }>;
 
-export type UseInfiniteScrollOpts<T> = {
+export type UseInfiniteScrollOpts<Data> = {
   pageSize: number;
   itemLimit: number;
   initialItemsLoaded: number;
   initialHasNextPage?: boolean;
-  fetchMore: FetchMore<T>;
+  fetchMore: FetchMore<Data>;
+  onFetchSuccess?: (_data: Data) => void;
 };
 
 export type UseInfiniteScrollResult<T extends Element> = {
@@ -40,13 +41,14 @@ export type UseInfiniteScrollResult<T extends Element> = {
   limitReached: boolean;
 };
 
-export function useInfiniteScroll<T extends Element, D>({
+export function useInfiniteScroll<T extends Element, Data>({
   pageSize,
   itemLimit,
   fetchMore,
+  onFetchSuccess,
   initialItemsLoaded,
   initialHasNextPage = true,
-}: UseInfiniteScrollOpts<D>): UseInfiniteScrollResult<T> {
+}: UseInfiniteScrollOpts<Data>): UseInfiniteScrollResult<T> {
   const { isVisible, ref } = useIsVisible<T>({});
   const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
   const [pageNumber, setPageNumber] = useState(1);
@@ -61,12 +63,17 @@ export function useInfiniteScroll<T extends Element, D>({
     // When the trigger transitions to visible, fetch more items
     async function fetchMoreIfVisible() {
       if (isVisible && !previousVisible) {
-        const { itemsFetched, hasNextPage: fetchHasNextPage } = await fetchMore(
-          {
-            currentPageNumber: pageNumber,
-            pageSize,
-          }
-        );
+        const {
+          data,
+          itemsFetched,
+          hasNextPage: fetchHasNextPage,
+        } = await fetchMore({
+          pageSize,
+          currentPageNumber: pageNumber,
+        });
+        if (data && onFetchSuccess) {
+          onFetchSuccess(data);
+        }
         const isLimitReached = totalItemsLoaded + itemsFetched >= itemLimit;
         setPageNumber((curr) => curr + 1);
         setHasNextPage(fetchHasNextPage && !isLimitReached);
@@ -77,6 +84,7 @@ export function useInfiniteScroll<T extends Element, D>({
     fetchMoreIfVisible();
   }, [
     fetchMore,
+    onFetchSuccess,
     isVisible,
     itemLimit,
     pageNumber,
