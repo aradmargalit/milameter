@@ -79,12 +79,12 @@ export function useMapControls({
   };
 
   return {
-    playing,
-    value,
-    togglePlay,
     goBack,
     goForward,
-    step,
     handleChange,
+    playing,
+    step,
+    togglePlay,
+    value,
   };
 }

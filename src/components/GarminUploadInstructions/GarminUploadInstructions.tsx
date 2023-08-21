@@ -81,9 +81,9 @@ export function GarminUploadInstructions({
           alignItems="center"
           paddingRight={6}
           sx={{
+            flexDirection: { md: 'row', xs: 'column' },
             mt: 3,
-            flexDirection: { xs: 'column', md: 'row' },
-            padding: { xs: '0', md: '0 6rem 0 0' },
+            padding: { md: '0 6rem 0 0', xs: '0' },
           }}
         >
           <Stack spacing={2}>

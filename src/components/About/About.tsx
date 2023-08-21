@@ -19,8 +19,8 @@ export function About() {
         placeholder="blur"
         style={{
           borderRadius: '15%',
-          overflow: 'hidden',
           marginBottom: 20,
+          overflow: 'hidden',
         }}
       />
       <Typography level="body1">

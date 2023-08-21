@@ -62,8 +62,8 @@ export function useInfiniteScroll<T extends Element>({
       if (isVisible && !previousVisible) {
         const { itemsFetched, hasNextPage: fetchHasNextPage } = await fetchMore(
           {
-            pageSize,
             currentPageNumber: pageNumber,
+            pageSize,
           }
         );
         const isLimitReached = totalItemsLoaded + itemsFetched >= itemLimit;
@@ -85,10 +85,10 @@ export function useInfiniteScroll<T extends Element>({
   ]);
 
   return {
-    scrollTriggerRef: ref,
     hasNextPage,
-    pageNumber,
-    totalItemsLoaded,
     limitReached,
+    pageNumber,
+    scrollTriggerRef: ref,
+    totalItemsLoaded,
   };
 }

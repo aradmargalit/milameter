@@ -17,11 +17,11 @@ export function expandBounds(coordinates: Coordinates) {
 // https://docs.mapbox.com/mapbox-gl-js/api/sources/#geojsonsource
 export function makeLineFromCoordinates(coordinates: Coordinates) {
   return {
-    type: 'Feature',
     geometry: {
-      type: 'LineString',
       coordinates: coordinates,
+      type: 'LineString',
     },
     properties: {},
+    type: 'Feature',
   } as const;
 }

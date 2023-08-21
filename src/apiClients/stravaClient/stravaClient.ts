@@ -47,10 +47,11 @@ export class StravaClient {
         '/athlete/activities',
         {
           params: {
+            // Number of items per page. Defaults to 30.
+            page,
             // before: '1', // An epoch timestamp to use for filtering activities that have taken place before a certain time.
             // after: '2', // An epoch timestamp to use for filtering activities that have taken place after a certain time.
-            per_page, // Number of items per page. Defaults to 30.
-            page,
+            per_page,
           },
         }
       );
@@ -87,6 +88,7 @@ export class StravaClient {
         `/activities/${id}/streams`,
         {
           params: {
+            key_by_type: true,
             /**
              * time: An instance of TimeStream.
              * distance: An instance of DistanceStream.
@@ -101,7 +103,6 @@ export class StravaClient {
              * grade_smooth: An instance of SmoothGradeStream.
              */
             keys: 'time,latlng,altitude',
-            key_by_type: true,
           },
         }
       );

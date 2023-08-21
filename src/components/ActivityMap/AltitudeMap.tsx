@@ -62,9 +62,9 @@ function makeChartData(
   const sparseArray = new Array<AltitudePoint>(end - start);
   for (let i = 0; i < sparseArray.length; i++) {
     sparseArray[i] = {
+      garminAltitude: null,
       secondsSinceStart: null,
       stravaAltitude: null,
-      garminAltitude: null,
     };
   }
 
@@ -98,18 +98,18 @@ export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
 
   const chartOptions: AltitudeChartOption[] = [
     {
-      label: 'Human Altitude',
-      dataKey: 'stravaAltitude',
       color: theme.palette.text.primary,
+      dataKey: 'stravaAltitude',
+      label: 'Human Altitude',
       strokeWidthPx: 5,
     },
   ];
 
   if (garminActivity?.records) {
     chartOptions.push({
-      label: 'Dog Altitude',
-      dataKey: 'garminAltitude',
       color: BRAND_ORANGE,
+      dataKey: 'garminAltitude',
+      label: 'Dog Altitude',
       strokeWidthPx: 2,
     });
   }

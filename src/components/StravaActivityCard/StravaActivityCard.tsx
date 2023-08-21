@@ -35,16 +35,16 @@ export function StravaActivityCard({
       variant="outlined"
       orientation="horizontal"
       sx={(theme) => ({
-        borderColor,
-        width: '100%',
-        height: 200,
-        gap: 2,
-        transition: 'transform 0.3s, border 0.3s',
         '&:hover': {
-          boxShadow: 'md',
           borderColor: theme.vars.palette.primary.outlinedHoverBorder,
+          boxShadow: 'md',
           transform: 'translateY(-2px)',
         },
+        borderColor,
+        gap: 2,
+        height: 200,
+        transition: 'transform 0.3s, border 0.3s',
+        width: '100%',
       })}
     >
       <div>
@@ -93,10 +93,10 @@ export function StravaActivityCard({
             variant="outlined"
             size="sm"
             sx={{
-              pointerEvents: 'none',
-              ml: 1,
               borderColor: DOG_COLOR,
               color: DOG_COLOR,
+              ml: 1,
+              pointerEvents: 'none',
             }}
           >
             🐶 Good Dogette

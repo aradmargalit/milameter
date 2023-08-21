@@ -49,17 +49,17 @@ export function DetailedActivityMapBase({
 
   const routeLayer: LayerProps = {
     id: 'route',
-    type: 'line',
-    source: 'route',
-    paint: {
-      'line-color': HUMAN_COLOR,
-      'line-width': 3,
-      'line-opacity': 0.75,
-    },
     layout: {
       'line-cap': 'round',
       'line-join': 'round',
     },
+    paint: {
+      'line-color': HUMAN_COLOR,
+      'line-opacity': 0.75,
+      'line-width': 3,
+    },
+    source: 'route',
+    type: 'line',
   };
 
   const handleSliderChange = (newValue: number): void => {
@@ -72,8 +72,8 @@ export function DetailedActivityMapBase({
   const resolvedActivityDuration = activityDuration ?? stravaActivityDuration;
 
   const sliderMarks = [
-    { value: 0, label: 'Start' },
-    { value: resolvedActivityDuration, label: 'End' },
+    { label: 'Start', value: 0 },
+    { label: 'End', value: resolvedActivityDuration },
   ];
 
   return (
@@ -90,7 +90,7 @@ export function DetailedActivityMapBase({
         <MapMarker coordinate={humanCoord} color={HUMAN_COLOR} />
         {mapChildren}
       </MapboxMap>
-      <Box sx={{ mt: 2, mb: 2 }}>
+      <Box sx={{ mb: 2, mt: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
           <MapSlider
             marks={sliderMarks}

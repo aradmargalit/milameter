@@ -16,15 +16,18 @@ export function MilaMeterTitle() {
       <Typography
         level="display1"
         sx={{
+          WebkitBackgroundClip: 'text',
+
+          animation: `${animateBG} 12s infinite linear`,
+
+          // fancy animation
+          background: `linear-gradient(90deg, ${colorOne}, ${colorTwo}, ${colorOne}) 0 0 / ${bgSize} 100%`,
+
+          backgroundClip: 'text',
+          color: 'transparent',
           fontSize: 'clamp(3rem, 12vmin, 8rem)',
           fontWeight: 'bold',
           letterSpacing: 2,
-          // fancy animation
-          background: `linear-gradient(90deg, ${colorOne}, ${colorTwo}, ${colorOne}) 0 0 / ${bgSize} 100%`,
-          color: 'transparent',
-          WebkitBackgroundClip: 'text',
-          backgroundClip: 'text',
-          animation: `${animateBG} 12s infinite linear`,
         }}
       >
         Mila

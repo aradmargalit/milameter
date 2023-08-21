@@ -68,9 +68,9 @@ export function GarminActivityStorageProvider({
   }
 
   const value: GarminActivityStorageContextValue = {
-    storedActivities,
     clearStoredGarminActivities: clearGarminActvities,
     storeGarminActivities,
+    storedActivities,
   };
 
   return (

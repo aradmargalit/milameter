@@ -61,8 +61,8 @@ export function getSeparationTrajectory(
         return null;
       }
       return {
-        time,
         distance: lawOfCosinesDistance(coord, coordB),
+        time,
       };
     })
     .filter((x): x is Separation => Boolean(x));

@@ -37,7 +37,7 @@ export function MapSlider({
   autoPlay = true,
 }: MapSliderProps) {
   const { playing, value, togglePlay, goBack, goForward, step, handleChange } =
-    useMapControls({ autoPlay, onChange, activityDuration });
+    useMapControls({ activityDuration, autoPlay, onChange });
 
   return (
     <Box sx={{ width: '80%' }}>

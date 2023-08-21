@@ -17,6 +17,7 @@ export function convertStravaActivityResponse({
 }: ConvertStravaActivityResponseArgs): StravaActivity {
   const core = {
     ...response,
+    UtcOffset: response.utc_offset,
     averageCadence: response.average_cadence ?? null,
     averageHeartrate: response.average_heartrate ?? null,
     averageSpeed: response.average_speed,
@@ -24,24 +25,23 @@ export function convertStravaActivityResponse({
     elapsedTime: response.elapsed_time,
     elevHigh: response.elev_high ?? null,
     elevLow: response.elev_low ?? null,
-    startLatLng: response.start_latlng,
     endLatLng: response.end_latlng,
     externalId: response.external_id,
     hasHeartrate: response.has_heartrate,
-    maxHeartrate: response.max_heartrate ?? null,
-    maxSpeed: response.max_speed,
-    startDate: response.start_date,
-    startDateLocal: response.start_date_local,
-    movingTIme: response.moving_time,
-    totalElevationGain: response.total_elevation_gain,
-    uploadId: response.upload_id,
-    uploadIdString: response.upload_id_str,
-    UtcOffset: response.utc_offset,
     map: {
       ...response.map,
       resourceState: response.map.resource_state,
       summaryPolyline: response.map.summary_polyline,
     },
+    maxHeartrate: response.max_heartrate ?? null,
+    maxSpeed: response.max_speed,
+    movingTIme: response.moving_time,
+    startDate: response.start_date,
+    startDateLocal: response.start_date_local,
+    startLatLng: response.start_latlng,
+    totalElevationGain: response.total_elevation_gain,
+    uploadId: response.upload_id,
+    uploadIdString: response.upload_id_str,
   };
 
   if (streamsResponse?.time && streamsResponse.latlng) {
@@ -58,12 +58,12 @@ export function convertStravaActivityResponse({
     ]);
 
     const records: Record[] = times.map((time, i) => ({
+      altitude: altitude.data[i],
+      coord: coordinates[i],
       time: floorNearestInterval(
         DateTime.fromISO(time),
         DEFAULT_TIME_SNAP_INTERVAL
       ),
-      coord: coordinates[i],
-      altitude: altitude.data[i],
     }));
 
     return { ...core, records };

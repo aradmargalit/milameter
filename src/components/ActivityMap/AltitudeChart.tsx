@@ -39,7 +39,7 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
     <ResponsiveContainer minWidth={300} width="100%" aspect={3.5}>
       <LineChart
         data={data}
-        margin={{ bottom: 10, top: 10, left: 10, right: 10 }}
+        margin={{ bottom: 10, left: 10, right: 10, top: 10 }}
       >
         <XAxis
           dataKey="secondsSinceStart"

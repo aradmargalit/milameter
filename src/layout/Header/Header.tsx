@@ -30,9 +30,9 @@ export function Header() {
         <Typography
           level="h2"
           sx={{
+            color: colorOne,
             fontWeight: 'bold',
             letterSpacing: 2,
-            color: colorOne,
           }}
         >
           Mila
@@ -40,9 +40,9 @@ export function Header() {
         <Typography
           level="h2"
           sx={{
+            color: 'var(--joy-palette-text-primary)',
             fontWeight: 'bold',
             letterSpacing: 2,
-            color: 'var(--joy-palette-text-primary)',
           }}
         >
           Meter

@@ -7,13 +7,13 @@ type StatisticProps = {
 };
 export function Statistic({ name, value, units }: StatisticProps) {
   return (
-    <Card variant="outlined" sx={{ width: 200, height: 80 }}>
+    <Card variant="outlined" sx={{ height: 80, width: 200 }}>
       <CardOverflow>
-        <Typography level="h2" sx={{ fontSize: 'md', mt: 1, mb: 1 }}>
+        <Typography level="h2" sx={{ fontSize: 'md', mb: 1, mt: 1 }}>
           {name}
         </Typography>
         <Divider />
-        <Stack direction="row" sx={{ mt: 0.5, mb: 1 }}>
+        <Stack direction="row" sx={{ mb: 1, mt: 0.5 }}>
           <Typography level="body1" sx={{ mr: 0.5 }}>
             {value}
           </Typography>
