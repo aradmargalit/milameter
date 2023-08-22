@@ -68,8 +68,8 @@ export function useInfiniteScroll<T extends Element, Data>({
           itemsFetched,
           hasNextPage: fetchHasNextPage,
         } = await fetchMore({
-          pageSize,
           currentPageNumber: pageNumber,
+          pageSize,
         });
         if (data && onFetchSuccess) {
           onFetchSuccess(data);

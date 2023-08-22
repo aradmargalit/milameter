@@ -73,11 +73,11 @@ export default function StravaActivities({
     Activity[]
   >({
     fetchMore,
-    pageSize: DESIRED_PAGE_SIZE,
+    initialHasNextPage: true,
     initialItemsLoaded: data.activities.length,
     itemLimit: ITEM_LIMIT,
-    initialHasNextPage: true,
     onFetchSuccess,
+    pageSize: DESIRED_PAGE_SIZE,
   });
 
   if (!activities.length) {

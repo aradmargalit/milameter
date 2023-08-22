@@ -16,15 +16,15 @@ export const fetchMore: FetchMore<Activity[]> = async ({
     const newActivities = message.activities as Activity[];
 
     return {
-      itemsFetched: newActivities.length,
-      hasNextPage: newActivities.length > 0,
       data: newActivities,
+      hasNextPage: newActivities.length > 0,
+      itemsFetched: newActivities.length,
     };
   } catch (e) {
     return {
-      itemsFetched: 0,
-      hasNextPage: false,
       data: null,
+      hasNextPage: false,
+      itemsFetched: 0,
     };
   }
 };
