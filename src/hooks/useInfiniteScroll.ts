@@ -9,8 +9,8 @@ export type FetchMoreOpts = {
 };
 
 /**
- * fetchMore should fetch more results and update any state tied to your UI
- * returns how many items it fetched and if there is a next page
+ * fetchMore should fetch more results
+ * returns the data, how many items it fetched, and if there is a next page
  */
 export type FetchMore<Data> = (_opts: FetchMoreOpts) => Promise<{
   itemsFetched: number;
