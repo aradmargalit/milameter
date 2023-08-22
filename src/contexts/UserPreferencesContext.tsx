@@ -54,8 +54,8 @@ export function UserPrefsProvider({ children }: { children: ReactNode }) {
   }
 
   const value: UserPrefsContextValue = {
-    userPrefs,
     updateUserPrefs,
+    userPrefs,
   };
 
   return (

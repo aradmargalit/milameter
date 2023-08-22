@@ -16,11 +16,11 @@ export function StravaLoginButton({
       variant={variant}
       onClick={onClick}
       sx={{
-        color: 'var(--strava-orange)',
-        borderColor: 'var(--strava-orange)',
         ':hover': {
           backgroundColor: 'var(--joy-palette-danger-200)',
         },
+        borderColor: 'var(--strava-orange)',
+        color: 'var(--strava-orange)',
       }}
     >
       Login with Strava

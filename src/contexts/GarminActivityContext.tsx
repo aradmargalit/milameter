@@ -61,10 +61,10 @@ export function GarminActivityProvider({ children }: { children: ReactNode }) {
   };
 
   const value: GarminActivityContextValue = {
+    clearActivities,
     garminActivities,
     selectedGarminActivity,
     setSelectedGarminActivity,
-    clearActivities,
     uploadActivities,
   };
 

@@ -6,13 +6,13 @@ export function Legend() {
   return (
     <Card
       sx={{
-        position: 'relative',
-        bottom: '70%',
-        left: '80%',
-        width: 115,
-        height: 70,
         border: '2px solid black',
+        bottom: '70%',
+        height: 70,
+        left: '80%',
         padding: 1,
+        position: 'relative',
+        width: 115,
       }}
     >
       <Stack>
@@ -20,8 +20,8 @@ export function Legend() {
           size="sm"
           sx={{
             backgroundColor: HUMAN_COLOR,
-            mb: 0.5,
             border: '1px solid black',
+            mb: 0.5,
           }}
         >
           Human

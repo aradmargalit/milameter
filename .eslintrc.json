@@ -1,6 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "prettier"],
-  "plugins": ["unused-imports", "simple-import-sort", "prettier"],
+  "plugins": ["unused-imports", "simple-import-sort", "prettier","sort-keys-fix"],
   "rules": {
     "prettier/prettier": "error",
     "simple-import-sort/imports": "error",
@@ -19,6 +19,7 @@
     "no-restricted-imports": ["error", {
       "name": "@mui/icons-material",
       "message": "Please import your icon directly from @mui/icons-material/YourIconName instead"
-    }]
+    }],
+    "sort-keys-fix/sort-keys-fix": "warn"
   }
 }

@@ -44,17 +44,17 @@ export function DetailedActivityMapWithGarmin({
 
   const garminRouteLayer: LayerProps = {
     id: 'garminRoute',
-    type: 'line',
-    source: 'garminRoute',
-    paint: {
-      'line-color': DOG_COLOR,
-      'line-width': 3,
-      'line-opacity': 0.75,
-    },
     layout: {
       'line-cap': 'round',
       'line-join': 'round',
     },
+    paint: {
+      'line-color': DOG_COLOR,
+      'line-opacity': 0.75,
+      'line-width': 3,
+    },
+    source: 'garminRoute',
+    type: 'line',
   };
 
   const handleSliderChange = (newTargetTime: number): void => {
@@ -75,10 +75,10 @@ export function DetailedActivityMapWithGarmin({
   );
 
   const gradient = colorGradientStrFromVector({
-    timepoints,
-    maxTime: separationTrajectory[0].time + activityDuration,
     cmapName: 'velocity-blue',
     invertCmap: true,
+    maxTime: separationTrajectory[0].time + activityDuration,
+    timepoints,
   });
 
   return (

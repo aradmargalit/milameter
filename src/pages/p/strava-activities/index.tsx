@@ -111,13 +111,13 @@ export default function StravaActivities({
       setActivities([...activities, ...newActivities]);
 
       return {
-        itemsFetched: newActivities.length,
         hasNextPage: newActivities.length > 0,
+        itemsFetched: newActivities.length,
       };
     } catch (e) {
       return {
-        itemsFetched: 0,
         hasNextPage: false,
+        itemsFetched: 0,
       };
     }
   };
@@ -126,15 +126,15 @@ export default function StravaActivities({
   const { scrollTriggerRef, hasNextPage, limitReached } =
     useInfiniteScroll<HTMLDivElement>({
       fetchMore,
-      pageSize: DESIRED_PAGE_SIZE,
+      initialHasNextPage: true,
       initialItemsLoaded: data.activities.length,
       itemLimit: ITEM_LIMIT,
-      initialHasNextPage: true,
+      pageSize: DESIRED_PAGE_SIZE,
     });
 
   if (!activities.length) {
     return (
-      <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
+      <Sheet sx={{ borderRadius: 12, margin: 4, padding: 4 }}>
         <ErrorAlert
           errors={[
             'You do not have any recent Strava activities with GPS data.',
@@ -165,9 +165,9 @@ export default function StravaActivities({
   return (
     <main>
       <Layout>
-        <Sheet sx={{ margin: 4, padding: 4, borderRadius: 12 }}>
+        <Sheet sx={{ borderRadius: 12, margin: 4, padding: 4 }}>
           <GarminUploadSection instructionsOpen={data.instructionsOpen} />
-          <Divider sx={{ marginTop: 4, marginBottom: 4 }} />
+          <Divider sx={{ marginBottom: 4, marginTop: 4 }} />
           <ActivityGrid activityPairs={activityPairs} />
           <Stack direction="row" justifyContent="center" marginTop={2}>
             {hasNextPage && (

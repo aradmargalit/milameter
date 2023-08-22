@@ -6,13 +6,13 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     // https://developers.strava.com/docs/authentication/#refreshingexpiredaccesstokens
     const response = await fetch('https://www.strava.com/api/v3/oauth/token', {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         client_id: process.env.STRAVA_CLIENT_ID || '',
         client_secret: process.env.STRAVA_CLIENT_SECRET || '',
-        refresh_token: token.refreshToken || '',
         grant_type: 'refresh_token',
+        refresh_token: token.refreshToken || '',
       }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       method: 'POST',
     });
 
@@ -36,14 +36,6 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 }
 
 export const authOptions: AuthOptions = {
-  // Configure one or more authentication providers
-  providers: [
-    StravaProvider({
-      clientId: process.env.STRAVA_CLIENT_ID || '',
-      clientSecret: process.env.STRAVA_CLIENT_SECRET || '',
-      authorization: { params: { scope: 'activity:read_all' } },
-    }),
-  ],
   callbacks: {
     async jwt({ token, account }) {
       // Persist the OAuth access_token and or the user id to the token right after signin
@@ -72,6 +64,15 @@ export const authOptions: AuthOptions = {
     signIn: '/',
     signOut: '/',
   },
+
+  // Configure one or more authentication providers
+  providers: [
+    StravaProvider({
+      authorization: { params: { scope: 'activity:read_all' } },
+      clientId: process.env.STRAVA_CLIENT_ID || '',
+      clientSecret: process.env.STRAVA_CLIENT_SECRET || '',
+    }),
+  ],
 };
 
 export default NextAuth(authOptions);

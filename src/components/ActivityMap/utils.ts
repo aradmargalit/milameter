@@ -10,7 +10,7 @@ export function computeActivityDuration(
 ): ActivityDuration {
   if (!activity.records) {
     console.error('called computeActivityDuration without records');
-    return { startTime: 0, activityDuration: 0 };
+    return { activityDuration: 0, startTime: 0 };
   }
 
   // we always have the start and end time for the primary activity, so start there
@@ -27,7 +27,7 @@ export function computeActivityDuration(
   }
 
   const activityDuration = endTime - startTime;
-  return { startTime, activityDuration };
+  return { activityDuration, startTime };
 }
 
 /**

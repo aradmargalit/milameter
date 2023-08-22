@@ -71,7 +71,7 @@ export default function StravaActivityDetailPage({
 
   return (
     <Layout>
-      <Sheet sx={{ margin: 4, borderRadius: 12, padding: 2 }}>
+      <Sheet sx={{ borderRadius: 12, margin: 4, padding: 2 }}>
         <Stack spacing={2}>
           <Link href="/p/strava-activities" passHref>
             <Button startDecorator={<ArrowBack />} variant="outlined">

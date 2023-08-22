@@ -22,10 +22,10 @@ export function colorGradientStrFromVector({
   const times = timepoints.map((tp) => tp.time);
   // create colormap entries
   const colors = colormap({
-    colormap: cmapName,
-    nshades: values.length,
-    format: 'hex',
     alpha: 1,
+    colormap: cmapName,
+    format: 'hex',
+    nshades: values.length,
   });
 
   // compute the highest value we have

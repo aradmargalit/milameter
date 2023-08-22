@@ -13,17 +13,17 @@ export function LiveSeparation({ separation, gradient }: LiveSeparationProps) {
   return (
     <Stack
       sx={{
+        alignItems: 'center',
         display: 'flex',
         justifyContent: 'space-around',
-        alignItems: 'center',
       }}
     >
       <Typography level="body3">{inner}</Typography>
       <Box
         sx={{
-          width: '80%',
-          height: '5px',
           background: gradient,
+          height: '5px',
+          width: '80%',
         }}
       />
     </Stack>
