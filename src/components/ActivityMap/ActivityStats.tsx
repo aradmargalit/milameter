@@ -1,7 +1,6 @@
 import { Divider, Grid, Stack } from '@mui/joy';
 
-import { Activity } from '@/models/activity';
-import { GarminActivity } from '@/models/garminActivity';
+import { useActivityPair } from '@/contexts/ActivityPairContext';
 import {
   computeMaxAccel,
   computeMaxDecel,
@@ -14,18 +13,12 @@ import {
 
 import { Statistic } from './Statistic';
 
-type ActivityStatsProps = {
-  activity: Activity;
-  garminActivity: GarminActivity | null;
-};
+export function ActivityStats() {
+  const { stravaActivity, garminActivity } = useActivityPair();
 
-export function ActivityStats({
-  activity,
-  garminActivity,
-}: ActivityStatsProps) {
   const separationTrajectory =
-    garminActivity && activity.records
-      ? getSeparationTrajectory(activity.records, garminActivity.records)
+    garminActivity && stravaActivity.records
+      ? getSeparationTrajectory(stravaActivity.records, garminActivity.records)
       : null;
 
   const maxSeparation =
@@ -39,37 +32,37 @@ export function ActivityStats({
           <Grid>
             <Statistic
               name="🏃‍♂️ Distance"
-              value={metersToMiles(activity.distance).toFixed(2)}
+              value={metersToMiles(stravaActivity.distance).toFixed(2)}
               units="mi"
             />
           </Grid>
           <Grid>
             <Statistic
               name="🏃‍♂️ Pace"
-              value={computePace(activity)}
+              value={computePace(stravaActivity)}
               units="min/mi"
             />
           </Grid>
           <Grid>
             <Statistic
               name="🏃‍♂️ Max Pace"
-              value={paceFromSpeed(activity.maxSpeed)}
+              value={paceFromSpeed(stravaActivity.maxSpeed)}
               units="min/mi"
             />
           </Grid>
-          {activity.records && (
+          {stravaActivity.records && (
             <>
               <Grid>
                 <Statistic
                   name="🏃‍♂️ Max Acceleration"
-                  value={computeMaxAccel(activity.records).toFixed(1)}
+                  value={computeMaxAccel(stravaActivity.records).toFixed(1)}
                   units="m/s^2"
                 />
               </Grid>
               <Grid>
                 <Statistic
                   name="🏃‍♂️ Max Deceleration"
-                  value={computeMaxDecel(activity.records).toFixed(1)}
+                  value={computeMaxDecel(stravaActivity.records).toFixed(1)}
                   units="m/s^2"
                 />
               </Grid>
@@ -79,7 +72,7 @@ export function ActivityStats({
           <Grid>
             <Statistic
               name="🏃‍♂️ Elevation Gain"
-              value={metersToFeet(activity.totalElevationGain).toFixed(0)}
+              value={metersToFeet(stravaActivity.totalElevationGain).toFixed(0)}
               units="ft"
             />
           </Grid>
