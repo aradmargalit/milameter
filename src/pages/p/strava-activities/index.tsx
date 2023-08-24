@@ -8,6 +8,7 @@ import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import ActivityGrid from '@/components/ActivityGrid';
 import ErrorAlert from '@/components/ErrorAlert';
 import GarminUploadSection from '@/components/GarminUploadSection';
+import { buildActivityPairs } from '@/components/pages/strava-activities/buildActivityPairs';
 import { fetchMore } from '@/components/pages/strava-activities/fetchMore';
 import { LoadingIndicator } from '@/components/Pagination/LoadingIndicator';
 import { NoMoreResults } from '@/components/Pagination/NoMoreResults';
@@ -16,8 +17,6 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
-
-import { buildActivityPairs } from '../../../components/pages/strava-activities/buildActivityPairs';
 
 type Data = { activities: Activity[]; instructionsOpen: boolean };
 
