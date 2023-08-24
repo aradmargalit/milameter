@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Layer, LayerProps, Source } from 'react-map-gl';
 
 import { DOG_COLOR } from '@/colors';
-import { GarminActivity } from '@/models/garminActivity';
-import { ActivityWithRecords, Coordinate } from '@/types';
+import { useActivityPair } from '@/contexts/ActivityPairContext';
+import { Coordinate } from '@/types';
 import {
   colorGradientStrFromVector,
   GradientTimePoint,
@@ -19,27 +19,22 @@ import { LiveSeparation } from './LiveSeparation';
 import { MapMarker } from './MapMarker';
 import { computeActivityDuration, findClosestCoord } from './utils';
 
-type DetailedActivityMapProps = {
-  activity: ActivityWithRecords;
-  garminActivity: GarminActivity;
-};
+export function DetailedActivityMapWithGarmin() {
+  const { stravaActivity, garminActivity } = useActivityPair();
 
-export function DetailedActivityMapWithGarmin({
-  activity,
-  garminActivity,
-}: DetailedActivityMapProps) {
   const [humanCoord, setHumanCoord] = useState<Coordinate>(
-    activity.records[0].coord
+    stravaActivity.records[0].coord
   );
   const [garminCoord, setGarminCoord] = useState<Coordinate>(
-    garminActivity.records[0].coord
+    // this should be safe, we will only render this component after checking for presence
+    garminActivity!.records[0].coord
   );
 
-  const garminGeoJSON = makeLineFromCoordinates(garminActivity.coordinates);
+  const garminGeoJSON = makeLineFromCoordinates(garminActivity!.coordinates);
 
   const { activityDuration } = computeActivityDuration(
-    activity,
-    garminActivity
+    stravaActivity,
+    garminActivity!
   );
 
   const garminRouteLayer: LayerProps = {
@@ -58,7 +53,7 @@ export function DetailedActivityMapWithGarmin({
   };
 
   const handleSliderChange = (newTargetTime: number): void => {
-    setHumanCoord(findClosestCoord(activity.records, newTargetTime));
+    setHumanCoord(findClosestCoord(stravaActivity.records, newTargetTime));
     if (garminActivity) {
       setGarminCoord(findClosestCoord(garminActivity.records, newTargetTime));
     }
@@ -66,8 +61,8 @@ export function DetailedActivityMapWithGarmin({
 
   const liveSeparation = lawOfCosinesDistance(humanCoord, garminCoord);
   const separationTrajectory = getSeparationTrajectory(
-    activity.records,
-    garminActivity.records
+    stravaActivity.records,
+    garminActivity!.records
   );
 
   const timepoints: GradientTimePoint[] = separationTrajectory.map(
@@ -83,7 +78,6 @@ export function DetailedActivityMapWithGarmin({
 
   return (
     <DetailedActivityMapBase
-      activity={activity}
       activityDuration={activityDuration}
       onSliderChange={handleSliderChange}
       mapChildren={

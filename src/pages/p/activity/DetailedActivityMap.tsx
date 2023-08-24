@@ -6,18 +6,15 @@ import { Legend } from '@/components/ActivityMap/Legend';
 import { useActivityPair } from '@/contexts/ActivityPairContext';
 
 export function DetailedActivityMap() {
-  const { garminActivity, stravaActivity } = useActivityPair();
+  const { garminActivity } = useActivityPair();
 
   return (
     <>
       <Box width="100%" height="800">
         {garminActivity ? (
-          <DetailedActivityMapWithGarmin
-            activity={stravaActivity}
-            garminActivity={garminActivity}
-          />
+          <DetailedActivityMapWithGarmin />
         ) : (
-          <DetailedActivityMapBase activity={stravaActivity} />
+          <DetailedActivityMapBase />
         )}
       </Box>
       {garminActivity && <Legend />}
