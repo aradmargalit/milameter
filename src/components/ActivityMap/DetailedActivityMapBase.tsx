@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { Layer, LayerProps, MapRef, Source } from 'react-map-gl';
 
 import { HUMAN_COLOR } from '@/colors';
-import { useActivityPair } from '@/contexts/ActivityPairContext';
+import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import { Coordinate } from '@/types';
 import { swapLatLong } from '@/utils/coordinateUtils';
 import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';

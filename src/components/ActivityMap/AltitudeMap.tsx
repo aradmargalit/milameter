@@ -2,7 +2,7 @@ import { Box, useTheme } from '@mui/joy';
 import { DateTime } from 'luxon';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
-import { useActivityPair } from '@/contexts/ActivityPairContext';
+import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import { GarminActivity } from '@/models/garminActivity';
 import { metersToFeet } from '@/utils/distanceUtils';
 import { mean } from '@/utils/mathUtils';

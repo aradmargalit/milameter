@@ -9,7 +9,7 @@ import { activityHasRecords } from '@/components/ActivityMap/utils';
 import ErrorAlert from '@/components/ErrorAlert';
 import { BackButton } from '@/components/pages/activity/BackButton';
 import { DetailedActivityMap } from '@/components/pages/activity/DetailedActivityMap';
-import { ActivityPairProvider } from '@/contexts/ActivityPairContext';
+import { ActivityPairProvider } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 

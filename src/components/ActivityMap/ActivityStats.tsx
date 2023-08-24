@@ -1,11 +1,13 @@
 import { Divider, Grid, Stack } from '@mui/joy';
 
-import { useActivityPair } from '@/contexts/ActivityPairContext';
+import {
+  hasGarmin,
+  useActivityPair,
+} from '@/contexts/ActivityPairContext/ActivityPairContext';
 import {
   computeMaxAccel,
   computeMaxDecel,
   computePace,
-  getSeparationTrajectory,
   metersToFeet,
   metersToMiles,
   paceFromSpeed,
@@ -14,16 +16,8 @@ import {
 import { Statistic } from './Statistic';
 
 export function ActivityStats() {
-  const { stravaActivity, garminActivity } = useActivityPair();
-
-  const separationTrajectory =
-    garminActivity && stravaActivity.records
-      ? getSeparationTrajectory(stravaActivity.records, garminActivity.records)
-      : null;
-
-  const maxSeparation =
-    separationTrajectory &&
-    Math.max(...separationTrajectory.map((separation) => separation.distance));
+  const activityPair = useActivityPair();
+  const { stravaActivity } = activityPair;
 
   return (
     <Stack>
@@ -77,49 +71,55 @@ export function ActivityStats() {
             />
           </Grid>
         </Grid>
-        {garminActivity && (
+        {hasGarmin(activityPair) && (
           <Grid container spacing={1}>
             <Grid>
               <Statistic
                 name="🐶 Distance"
-                value={metersToMiles(garminActivity.distance).toFixed(2)}
+                value={metersToMiles(
+                  activityPair.garminActivity.distance
+                ).toFixed(2)}
                 units="mi"
               />
             </Grid>
             <Grid>
               <Statistic
                 name="🐶 Pace"
-                value={computePace(garminActivity)}
+                value={computePace(activityPair.garminActivity)}
                 units="min/mi"
               />
             </Grid>
             <Grid>
               <Statistic
                 name="🐶 Max Pace"
-                value={paceFromSpeed(garminActivity.maxSpeed)}
+                value={paceFromSpeed(activityPair.garminActivity.maxSpeed)}
                 units="min/mi"
               />
             </Grid>
             <Grid>
               <Statistic
                 name="🐶 Max Acceleration"
-                value={computeMaxAccel(garminActivity.records).toFixed(1)}
+                value={computeMaxAccel(
+                  activityPair.garminActivity.records
+                ).toFixed(1)}
                 units="m/s^2"
               />
             </Grid>
             <Grid>
               <Statistic
                 name="🐶 Max Deceleration"
-                value={computeMaxDecel(garminActivity.records).toFixed(1)}
+                value={computeMaxDecel(
+                  activityPair.garminActivity.records
+                ).toFixed(1)}
                 units="m/s^2"
               />
             </Grid>
             <Grid>
               <Statistic
                 name="🐶 Elevation Gain"
-                value={metersToFeet(garminActivity.totalElevationGain).toFixed(
-                  0
-                )}
+                value={metersToFeet(
+                  activityPair.garminActivity.totalElevationGain
+                ).toFixed(0)}
                 units="ft"
               />
             </Grid>
@@ -127,11 +127,13 @@ export function ActivityStats() {
         )}
       </Stack>
       <Divider />
-      {!!maxSeparation && (
+      {hasGarmin(activityPair) && (
         <Grid>
           <Statistic
             name="Max Separation"
-            value={maxSeparation.toFixed(0)}
+            value={activityPair.derivedActivityProperties.maxSeparation.toFixed(
+              0
+            )}
             units="m"
           />
         </Grid>

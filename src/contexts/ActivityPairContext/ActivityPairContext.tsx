@@ -3,12 +3,24 @@ import { createContext, ReactNode, useContext } from 'react';
 import { GarminActivity } from '@/models/garminActivity';
 import { ActivityWithRecords } from '@/types';
 
-import { useGarminActivities } from './GarminActivityContext';
+import { useGarminActivities } from '../GarminActivityContext';
+import {
+  buildDerivedActivityProperties,
+  DerivedActivityProperties,
+} from './derivedActivityProperties';
 
-type ActivityPairContextData = {
+type BaseActivityPairContextData = {
   stravaActivity: ActivityWithRecords;
-  garminActivity: GarminActivity | null;
 };
+
+type ActivityPairContextDataWithGarmin = BaseActivityPairContextData & {
+  garminActivity: GarminActivity;
+  derivedActivityProperties: DerivedActivityProperties;
+};
+
+type ActivityPairContextData =
+  | BaseActivityPairContextData
+  | ActivityPairContextDataWithGarmin;
 
 type ActivityPairContextMethods = {};
 
@@ -24,16 +36,30 @@ type ActivityPairProviderProps = {
   stravaActivity: ActivityWithRecords;
 };
 
+export function hasGarmin(
+  state: BaseActivityPairContextData | ActivityPairContextDataWithGarmin
+): state is ActivityPairContextDataWithGarmin {
+  return !!(state as ActivityPairContextDataWithGarmin).garminActivity;
+}
+
 export function ActivityPairProvider({
   children,
   stravaActivity,
 }: ActivityPairProviderProps) {
   const { selectedGarminActivity: garminActivity } = useGarminActivities();
 
-  const value: ActivityPairContextValue = {
-    garminActivity,
-    stravaActivity,
-  };
+  const value: ActivityPairContextValue = garminActivity
+    ? {
+        derivedActivityProperties: buildDerivedActivityProperties({
+          garminActivity,
+          stravaActivity,
+        }),
+        garminActivity,
+        stravaActivity,
+      }
+    : {
+        stravaActivity,
+      };
 
   return (
     <ActivityPairContext.Provider value={value}>

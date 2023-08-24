@@ -1,7 +1,7 @@
 import Place from '@mui/icons-material/Place';
 import { Box, Typography } from '@mui/joy';
 
-import { useActivityPair } from '@/contexts/ActivityPairContext';
+import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
 
 export function ActivityMeta() {
   const {
