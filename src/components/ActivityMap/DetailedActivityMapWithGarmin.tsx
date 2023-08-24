@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { Layer, LayerProps, Source } from 'react-map-gl';
 
 import { DOG_COLOR } from '@/colors';
-import {
-  hasGarmin,
-  useActivityPair,
-} from '@/contexts/ActivityPairContext/ActivityPairContext';
+import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import { Coordinate } from '@/types';
 import {
   colorGradientStrFromVector,
@@ -20,14 +17,12 @@ import { MapMarker } from './MapMarker';
 import { computeActivityDuration, findClosestCoord } from './utils';
 
 export function DetailedActivityMapWithGarmin() {
-  const activityPair = useActivityPair();
+  const { stravaActivity, garminActivity, derivedActivityProperties } =
+    useActivityPair();
 
-  if (!hasGarmin(activityPair)) {
+  if (!garminActivity) {
     return null;
   }
-
-  const { stravaActivity, garminActivity, derivedActivityProperties } =
-    activityPair;
 
   // Safe to return early if no Garmin activity
   // eslint-disable-next-line react-hooks/rules-of-hooks

@@ -11,9 +11,14 @@ import {
 
 type BaseActivityPairContextData = {
   stravaActivity: ActivityWithRecords;
+  garminActivity: null;
+  derivedActivityProperties: null;
 };
 
-type ActivityPairContextDataWithGarmin = BaseActivityPairContextData & {
+type ActivityPairContextDataWithGarmin = Omit<
+  BaseActivityPairContextData,
+  'garminActivity' | 'derivedActivityProperties'
+> & {
   garminActivity: GarminActivity;
   derivedActivityProperties: DerivedActivityProperties;
 };
@@ -36,12 +41,6 @@ type ActivityPairProviderProps = {
   stravaActivity: ActivityWithRecords;
 };
 
-export function hasGarmin(
-  state: BaseActivityPairContextData | ActivityPairContextDataWithGarmin
-): state is ActivityPairContextDataWithGarmin {
-  return !!(state as ActivityPairContextDataWithGarmin).garminActivity;
-}
-
 export function ActivityPairProvider({
   children,
   stravaActivity,
@@ -58,6 +57,8 @@ export function ActivityPairProvider({
         stravaActivity,
       }
     : {
+        derivedActivityProperties: null,
+        garminActivity: null,
         stravaActivity,
       };
 
