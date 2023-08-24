@@ -10,14 +10,14 @@ import ErrorAlert from '@/components/ErrorAlert';
 import GarminUploadSection from '@/components/GarminUploadSection';
 import { LoadingIndicator } from '@/components/Pagination/LoadingIndicator';
 import { NoMoreResults } from '@/components/Pagination/NoMoreResults';
+import { fetchMore } from '@/components/strava-activities/fetchMore';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
 
-import { buildActivityPairs } from './buildActivityPairs';
-import { fetchMore } from './fetchMore';
+import { buildActivityPairs } from '../../../components/strava-activities/buildActivityPairs';
 
 type Data = { activities: Activity[]; instructionsOpen: boolean };
 
