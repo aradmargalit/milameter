@@ -1,6 +1,5 @@
 import { Divider, Sheet, Stack } from '@mui/joy';
 import { getCookie } from 'cookies-next';
-import { DateTime } from 'luxon';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { useState } from 'react';
@@ -12,12 +11,13 @@ import GarminUploadSection from '@/components/GarminUploadSection';
 import { LoadingIndicator } from '@/components/Pagination/LoadingIndicator';
 import { NoMoreResults } from '@/components/Pagination/NoMoreResults';
 import { useGarminActivities } from '@/contexts/GarminActivityContext';
-import { FetchMore, useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
-import { ActivityPair } from '@/models/activityPair';
-import { GarminActivity } from '@/models/garminActivity';
 import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
+
+import { buildActivityPairs } from './buildActivityPairs';
+import { fetchMore } from './fetchMore';
 
 type Data = { activities: Activity[]; instructionsOpen: boolean };
 
@@ -59,78 +59,26 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async ({
   };
 };
 
-/**
- * compute an abstract numeric "distance" score between a given garmin activity and
- * standard activity.
- * Currently this just computes the time difference, with a cutoff of 1 hour
- *
- * @param garminActivity activity from the watch
- * @param activity primary activity to compare against
- * @param timeGapCutoff the longest amount of time (in seconds) that we'll consider as
- *  possibly belonging to the same activity (default: 1 hour = 3600 seconds)
- * @returns a value between 0 and 1 indicating the dissimilarity between the activities
- *  (lower is better)
- */
-function activityDistance(
-  garminActivity: GarminActivity,
-  activity: Activity,
-  timeGapCutoff: number = 60 * 60
-): number {
-  // convert times from both activities to luxon DateTime objects
-  const targetStartTime = DateTime.fromISO(activity.startDate);
-
-  // the garmin FIT decoder exports the timestamp as a stringified JS Date, so we can
-  // reconstitute it that way before jamming it into a luxon.DateTime object
-  const garminStartTime = DateTime.fromSeconds(garminActivity.records[0].time);
-
-  // find the absolute difference in seconds (we don't care which watch started first)
-  const startTimeOffset = Math.abs(
-    targetStartTime.diff(garminStartTime, 'seconds').seconds
-  );
-
-  // the final distance is the fraction of the maximum cutoff
-  return Math.min(startTimeOffset, timeGapCutoff) / timeGapCutoff;
-}
-
 export default function StravaActivities({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [activities, setActivities] = useState<Activity[]>(data.activities);
-
-  const fetchMore: FetchMore = async ({ pageSize, currentPageNumber }) => {
-    try {
-      const res = await fetch(
-        `/api/milameter/getActivities?pageSize=${pageSize}&pageNumber=${
-          currentPageNumber + 1
-        }`
-      );
-
-      const { message } = await res.json();
-      const newActivities = message.activities;
-
-      setActivities([...activities, ...newActivities]);
-
-      return {
-        hasNextPage: newActivities.length > 0,
-        itemsFetched: newActivities.length,
-      };
-    } catch (e) {
-      return {
-        hasNextPage: false,
-        itemsFetched: 0,
-      };
-    }
-  };
-
   const { garminActivities } = useGarminActivities();
-  const { scrollTriggerRef, hasNextPage, limitReached } =
-    useInfiniteScroll<HTMLDivElement>({
-      fetchMore,
-      initialHasNextPage: true,
-      initialItemsLoaded: data.activities.length,
-      itemLimit: ITEM_LIMIT,
-      pageSize: DESIRED_PAGE_SIZE,
-    });
+
+  const onFetchSuccess = (newActivities: Activity[]) =>
+    setActivities([...activities, ...newActivities]);
+
+  const { scrollTriggerRef, hasNextPage, limitReached } = useInfiniteScroll<
+    HTMLDivElement,
+    Activity[]
+  >({
+    fetchMore,
+    initialHasNextPage: true,
+    initialItemsLoaded: data.activities.length,
+    itemLimit: ITEM_LIMIT,
+    onFetchSuccess,
+    pageSize: DESIRED_PAGE_SIZE,
+  });
 
   if (!activities.length) {
     return (
@@ -144,23 +92,7 @@ export default function StravaActivities({
     );
   }
 
-  // for each activity, find the garmin activity with the lowest dissimilarity. If that
-  // dissimilarity is above an arbitrarily threshold (0.5 for now), assume there's no
-  // good match
-  const activityPairs: ActivityPair[] = activities.map((activity) => {
-    const distances = garminActivities.map((gA) =>
-      activityDistance(gA, activity)
-    );
-    const argMin = distances.indexOf(Math.min(...distances));
-
-    if (distances[argMin] < 0.5) {
-      return {
-        activity,
-        garminActivity: garminActivities[argMin],
-      };
-    }
-    return { activity, garminActivity: null };
-  });
+  const activityPairs = buildActivityPairs(activities, garminActivities);
 
   return (
     <main>
@@ -171,7 +103,6 @@ export default function StravaActivities({
           <ActivityGrid activityPairs={activityPairs} />
           <Stack direction="row" justifyContent="center" marginTop={2}>
             {hasNextPage && (
-              // @ts-ignore ref is complaining that it could be null
               <div ref={scrollTriggerRef}>
                 <LoadingIndicator variant="soft" size="lg" />
               </div>
