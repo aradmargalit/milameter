@@ -7,13 +7,13 @@ import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
 import { AltitudeMap } from '@/components/ActivityMap/AltitudeMap';
 import { activityHasRecords } from '@/components/ActivityMap/utils';
 import ErrorAlert from '@/components/ErrorAlert';
+import { BackButton } from '@/components/pages/activity/BackButton';
+import { DetailedActivityMap } from '@/components/pages/activity/DetailedActivityMap';
 import { ActivityPairProvider } from '@/contexts/ActivityPairContext';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 
-import { ActivityMeta } from './ActivityMeta';
-import { BackButton } from './BackButton';
-import { DetailedActivityMap } from './DetailedActivityMap';
+import { ActivityMeta } from '../../../components/pages/activity/ActivityMeta';
 
 type Data = {
   activity: Activity | null;
