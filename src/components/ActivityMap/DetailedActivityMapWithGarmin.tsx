@@ -90,6 +90,7 @@ export function DetailedActivityMapWithGarmin() {
               key={zoom.time}
               coordinate={zoom.stravaCoord}
               marker="💨"
+              opacity={50}
             />
           ))}
           <Source
