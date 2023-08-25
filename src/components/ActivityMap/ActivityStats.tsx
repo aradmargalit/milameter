@@ -118,7 +118,17 @@ export function ActivityStats() {
               <Statistic
                 name="Zoomies 💨"
                 value={derivedActivityProperties.zoomies.length.toString()}
-                units="zoomies"
+                units="total"
+              />
+            </Grid>
+            <Grid>
+              <Statistic
+                name="Average zoomies 💨"
+                value={(
+                  derivedActivityProperties.zoomies.length /
+                  metersToMiles(garminActivity.distance)
+                ).toFixed(2)}
+                units="per mile"
               />
             </Grid>
           </Grid>
