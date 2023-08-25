@@ -114,6 +114,13 @@ export function ActivityStats() {
                 units="ft"
               />
             </Grid>
+            <Grid>
+              <Statistic
+                name="Zoomies 💨"
+                value={derivedActivityProperties.zoomies.length.toString()}
+                units="zoomies"
+              />
+            </Grid>
           </Grid>
         )}
       </Stack>

@@ -85,6 +85,13 @@ export function DetailedActivityMapWithGarmin() {
       mapChildren={
         <>
           <MapMarker coordinate={garminCoord} color={DOG_COLOR} />
+          {derivedActivityProperties.zoomies.map((zoom) => (
+            <MapMarker
+              key={zoom.time}
+              coordinate={zoom.stravaCoord}
+              marker="💨"
+            />
+          ))}
           <Source
             id="garminRoute"
             type="geojson"

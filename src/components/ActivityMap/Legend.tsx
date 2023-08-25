@@ -8,7 +8,6 @@ export function Legend() {
       sx={{
         border: '2px solid black',
         bottom: '70%',
-        height: 70,
         left: '80%',
         padding: 1,
         position: 'relative',
@@ -31,6 +30,12 @@ export function Legend() {
           sx={{ backgroundColor: DOG_COLOR, border: '1px solid black' }}
         >
           Dog
+        </Chip>
+        <Chip
+          size="sm"
+          sx={{ backgroundColor: 'gray', border: '1px solid black' }}
+        >
+          Zoom 💨
         </Chip>
       </Stack>
     </Card>

@@ -6,7 +6,12 @@ export const METERS_PER_MILE = 1609.34;
 export const METERS_PER_FOOT = 0.3048;
 const RADIUS_OF_EARTH_IN_KM = 6371;
 
-type Separation = { time: UNIXEpochSeconds; distance: number };
+export type Separation = {
+  time: UNIXEpochSeconds;
+  distance: number;
+  stravaCoord: Coordinate;
+  garminCoord: Coordinate;
+};
 export type SeparationTrajectory = Separation[];
 
 export function metersToMiles(meters: number): number {
@@ -46,22 +51,28 @@ function makeRecordMap(records: Record[]): Map<UNIXEpochSeconds, Coordinate> {
   return new Map(records.map(({ time, coord }) => [time, coord]));
 }
 
-export function getSeparationTrajectory(
-  recordsA: Record[],
-  recordsB: Record[]
-): SeparationTrajectory {
+type GetSeparationTrajectoryOpts = {
+  stravaRecords: Record[];
+  garminRecords: Record[];
+};
+export function getSeparationTrajectory({
+  stravaRecords,
+  garminRecords,
+}: GetSeparationTrajectoryOpts): SeparationTrajectory {
   // create a mapping from unix epoch seconds to coordinates
-  const recordsMapB = makeRecordMap(recordsB);
+  const recordsMapB = makeRecordMap(garminRecords);
 
   // iterate over source activities
-  const separationTrajectory: SeparationTrajectory = recordsA
-    .map(({ time, coord }) => {
-      const coordB = recordsMapB.get(time);
-      if (!coordB) {
+  const separationTrajectory: SeparationTrajectory = stravaRecords
+    .map(({ time, coord: stravaCoord }) => {
+      const garminCoord = recordsMapB.get(time);
+      if (!garminCoord) {
         return null;
       }
       return {
-        distance: lawOfCosinesDistance(coord, coordB),
+        distance: lawOfCosinesDistance(stravaCoord, garminCoord),
+        garminCoord,
+        stravaCoord,
         time,
       };
     })
