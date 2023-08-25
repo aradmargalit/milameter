@@ -1,8 +1,35 @@
 import { Card, Chip, Stack } from '@mui/joy';
 
 import { DOG_COLOR, HUMAN_COLOR } from '@/colors';
+import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
+
+type LegendChipProps = {
+  backgroundColor: string;
+  text: string;
+  hasBottomMargin?: boolean;
+};
+
+function LegendChip({
+  text,
+  backgroundColor,
+  hasBottomMargin = true,
+}: LegendChipProps) {
+  return (
+    <Chip
+      size="sm"
+      sx={{
+        backgroundColor: backgroundColor,
+        border: '1px solid black',
+        mb: hasBottomMargin ? 0.5 : 0,
+      }}
+    >
+      {text}
+    </Chip>
+  );
+}
 
 export function Legend() {
+  const { derivedActivityProperties } = useActivityPair();
   return (
     <Card
       sx={{
@@ -15,28 +42,11 @@ export function Legend() {
       }}
     >
       <Stack>
-        <Chip
-          size="sm"
-          sx={{
-            backgroundColor: HUMAN_COLOR,
-            border: '1px solid black',
-            mb: 0.5,
-          }}
-        >
-          Human
-        </Chip>
-        <Chip
-          size="sm"
-          sx={{ backgroundColor: DOG_COLOR, border: '1px solid black' }}
-        >
-          Dog
-        </Chip>
-        <Chip
-          size="sm"
-          sx={{ backgroundColor: 'gray', border: '1px solid black' }}
-        >
-          Zoom 💨
-        </Chip>
+        <LegendChip backgroundColor={HUMAN_COLOR} text="Human" />
+        <LegendChip backgroundColor={DOG_COLOR} text="Dog" />
+        {derivedActivityProperties?.zoomies && (
+          <LegendChip backgroundColor="gray" text="Zoom 💨" />
+        )}
       </Stack>
     </Card>
   );

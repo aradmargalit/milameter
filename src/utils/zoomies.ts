@@ -16,7 +16,6 @@ export function getZoomies(separationTrajectory: SeparationTrajectory): Zoom[] {
 
   for (let i = 1; i < separationTrajectory.length; i++) {
     const separation = separationTrajectory[i];
-    console.log(separation);
     // If out of range for the first time, set flag to true
     if (!outOfRange && separation.distance > OUT_OF_RANGE_METERS) {
       outOfRange = true;
