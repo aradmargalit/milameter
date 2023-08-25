@@ -44,7 +44,7 @@ export function Legend() {
       <Stack>
         <LegendChip backgroundColor={HUMAN_COLOR} text="Human" />
         <LegendChip backgroundColor={DOG_COLOR} text="Dog" />
-        {derivedActivityProperties?.zoomies && (
+        {!!derivedActivityProperties?.zoomies.length && (
           <LegendChip backgroundColor="gray" text="Zoom 💨" />
         )}
       </Stack>

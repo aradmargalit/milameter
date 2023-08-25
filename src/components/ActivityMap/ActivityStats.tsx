@@ -121,16 +121,18 @@ export function ActivityStats() {
                 units="total"
               />
             </Grid>
-            <Grid>
-              <Statistic
-                name="Average zoomies 💨"
-                value={(
-                  derivedActivityProperties.zoomies.length /
-                  metersToMiles(garminActivity.distance)
-                ).toFixed(2)}
-                units="per mile"
-              />
-            </Grid>
+            {!!derivedActivityProperties.zoomies.length && (
+              <Grid>
+                <Statistic
+                  name="Average zoomies 💨"
+                  value={(
+                    derivedActivityProperties.zoomies.length /
+                    metersToMiles(garminActivity.distance)
+                  ).toFixed(2)}
+                  units="per mile"
+                />
+              </Grid>
+            )}
           </Grid>
         )}
       </Stack>
