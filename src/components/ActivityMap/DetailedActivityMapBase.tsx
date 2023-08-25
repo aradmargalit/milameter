@@ -96,6 +96,7 @@ export function DetailedActivityMapBase({
             marks={sliderMarks}
             activityDuration={resolvedActivityDuration}
             onChange={handleSliderChange}
+            autoPlay={false}
           />
         </Box>
         {sliderChildren}
