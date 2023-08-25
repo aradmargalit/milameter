@@ -4,7 +4,8 @@ import { useRef, useState } from 'react';
 import { Layer, LayerProps, MapRef, Source } from 'react-map-gl';
 
 import { HUMAN_COLOR } from '@/colors';
-import { ActivityWithRecords, Coordinate } from '@/types';
+import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
+import { Coordinate } from '@/types';
 import { swapLatLong } from '@/utils/coordinateUtils';
 import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
 
@@ -14,7 +15,6 @@ import { MapSlider } from './MapSlider';
 import { computeActivityDuration, findClosestCoord } from './utils';
 
 type DetailedActivityMapProps = {
-  activity: ActivityWithRecords;
   onSliderChange?: (_newTarget: number) => void;
   mapChildren?: React.ReactNode;
   sliderChildren?: React.ReactNode;
@@ -22,24 +22,24 @@ type DetailedActivityMapProps = {
 };
 
 export function DetailedActivityMapBase({
-  activity,
   onSliderChange,
   mapChildren,
   sliderChildren,
   activityDuration,
 }: DetailedActivityMapProps) {
+  const { stravaActivity } = useActivityPair();
   const mapRef = useRef<MapRef | null>(null);
   const [humanCoord, setHumanCoord] = useState<Coordinate>(
-    activity.records[0].coord
+    stravaActivity.records[0].coord
   );
 
-  const coordinates = polyline.decode(activity.map.polyline);
+  const coordinates = polyline.decode(stravaActivity.map.polyline);
   const correctedCoordinates = swapLatLong(coordinates);
   const bounds = expandBounds(correctedCoordinates);
   const geoJSON = makeLineFromCoordinates(correctedCoordinates);
 
   const { startTime, activityDuration: stravaActivityDuration } =
-    computeActivityDuration(activity);
+    computeActivityDuration(stravaActivity);
 
   function handleMapLoad() {
     mapRef.current?.fitBounds(bounds, {
@@ -64,7 +64,7 @@ export function DetailedActivityMapBase({
 
   const handleSliderChange = (newValue: number): void => {
     const targetTime = startTime + newValue;
-    setHumanCoord(findClosestCoord(activity.records, targetTime));
+    setHumanCoord(findClosestCoord(stravaActivity.records, targetTime));
 
     onSliderChange && onSliderChange(targetTime);
   };

@@ -2,6 +2,7 @@ import { Box, useTheme } from '@mui/joy';
 import { DateTime } from 'luxon';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
+import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import { GarminActivity } from '@/models/garminActivity';
 import { metersToFeet } from '@/utils/distanceUtils';
 import { mean } from '@/utils/mathUtils';
@@ -11,11 +12,6 @@ import {
   AltitudeChartOption,
   AltitudePoint,
 } from './AltitudeChart';
-
-type AltitudeMapProps = {
-  activity: StravaActivity;
-  garminActivity: GarminActivity | null;
-};
 
 const BRAND_ORANGE = '#FF4500';
 
@@ -88,9 +84,10 @@ function makeChartData(
   return matchMeanElevation(filtered);
 }
 
-export function AltitudeMap({ activity, garminActivity }: AltitudeMapProps) {
+export function AltitudeMap() {
+  const { stravaActivity, garminActivity } = useActivityPair();
   const theme = useTheme();
-  const data = makeChartData(activity, garminActivity);
+  const data = makeChartData(stravaActivity, garminActivity);
 
   if (!data) {
     return null;

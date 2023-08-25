@@ -1,12 +1,10 @@
 import { Divider, Grid, Stack } from '@mui/joy';
 
-import { Activity } from '@/models/activity';
-import { GarminActivity } from '@/models/garminActivity';
+import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import {
   computeMaxAccel,
   computeMaxDecel,
   computePace,
-  getSeparationTrajectory,
   metersToFeet,
   metersToMiles,
   paceFromSpeed,
@@ -14,23 +12,9 @@ import {
 
 import { Statistic } from './Statistic';
 
-type ActivityStatsProps = {
-  activity: Activity;
-  garminActivity: GarminActivity | null;
-};
-
-export function ActivityStats({
-  activity,
-  garminActivity,
-}: ActivityStatsProps) {
-  const separationTrajectory =
-    garminActivity && activity.records
-      ? getSeparationTrajectory(activity.records, garminActivity.records)
-      : null;
-
-  const maxSeparation =
-    separationTrajectory &&
-    Math.max(...separationTrajectory.map((separation) => separation.distance));
+export function ActivityStats() {
+  const { stravaActivity, garminActivity, derivedActivityProperties } =
+    useActivityPair();
 
   return (
     <Stack>
@@ -39,37 +23,37 @@ export function ActivityStats({
           <Grid>
             <Statistic
               name="🏃‍♂️ Distance"
-              value={metersToMiles(activity.distance).toFixed(2)}
+              value={metersToMiles(stravaActivity.distance).toFixed(2)}
               units="mi"
             />
           </Grid>
           <Grid>
             <Statistic
               name="🏃‍♂️ Pace"
-              value={computePace(activity)}
+              value={computePace(stravaActivity)}
               units="min/mi"
             />
           </Grid>
           <Grid>
             <Statistic
               name="🏃‍♂️ Max Pace"
-              value={paceFromSpeed(activity.maxSpeed)}
+              value={paceFromSpeed(stravaActivity.maxSpeed)}
               units="min/mi"
             />
           </Grid>
-          {activity.records && (
+          {stravaActivity.records && (
             <>
               <Grid>
                 <Statistic
                   name="🏃‍♂️ Max Acceleration"
-                  value={computeMaxAccel(activity.records).toFixed(1)}
+                  value={computeMaxAccel(stravaActivity.records).toFixed(1)}
                   units="m/s^2"
                 />
               </Grid>
               <Grid>
                 <Statistic
                   name="🏃‍♂️ Max Deceleration"
-                  value={computeMaxDecel(activity.records).toFixed(1)}
+                  value={computeMaxDecel(stravaActivity.records).toFixed(1)}
                   units="m/s^2"
                 />
               </Grid>
@@ -79,7 +63,7 @@ export function ActivityStats({
           <Grid>
             <Statistic
               name="🏃‍♂️ Elevation Gain"
-              value={metersToFeet(activity.totalElevationGain).toFixed(0)}
+              value={metersToFeet(stravaActivity.totalElevationGain).toFixed(0)}
               units="ft"
             />
           </Grid>
@@ -130,15 +114,32 @@ export function ActivityStats({
                 units="ft"
               />
             </Grid>
+            <Grid>
+              <Statistic
+                name="Zoomies 💨"
+                value={derivedActivityProperties.zoomies.length.toString()}
+                units="total"
+              />
+            </Grid>
+            <Grid>
+              <Statistic
+                name="Average zoomies 💨"
+                value={(
+                  derivedActivityProperties.zoomies.length /
+                  metersToMiles(garminActivity.distance)
+                ).toFixed(2)}
+                units="per mile"
+              />
+            </Grid>
           </Grid>
         )}
       </Stack>
       <Divider />
-      {!!maxSeparation && (
+      {!!garminActivity && (
         <Grid>
           <Statistic
             name="Max Separation"
-            value={maxSeparation.toFixed(0)}
+            value={derivedActivityProperties.maxSeparation.toFixed(0)}
             units="m"
           />
         </Grid>
