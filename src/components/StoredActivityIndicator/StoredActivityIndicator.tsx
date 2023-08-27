@@ -8,11 +8,13 @@ export function StoredActivityIndicator() {
   const { storedActivities, clearStoredGarminActivities } =
     useGarminActivityStorage();
 
+  const countString = `${storedActivities.length} Garmin ${
+    storedActivities.length > 1 ? 'activities' : 'activity'
+  } uploaded`;
+
   return (
     <Box display="flex" alignItems="center" gap={1}>
-      <Typography>
-        {storedActivities.length} Garmin activities uploaded
-      </Typography>
+      <Typography>{countString}</Typography>
       {storedActivities.length !== 0 && (
         <Button
           variant="outlined"
