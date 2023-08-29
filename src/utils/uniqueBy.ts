@@ -1,8 +1,8 @@
-export function uniqueBy<T>(arr: T[], key: keyof T) {
-  let seen = new Set<T>();
+export function uniqueBy<T extends object>(arr: T[], key: keyof T) {
+  const seen = new Set<T>();
 
   return arr.filter((it) => {
-    let val = it[key] as T;
+    const val = it[key];
     if (seen.has(val)) {
       return false;
     } else {
