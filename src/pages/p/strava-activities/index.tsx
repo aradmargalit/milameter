@@ -17,6 +17,7 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
+import { uniqueBy } from '@/utils/uniqueBy';
 
 type Data = { activities: Activity[]; instructionsOpen: boolean };
 
@@ -64,8 +65,10 @@ export default function StravaActivities({
   const [activities, setActivities] = useState<Activity[]>(data.activities);
   const { garminActivities } = useGarminActivities();
 
-  const onFetchSuccess = (newActivities: Activity[]) =>
-    setActivities([...activities, ...newActivities]);
+  const onFetchSuccess = (newActivities: Activity[]) => {
+    // we can get duplicates if new activities are added between fetches, de-dupe
+    setActivities(uniqueBy([...activities, ...newActivities], 'id'));
+  };
 
   const { scrollTriggerRef, hasNextPage, limitReached } = useInfiniteScroll<
     HTMLDivElement,
