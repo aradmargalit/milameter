@@ -35,7 +35,7 @@ export function convertStravaActivityResponse({
     },
     maxHeartrate: response.max_heartrate ?? null,
     maxSpeed: response.max_speed,
-    movingTIme: response.moving_time,
+    movingTime: response.moving_time,
     startDate: response.start_date,
     startDateLocal: response.start_date_local,
     startLatLng: response.start_latlng,

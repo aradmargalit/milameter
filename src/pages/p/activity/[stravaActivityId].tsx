@@ -3,7 +3,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
-import { ActivityStats } from '@/components/ActivityMap/ActivityStats';
+import { ActivityStats } from '@/components/ActivityMap/ActivityStats/ActivityStats';
 import { AltitudeMap } from '@/components/ActivityMap/AltitudeMap';
 import { activityHasRecords } from '@/components/ActivityMap/utils';
 import ErrorAlert from '@/components/ErrorAlert';
