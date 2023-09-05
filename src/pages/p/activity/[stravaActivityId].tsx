@@ -72,15 +72,15 @@ export default function StravaActivityDetailPage({
         <Sheet sx={{ borderRadius: 12, margin: 4, padding: 2 }}>
           <Stack spacing={2}>
             <BackButton />
-            <Grid container spacing={1}>
-              <Grid xs={8}>
+            <Grid container spacing={2}>
+              <Grid sm={12} md={8}>
                 <ActivityMeta />
                 <DetailedActivityMap />
               </Grid>
-              <Grid xs={4}>
+              <Grid sm={12} md={4}>
                 <ActivityStats />
               </Grid>
-              <Grid xs={8}>
+              <Grid sm={12} md={8}>
                 <AltitudeMap />
               </Grid>
             </Grid>

@@ -1,4 +1,4 @@
-import { Divider, Grid, Stack } from '@mui/joy';
+import { Table } from '@mui/joy';
 
 import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import {
@@ -10,142 +10,98 @@ import {
   paceFromSpeed,
 } from '@/utils/distanceUtils';
 
-import { Statistic } from './Statistic';
+type StatisticRow = {
+  dog: string;
+  human: string;
+  label: string;
+};
 
 export function ActivityStats() {
   const { stravaActivity, garminActivity, derivedActivityProperties } =
     useActivityPair();
 
-  return (
-    <Stack>
-      <Stack direction="row">
-        <Grid container spacing={1}>
-          <Grid>
-            <Statistic
-              name="🏃‍♂️ Distance"
-              value={metersToMiles(stravaActivity.distance).toFixed(2)}
-              units="mi"
-            />
-          </Grid>
-          <Grid>
-            <Statistic
-              name="🏃‍♂️ Pace"
-              value={computePace(stravaActivity)}
-              units="min/mi"
-            />
-          </Grid>
-          <Grid>
-            <Statistic
-              name="🏃‍♂️ Max Pace"
-              value={paceFromSpeed(stravaActivity.maxSpeed)}
-              units="min/mi"
-            />
-          </Grid>
-          {stravaActivity.records && (
-            <>
-              <Grid>
-                <Statistic
-                  name="🏃‍♂️ Max Acceleration"
-                  value={computeMaxAccel(stravaActivity.records).toFixed(1)}
-                  units="m/s^2"
-                />
-              </Grid>
-              <Grid>
-                <Statistic
-                  name="🏃‍♂️ Max Deceleration"
-                  value={computeMaxDecel(stravaActivity.records).toFixed(1)}
-                  units="m/s^2"
-                />
-              </Grid>
-            </>
-          )}
+  const columns: string[] = [
+    'Statistic',
+    '🏃‍♂️ Human',
+    ...(garminActivity ? ['🐶 Dog'] : []),
+  ];
 
-          <Grid>
-            <Statistic
-              name="🏃‍♂️ Elevation Gain"
-              value={metersToFeet(stravaActivity.totalElevationGain).toFixed(0)}
-              units="ft"
-            />
-          </Grid>
-        </Grid>
-        {garminActivity && (
-          <Grid container spacing={1}>
-            <Grid>
-              <Statistic
-                name="🐶 Distance"
-                value={metersToMiles(garminActivity.distance).toFixed(2)}
-                units="mi"
-              />
-            </Grid>
-            <Grid>
-              <Statistic
-                name="🐶 Pace"
-                value={computePace(garminActivity)}
-                units="min/mi"
-              />
-            </Grid>
-            <Grid>
-              <Statistic
-                name="🐶 Max Pace"
-                value={paceFromSpeed(garminActivity.maxSpeed)}
-                units="min/mi"
-              />
-            </Grid>
-            <Grid>
-              <Statistic
-                name="🐶 Max Acceleration"
-                value={computeMaxAccel(garminActivity.records).toFixed(1)}
-                units="m/s^2"
-              />
-            </Grid>
-            <Grid>
-              <Statistic
-                name="🐶 Max Deceleration"
-                value={computeMaxDecel(garminActivity.records).toFixed(1)}
-                units="m/s^2"
-              />
-            </Grid>
-            <Grid>
-              <Statistic
-                name="🐶 Elevation Gain"
-                value={metersToFeet(garminActivity.totalElevationGain).toFixed(
-                  0
-                )}
-                units="ft"
-              />
-            </Grid>
-            <Grid>
-              <Statistic
-                name="Zoomies 💨"
-                value={derivedActivityProperties.zoomies.length.toString()}
-                units="total"
-              />
-            </Grid>
-            {!!derivedActivityProperties.zoomies.length && (
-              <Grid>
-                <Statistic
-                  name="Average zoomies 💨"
-                  value={(
-                    derivedActivityProperties.zoomies.length /
-                    metersToMiles(garminActivity.distance)
-                  ).toFixed(2)}
-                  units="per mile"
-                />
-              </Grid>
-            )}
-          </Grid>
-        )}
-      </Stack>
-      <Divider />
-      {!!garminActivity && (
-        <Grid>
-          <Statistic
-            name="Max Separation"
-            value={derivedActivityProperties.maxSeparation.toFixed(0)}
-            units="m"
-          />
-        </Grid>
-      )}
-    </Stack>
+  const statistics: StatisticRow[] = [
+    {
+      dog: garminActivity
+        ? metersToMiles(garminActivity.distance).toFixed(2)
+        : '',
+      human: metersToMiles(stravaActivity.distance).toFixed(2),
+      label: 'Distance (mi)',
+    },
+    {
+      dog: garminActivity ? computePace(garminActivity) : '',
+      human: computePace(stravaActivity),
+      label: 'Pace (min/mi)',
+    },
+    {
+      dog: garminActivity ? paceFromSpeed(garminActivity.maxSpeed) : '',
+      human: paceFromSpeed(stravaActivity.maxSpeed),
+      label: 'Max Pace (min/mi)',
+    },
+  ];
+
+  if (derivedActivityProperties?.zoomies.length) {
+    statistics.push({
+      dog: (
+        derivedActivityProperties.zoomies.length /
+        metersToMiles(garminActivity.distance)
+      ).toFixed(2),
+      human: '',
+      label: 'Average zoomies per mile 💨',
+    });
+  }
+
+  if (stravaActivity.records) {
+    const recordStatistics: StatisticRow[] = [
+      {
+        dog: garminActivity
+          ? computeMaxAccel(garminActivity.records).toFixed(1)
+          : '',
+        human: computeMaxAccel(stravaActivity.records).toFixed(1),
+        label: 'Max Acceleration (m/s^2)',
+      },
+      {
+        dog: garminActivity
+          ? computeMaxDecel(garminActivity.records).toFixed(1)
+          : '',
+        human: computeMaxDecel(stravaActivity.records).toFixed(1),
+        label: 'Max Deceleration (m/s^2)',
+      },
+      {
+        dog: garminActivity
+          ? metersToFeet(garminActivity.totalElevationGain).toFixed(0)
+          : '',
+        human: metersToFeet(stravaActivity.totalElevationGain).toFixed(0),
+        label: 'Elevation Gain (ft)',
+      },
+    ];
+    statistics.push(...recordStatistics);
+  }
+
+  return (
+    <Table>
+      <thead>
+        <tr>
+          {columns.map((c) => (
+            <th key={c}>{c}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {statistics.map(({ label, dog, human }) => (
+          <tr key={label}>
+            <td>{label}</td>
+            <td>{human}</td>
+            {garminActivity && <td>{dog}</td>}
+          </tr>
+        ))}
+      </tbody>
+    </Table>
   );
 }
