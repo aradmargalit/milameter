@@ -38,21 +38,13 @@ export function ActivityStatRow({
       <td>{label}</td>
       <td>
         {stravaOverride ?? (
-          <ActivityStatData
-            key={`s-${label}`}
-            data={transformFn(stravaActivity)}
-            unit={unit}
-          />
+          <ActivityStatData data={transformFn(stravaActivity)} unit={unit} />
         )}
       </td>
       {garminActivity && (
         <td>
           {garminOverride ?? (
-            <ActivityStatData
-              key={`g-${label}`}
-              data={transformFn(garminActivity)}
-              unit={unit}
-            />
+            <ActivityStatData data={transformFn(garminActivity)} unit={unit} />
           )}
         </td>
       )}
