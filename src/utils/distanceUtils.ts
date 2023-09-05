@@ -1,6 +1,10 @@
-import { Activity } from '@/models/activity';
-import { GarminActivity } from '@/models/garminActivity';
-import { Coordinate, MetersPerSecond, Record, UNIXEpochSeconds } from '@/types';
+import {
+  Coordinate,
+  GenericActivity,
+  MetersPerSecond,
+  Record,
+  UNIXEpochSeconds,
+} from '@/types';
 
 export const METERS_PER_MILE = 1609.34;
 export const METERS_PER_FOOT = 0.3048;
@@ -97,10 +101,7 @@ export function paceFromSpeed(speed: MetersPerSecond): Pace {
   return `${minStr}:${secStr}`;
 }
 
-export function computePace({
-  distance,
-  elapsedTime,
-}: Activity | GarminActivity): Pace {
+export function computePace({ distance, elapsedTime }: GenericActivity): Pace {
   // convert meters per second to minutes per mile
   const speed: MetersPerSecond = distance / elapsedTime;
   return paceFromSpeed(speed);

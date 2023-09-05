@@ -37,7 +37,7 @@ export type StravaActivity = {
   // athlete: { id: Athlete['id']; resourceState: number };
   name: string;
   distance: Meters;
-  movingTIme: Seconds;
+  movingTime: Seconds;
   elapsedTime: Seconds;
   totalElevationGain: Meters;
   type: ActivityType;
