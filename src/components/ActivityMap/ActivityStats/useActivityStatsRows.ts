@@ -18,7 +18,7 @@ export function useActivityStatsRows(): UseActivityStatsRows {
 
   const columns: string[] = [
     'Statistic',
-    '🏃‍♂️ Human',
+    `${garminActivity ? '🏃‍♂️ Human' : 'Value'}`,
     ...(garminActivity ? ['🐶 Dog'] : []),
   ];
 
