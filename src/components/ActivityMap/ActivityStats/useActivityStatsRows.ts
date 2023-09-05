@@ -49,7 +49,7 @@ export function useActivityStatsRows(): UseActivityStatsRows {
         unit: 'm/s^2',
       },
       {
-        label: 'Max Decelration',
+        label: 'Max Deceleration',
         transformFn: (activity) =>
           activity.records ? computeMaxDecel(activity.records).toFixed(1) : '',
         unit: 'm/s^2',
