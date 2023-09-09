@@ -1,29 +1,29 @@
-import LoginOutlined from '@mui/icons-material/LoginOutlined';
-import { Button } from '@mui/joy';
+import Image from 'next/image';
+
+import StravaButtonPng from './btn_strava_connectwith_orange.svg';
 
 export type StravaLoginButtonProps = {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
-  variant?: React.ComponentProps<typeof Button>['variant'];
 };
 
-export function StravaLoginButton({
-  onClick,
-  variant = 'outlined',
-}: StravaLoginButtonProps) {
+/**
+ * Must adhere to the Strava Brand Guidelines and use the provided assets
+ * https://developers.strava.com/guidelines/
+ */
+export function StravaLoginButton({ onClick }: StravaLoginButtonProps) {
   return (
-    <Button
-      startDecorator={<LoginOutlined />}
-      variant={variant}
+    <button
       onClick={onClick}
-      sx={{
-        ':hover': {
-          backgroundColor: 'var(--joy-palette-danger-200)',
-        },
-        borderColor: 'var(--strava-orange)',
-        color: 'var(--strava-orange)',
+      style={{
+        background: 'transparent',
+        border: 'none',
+        cursor: 'pointer',
+        margin: 0,
+        padding: 0,
+        width: '300px',
       }}
     >
-      Login with Strava
-    </Button>
+      <Image alt="Connect with Strava" src={StravaButtonPng} width={300} />
+    </button>
   );
 }

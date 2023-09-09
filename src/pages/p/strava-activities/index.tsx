@@ -97,24 +97,22 @@ export default function StravaActivities({
   const activityPairs = buildActivityPairs(activities, garminActivities);
 
   return (
-    <main>
-      <Layout>
-        <Sheet sx={{ borderRadius: 12, margin: 4, padding: 4 }}>
-          <GarminUploadSection instructionsOpen={data.instructionsOpen} />
-          <Divider sx={{ marginBottom: 4, marginTop: 4 }} />
-          <ActivityGrid activityPairs={activityPairs} />
-          <Stack direction="row" justifyContent="center" marginTop={2}>
-            {hasNextPage && (
-              <div ref={scrollTriggerRef}>
-                <LoadingIndicator variant="soft" size="lg" />
-              </div>
-            )}
-            {!hasNextPage && (
-              <NoMoreResults limit={limitReached ? ITEM_LIMIT : undefined} />
-            )}
-          </Stack>
-        </Sheet>
-      </Layout>
-    </main>
+    <Layout>
+      <Sheet sx={{ borderRadius: 12, margin: 4, padding: 4 }}>
+        <GarminUploadSection instructionsOpen={data.instructionsOpen} />
+        <Divider sx={{ marginBottom: 4, marginTop: 4 }} />
+        <ActivityGrid activityPairs={activityPairs} />
+        <Stack direction="row" justifyContent="center" marginTop={2}>
+          {hasNextPage && (
+            <div ref={scrollTriggerRef}>
+              <LoadingIndicator variant="soft" size="lg" />
+            </div>
+          )}
+          {!hasNextPage && (
+            <NoMoreResults limit={limitReached ? ITEM_LIMIT : undefined} />
+          )}
+        </Stack>
+      </Sheet>
+    </Layout>
   );
 }
