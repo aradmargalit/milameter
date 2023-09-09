@@ -47,7 +47,7 @@ export default function Home() {
           sx={{ margin: 4 }}
         >
           <MilaMeterTitle />
-          <StravaLoginButtonContainer variant="plain" />
+          <StravaLoginButtonContainer />
         </Box>
       </main>
     </>

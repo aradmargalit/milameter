@@ -1,9 +1,13 @@
-import { Stack, Typography } from '@mui/joy';
+import { Stack, Typography, useColorScheme } from '@mui/joy';
 import Image from 'next/image';
 
+import PoweredByStravaLightMode from './api_logo_pwrdBy_strava_stack_gray.svg';
+import PoweredByStravaDarkMode from './api_logo_pwrdBy_strava_stack_white.svg';
 import milaImage from './mila.png';
 
 export function About() {
+  const colorScheme = useColorScheme();
+
   return (
     <Stack
       display="flex"
@@ -34,6 +38,15 @@ export function About() {
         allows .fit files from a Garmin device to be manually uploaded and
         compared with existing Strava activities from the same date and time.
       </Typography>
+      {/* Required by Strava Brand Guidelines: https://developers.strava.com/guidelines/ */}
+      <Image
+        src={
+          colorScheme.mode === 'dark'
+            ? PoweredByStravaDarkMode
+            : PoweredByStravaLightMode
+        }
+        alt="Powered by Strava"
+      />
     </Stack>
   );
 }

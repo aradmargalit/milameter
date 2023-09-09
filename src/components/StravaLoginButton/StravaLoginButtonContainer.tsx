@@ -1,19 +1,12 @@
+import LogoutOutlined from '@mui/icons-material/LogoutOutlined';
 import { Button } from '@mui/joy';
 import { signIn, signOut } from 'next-auth/react';
-
-import {
-  StravaLoginButton,
-  StravaLoginButtonProps,
-} from '@/components/StravaLoginButton/StravaLoginButton';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
-
-type StravaLoginButtonContainerProps = Omit<StravaLoginButtonProps, 'onClick'>;
-import LogoutOutlined from '@mui/icons-material/LogoutOutlined';
 import { useSession } from 'next-auth/react';
 
-export function StravaLoginButtonContainer(
-  props: StravaLoginButtonContainerProps
-) {
+import { StravaLoginButton } from '@/components/StravaLoginButton/StravaLoginButton';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+
+export function StravaLoginButtonContainer() {
   const { status } = useSession();
 
   const isLoggedIn = status === 'authenticated';
@@ -45,5 +38,5 @@ export function StravaLoginButtonContainer(
     );
   }
 
-  return <StravaLoginButton onClick={() => signIn(id)} {...props} />;
+  return <StravaLoginButton onClick={() => signIn(id)} />;
 }
