@@ -9,6 +9,7 @@ import { activityHasRecords } from '@/components/ActivityMap/utils';
 import ErrorAlert from '@/components/ErrorAlert';
 import { BackButton } from '@/components/pages/activity/BackButton';
 import { DetailedActivityMap } from '@/components/pages/activity/DetailedActivityMap';
+import { ViewOnStrava } from '@/components/ViewOnStrava/ViewOnStrava';
 import { ActivityPairProvider } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
@@ -71,7 +72,11 @@ export default function StravaActivityDetailPage({
       <Layout>
         <Sheet sx={{ borderRadius: 12, margin: 4, padding: 2 }}>
           <Stack spacing={2}>
-            <BackButton />
+            <Stack direction="row" spacing={1} alignItems="center">
+              <BackButton />
+              {/* Required by the Strava Brand Guidelines: https://developers.strava.com/guidelines/ */}
+              <ViewOnStrava activityId={activity.id} />
+            </Stack>
             <Grid container spacing={2}>
               <Grid sm={12} md={8}>
                 <ActivityMeta />
