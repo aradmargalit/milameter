@@ -37,19 +37,17 @@ export default function Home() {
   return (
     <>
       <MilaMeterHead />
-      <main>
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-around"
-          alignItems="center"
-          height="70vh"
-          sx={{ margin: 4 }}
-        >
-          <MilaMeterTitle />
-          <StravaLoginButtonContainer />
-        </Box>
-      </main>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-around"
+        alignItems="center"
+        height="70vh"
+        sx={{ margin: 4 }}
+      >
+        <MilaMeterTitle />
+        <StravaLoginButtonContainer />
+      </Box>
     </>
   );
 }

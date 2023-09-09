@@ -8,19 +8,17 @@ export default function AboutPage() {
   return (
     <>
       <MilaMeterHead />
-      <main>
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-around"
-          alignItems="center"
-          height="70vh"
-          sx={{ margin: 4 }}
-        >
-          <MilaMeterTitle />
-          <About />
-        </Box>
-      </main>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        alignItems="center"
+        height="80vh"
+        sx={{ margin: 4 }}
+      >
+        <MilaMeterTitle />
+        <About />
+      </Box>
     </>
   );
 }
