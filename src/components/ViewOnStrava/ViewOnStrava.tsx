@@ -9,7 +9,9 @@ export function ViewOnStrava({ activityId }: ViewOnStravaProps) {
         color: STRAVA_BRAND_COLOR,
         textDecoration: 'underline',
       }}
-      href={`https://strava.com/activity/${activityId}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      href={`https://strava.com/activities/${activityId}`}
     >
       View on Strava
     </a>
