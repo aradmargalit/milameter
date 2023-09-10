@@ -98,7 +98,13 @@ export default function StravaActivities({
 
   return (
     <Layout>
-      <Sheet sx={{ borderRadius: 12, margin: 4, padding: 4 }}>
+      <Sheet
+        sx={{
+          borderRadius: 12,
+          margin: { md: 4, xs: 1 },
+          padding: { md: 4, xs: 1 },
+        }}
+      >
         <GarminUploadSection instructionsOpen={data.instructionsOpen} />
         <Divider sx={{ marginBottom: 4, marginTop: 4 }} />
         <ActivityGrid activityPairs={activityPairs} />

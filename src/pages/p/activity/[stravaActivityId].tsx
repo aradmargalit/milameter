@@ -70,7 +70,13 @@ export default function StravaActivityDetailPage({
   return (
     <ActivityPairProvider stravaActivity={activity}>
       <Layout>
-        <Sheet sx={{ borderRadius: 12, margin: 4, padding: 2 }}>
+        <Sheet
+          sx={{
+            borderRadius: 12,
+            margin: { md: 4, xs: 1 },
+            padding: { md: 2, xs: 1 },
+          }}
+        >
           <Stack spacing={2}>
             <Stack direction="row" spacing={1} alignItems="center">
               <BackButton />
@@ -78,14 +84,14 @@ export default function StravaActivityDetailPage({
               <ViewOnStrava activityId={activity.id} />
             </Stack>
             <Grid container spacing={2}>
-              <Grid sm={12} md={8}>
+              <Grid xs={12} md={8}>
                 <ActivityMeta />
                 <DetailedActivityMap />
               </Grid>
-              <Grid sm={12} md={4}>
+              <Grid xs={12} md={4}>
                 <ActivityStats />
               </Grid>
-              <Grid sm={12} md={8}>
+              <Grid xs={12} md={8}>
                 <AltitudeMap />
               </Grid>
             </Grid>

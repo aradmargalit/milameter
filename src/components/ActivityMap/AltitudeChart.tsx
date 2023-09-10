@@ -10,6 +10,7 @@ import {
   YAxis,
 } from 'recharts';
 
+import { useDisplayIsSizeOrLarger } from '@/hooks/useDisplayIsSizeOrLarger';
 import { secondsToDuration } from '@/utils/timeUtils';
 
 export type AltitudeChartOption = {
@@ -34,9 +35,14 @@ const AXIS_PADDING_FEET = 20;
 
 export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
   const theme = useTheme();
+  const isMediumOrLarger = useDisplayIsSizeOrLarger('md');
 
   return (
-    <ResponsiveContainer minWidth={300} width="100%" aspect={3.5}>
+    <ResponsiveContainer
+      minWidth={300}
+      width="100%"
+      aspect={isMediumOrLarger ? 3.5 : 1.5}
+    >
       <LineChart
         data={data}
         margin={{ bottom: 10, left: 10, right: 10, top: 10 }}

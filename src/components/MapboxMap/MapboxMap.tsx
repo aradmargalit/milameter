@@ -38,8 +38,13 @@ export const MapboxMap = forwardRef(function MapboxMap(
   const selectedStyleURI = mapStyles.find((x) => x.label === mapTheme)!.value;
 
   return (
-    <Box display="flex" flexDirection="column" gap={2} height={600}>
-      <Box width="50%" display="flex" gap={1} alignItems="center">
+    <Box display="flex" flexDirection="column" gap={2} height="50vh">
+      <Box
+        width={{ md: '50%', xs: '100%' }}
+        display="flex"
+        gap={1}
+        alignItems="center"
+      >
         <Typography>Map Style</Typography>
         <Select value={mapTheme} onChange={handleChange}>
           {mapStyles.map(({ label }) => (

@@ -9,7 +9,11 @@ type GarminFilePickerProps = {
 
 export function GarminFilePicker({ onChange }: GarminFilePickerProps) {
   return (
-    <Stack spacing={2} direction="row" alignItems="center">
+    <Stack
+      spacing={{ md: 2, xs: 1 }}
+      direction={{ md: 'row', xs: 'column' }}
+      alignItems="center"
+    >
       <label htmlFor="file-picker">
         <Typography level="h5" component="h2">
           Please select your .fit files
