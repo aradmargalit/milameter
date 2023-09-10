@@ -43,6 +43,7 @@ export function StravaActivityCard({
           boxShadow: 'md',
           transform: 'translateY(-2px)',
         },
+        backgroundColor: theme.vars.palette.background.backdrop,
         borderColor,
         gap: 2,
         height: 200,
