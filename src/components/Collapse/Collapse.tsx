@@ -1,4 +1,5 @@
 import ChevronRightOutlined from '@mui/icons-material/ChevronRightOutlined';
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
 import { Box, Button, Stack } from '@mui/joy';
 import { ReactNode } from 'react';
 
@@ -23,6 +24,7 @@ export function Collapse({
   return (
     <Stack direction="row" spacing={2}>
       <Button variant="outlined" onClick={toggle} aria-label={buttonAriaLabel}>
+        <InfoOutlined />
         <ChevronRightOutlined
           sx={{
             transform: open ? 'rotate(0deg)' : 'rotate(90deg)',
