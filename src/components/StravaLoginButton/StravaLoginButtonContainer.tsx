@@ -29,7 +29,7 @@ export function StravaLoginButtonContainer() {
     return (
       <Button
         startDecorator={<LogoutOutlined />}
-        variant="soft"
+        variant="outlined"
         onClick={() => signOut()}
         color="danger"
       >
