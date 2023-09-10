@@ -1,4 +1,3 @@
-import Info from '@mui/icons-material/InfoOutlined';
 import { Box, Stack, Typography } from '@mui/joy';
 import { setCookie } from 'cookies-next';
 import Image from 'next/image';
@@ -61,10 +60,6 @@ export function GarminUploadInstructions({
 
   return (
     <Stack spacing={1}>
-      <Typography level="h4" component="h1" startDecorator={<Info />}>
-        Instructions
-      </Typography>
-
       <Collapse
         approxHeightPx={400}
         open={open}
