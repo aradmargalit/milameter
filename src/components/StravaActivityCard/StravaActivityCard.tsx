@@ -1,5 +1,5 @@
 import Place from '@mui/icons-material/Place';
-import { Card, Chip, Link, Typography } from '@mui/joy';
+import { Card, Chip, Link, Typography, useTheme } from '@mui/joy';
 import { useRouter } from 'next/router';
 
 import { DOG_COLOR } from '@/colors';
@@ -19,6 +19,7 @@ export function StravaActivityCard({
   activity,
   matchedGarminActivity,
 }: StravaActivityCardProps) {
+  const theme = useTheme();
   const router = useRouter();
   const { setSelectedGarminActivity } = useGarminActivities();
 
@@ -28,7 +29,9 @@ export function StravaActivityCard({
     router.push(`/p/activity/${activity.id}`);
   };
 
-  const borderColor = matchedGarminActivity ? DOG_COLOR : null;
+  const borderColor = matchedGarminActivity
+    ? theme.palette.primary.outlinedBorder
+    : null;
   const title = truncateTitle(activity.name, MAX_TITLE_LEN);
   return (
     <Card

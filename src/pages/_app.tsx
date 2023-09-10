@@ -2,11 +2,12 @@ import './globals.css';
 import '@fontsource/public-sans';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import { CssVarsProvider } from '@mui/joy/styles';
+import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import type { AppProps } from 'next/app';
 import { Inter } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 
+import { milaMeterThemeConfig } from '@/colors';
 import FullPageLoader from '@/components/FullPageLoader';
 import { GarminActivityProvider } from '@/contexts/GarminActivityContext';
 import { GarminActivityStorageProvider } from '@/contexts/GarminActivityStorageContext';
@@ -17,10 +18,11 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function App({ Component, pageProps }: AppProps) {
   const { loading } = useAppLoading();
+  const milaMeterTheme = extendTheme(milaMeterThemeConfig);
 
   return (
     <SessionProvider session={pageProps.session}>
-      <CssVarsProvider defaultMode="system">
+      <CssVarsProvider defaultMode="system" theme={milaMeterTheme}>
         <UserPrefsProvider>
           <GarminActivityStorageProvider>
             <GarminActivityProvider>
