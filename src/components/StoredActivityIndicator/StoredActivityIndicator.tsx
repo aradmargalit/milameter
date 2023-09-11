@@ -9,7 +9,7 @@ export function StoredActivityIndicator() {
     useGarminActivityStorage();
 
   const countString = `${storedActivities.length} Garmin ${
-    storedActivities.length == 1 ? 'activity' : 'activities'
+    storedActivities.length === 1 ? 'activity' : 'activities'
   } uploaded`;
 
   return (
