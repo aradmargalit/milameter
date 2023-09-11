@@ -38,7 +38,7 @@ export function GarminFilePickerContainer() {
 
   return (
     <Stack gap={2}>
-      <Stack direction="row" gap={2}>
+      <Stack direction={{ md: 'row', xs: 'column' }} gap={2}>
         <GarminFilePicker onChange={handleChange} />
         <StoredActivityIndicator />
       </Stack>

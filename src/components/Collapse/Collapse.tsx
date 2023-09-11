@@ -22,7 +22,7 @@ export function Collapse({
   buttonAriaLabel,
 }: CollapseProps) {
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack direction={{ md: 'row', xs: 'column' }} spacing={2}>
       <Button variant="outlined" onClick={toggle} aria-label={buttonAriaLabel}>
         <InfoOutlined />
         <ChevronRightOutlined

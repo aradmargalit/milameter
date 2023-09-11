@@ -3,6 +3,7 @@ import { setCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { useDisplayIsSizeOrLarger } from '@/hooks/useDisplayIsSizeOrLarger';
 import { GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE } from '@/storage/cookies';
 
 import Collapse from '../Collapse';
@@ -58,34 +59,34 @@ export function GarminUploadInstructions({
     setCookie(GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE, newValue);
   };
 
+  const isMediumDisplayOrLarger = useDisplayIsSizeOrLarger('md');
+
   return (
-    <Stack spacing={1}>
-      <Collapse
-        approxHeightPx={400}
-        open={open}
-        toggle={toggle}
-        buttonAriaLabel="Toggle Garmin activities instructions"
+    <Collapse
+      approxHeightPx={400}
+      open={open}
+      toggle={toggle}
+      buttonAriaLabel="Toggle Garmin activities instructions"
+    >
+      <Typography level="body1">
+        Your Strava activities have been automatically imported. To link
+        activities from an external Garmin device, follow these steps.
+      </Typography>
+      <Stack
+        width="100%"
+        justifyContent="space-between"
+        alignItems="center"
+        paddingRight={6}
+        direction={{ md: 'row', xs: 'column' }}
+        padding={{ md: '0 6rem 0 0', xs: '0' }}
+        marginTop={{ md: 3, xs: 1 }}
       >
-        <Typography level="body1">
-          Your Strava activities have been automatically imported. To link
-          activities from an external Garmin device, follow these steps.
-        </Typography>
-        <Stack
-          width="100%"
-          justifyContent="space-between"
-          alignItems="center"
-          paddingRight={6}
-          sx={{
-            flexDirection: { md: 'row', xs: 'column' },
-            mt: 3,
-            padding: { md: '0 6rem 0 0', xs: '0' },
-          }}
-        >
-          <Stack spacing={2}>
-            {steps.map((step, idx) => (
-              <UploadStep key={idx} idx={idx} instructions={step} />
-            ))}
-          </Stack>
+        <Stack spacing={2}>
+          {steps.map((step, idx) => (
+            <UploadStep key={idx} idx={idx} instructions={step} />
+          ))}
+        </Stack>
+        {isMediumDisplayOrLarger && (
           <Image
             src={garminImage}
             alt="garmin 45s"
@@ -93,8 +94,8 @@ export function GarminUploadInstructions({
             height={320}
             placeholder="blur"
           />
-        </Stack>
-      </Collapse>
-    </Stack>
+        )}
+      </Stack>
+    </Collapse>
   );
 }

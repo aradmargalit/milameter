@@ -12,7 +12,7 @@ export function GarminUploadSection({
     <Box
       border="1px solid var(--joy-palette-neutral-outlinedBorder)"
       borderRadius="var(--joy-radius-md)"
-      padding={2}
+      padding={{ md: 2, xs: 1 }}
     >
       <GarminUploadInstructions instructionsOpen={instructionsOpen} />
       <GarminFilePickerContainer />
