@@ -23,7 +23,7 @@
     "@mui/icons-material": "^5.14.1",
     "@mui/joy": "^5.0.0-alpha.88",
     "@mui/material": "^5.14.1",
-    "@sentry/nextjs": "^7.64.0",
+    "@sentry/nextjs": "^7.77.0",
     "@types/node": "20.4.4",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
