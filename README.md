@@ -19,7 +19,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Requirements
 
-- Node 18.12.1
+- Node 18.17.1
 - `npm`
 
 ## Getting Started
@@ -32,6 +32,9 @@ Copy `env.development.sample` and rename as `env.development`. Update the values
 npm install # install dependencies
 
 npm run dev # start a local dev server, available on port :3000
+
+# to opt out of turbopack
+npm run dev:webpack
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
