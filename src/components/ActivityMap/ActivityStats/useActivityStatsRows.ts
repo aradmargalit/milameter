@@ -77,6 +77,17 @@ export function useActivityStatsRows(): UseActivityStatsRows {
     });
   }
 
+  if (derivedActivityProperties?.maxSeparation) {
+    statistics.push({
+      label: 'Max Separation',
+      stravaOverride: '',
+      transformFn: (_garminActivity) => {
+        return derivedActivityProperties.maxSeparation.toFixed(2);
+      },
+      unit: 'm',
+    });
+  }
+
   return {
     columns,
     statsRows: statistics,
