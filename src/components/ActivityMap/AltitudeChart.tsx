@@ -50,7 +50,7 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
         <XAxis
           dataKey="secondsSinceStart"
           tickFormatter={(value) => secondsToDuration(value)}
-          interval={30}
+          minTickGap={50}
         />
         <YAxis
           domain={[
