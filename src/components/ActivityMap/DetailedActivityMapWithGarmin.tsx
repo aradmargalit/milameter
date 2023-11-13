@@ -74,7 +74,7 @@ export function DetailedActivityMapWithGarmin() {
   const gradient = colorGradientStrFromVector({
     cmapName: 'velocity-blue',
     invertCmap: true,
-    maxTime: separationTrajectory[0].time + activityDuration,
+    maxTime: (separationTrajectory[0]?.time ?? 0) + activityDuration,
     timepoints,
   });
 
