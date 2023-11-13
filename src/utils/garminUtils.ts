@@ -18,7 +18,13 @@ export function convertGarminCoord(gc: number): number {
   return (gc / TICKS_PER_GLOBE) * DEGREES_PER_GLOBE;
 }
 
-function convertGarminRecord(garminRecord: GarminActivityRecord): Record {
+function convertGarminRecord(
+  garminRecord: GarminActivityRecord
+): Record | null {
+  // if no GPS data, throw away the record
+  if (!garminRecord.positionLat || !garminRecord.positionLong) {
+    return null;
+  }
   const coord: Coordinate = [
     convertGarminCoord(garminRecord.positionLong) + TEST_OFFSET,
     convertGarminCoord(garminRecord.positionLat) + TEST_OFFSET,
@@ -78,6 +84,7 @@ export async function garminActivityFromFile(
   // convert GarminActivityRecord to plain Record
   const records: Record[] = garminRecords
     .map(convertGarminRecord)
+    .filter((x): x is Record => Boolean(x))
     .filter(isValidRecord);
 
   // expose coordinates more easily
