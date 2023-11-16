@@ -18,7 +18,7 @@ export function LiveSeparation({ separation, gradient }: LiveSeparationProps) {
         justifyContent: 'space-around',
       }}
     >
-      <Typography level="body3">{inner}</Typography>
+      <Typography level="body-sm">{inner}</Typography>
       <Box
         sx={{
           background: gradient,

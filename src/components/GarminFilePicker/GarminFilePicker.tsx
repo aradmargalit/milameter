@@ -15,7 +15,7 @@ export function GarminFilePicker({ onChange }: GarminFilePickerProps) {
       alignItems="center"
     >
       <label htmlFor="file-picker">
-        <Typography level="h5" component="h2">
+        <Typography level="title-lg" component="h2">
           Please select your .fit files
         </Typography>
       </label>

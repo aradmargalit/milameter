@@ -68,7 +68,7 @@ export function GarminUploadInstructions({
       toggle={toggle}
       buttonAriaLabel="Toggle Garmin activities instructions"
     >
-      <Typography level="body1">
+      <Typography level="body-sm">
         Your Strava activities have been automatically imported. To link
         activities from an external Garmin device, follow these steps.
       </Typography>

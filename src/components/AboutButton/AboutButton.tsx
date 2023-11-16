@@ -8,7 +8,7 @@ export function AboutButton() {
   return (
     <Button
       variant="soft"
-      color="info"
+      color="warning"
       startDecorator={<Info />}
       onClick={() => router.push('/about')}
     >
