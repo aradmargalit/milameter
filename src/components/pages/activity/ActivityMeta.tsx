@@ -11,7 +11,7 @@ export function ActivityMeta() {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <Typography level="h4">{name}</Typography>
-      <Typography level="body1" startDecorator={<Place />}>
+      <Typography level="body-sm" startDecorator={<Place />}>
         {locationName}
       </Typography>
     </Box>

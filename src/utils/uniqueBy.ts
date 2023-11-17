@@ -2,7 +2,7 @@ export function uniqueBy<T extends object>(arr: T[], key: keyof T) {
   const seen = new Set<T>();
 
   return arr.filter((it) => {
-    const val = it[key];
+    const val = it[key] as T;
     if (seen.has(val)) {
       return false;
     } else {

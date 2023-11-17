@@ -28,11 +28,11 @@ export function About() {
             overflow: 'hidden',
           }}
         />
-        <Typography level="body1">
+        <Typography level="body-md">
           This is Mila. She&apos;s a very active German Shorthaired Pointer who
           loves to run!
         </Typography>
-        <Typography level="body1">
+        <Typography level="body-md">
           This site was designed to allow our dad to attach a Garmin GPS to
           Mila, and analyze her activity on runs where she&apos;s allowed to
           explore off leash. MilaMeter syncs with the primary user&apos;s Strava

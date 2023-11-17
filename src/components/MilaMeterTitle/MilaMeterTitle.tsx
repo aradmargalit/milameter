@@ -14,7 +14,7 @@ export function MilaMeterTitle() {
   return (
     <Box display="flex" alignItems="center" maxWidth="75vw">
       <Typography
-        level="display1"
+        level="title-lg"
         sx={{
           WebkitBackgroundClip: 'text',
 

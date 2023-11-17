@@ -24,7 +24,11 @@ export const MapboxMap = forwardRef(function MapboxMap(
     updateUserPrefs,
   } = useUserPreferences();
 
-  const handleChange: SelectProps<MapStyle>['onChange'] = (_e, value) => {
+  // second generic argument is for multiselect boolean
+  const handleChange: SelectProps<MapStyle, false>['onChange'] = (
+    _e,
+    value
+  ) => {
     if (value === null) {
       return;
     }
