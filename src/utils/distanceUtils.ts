@@ -34,17 +34,22 @@ export function lawOfCosinesDistance(
   [lat1, lon1]: number[],
   [lat2, lon2]: number[]
 ): number {
+  if (lat1 == lat2 && lon1 == lon2) {
+    return 0;
+  }
+
   const phi1 = (lat1 * Math.PI) / 180;
   const phi2 = (lat2 * Math.PI) / 180;
   const deltaLamba = ((lon2 - lon1) * Math.PI) / 180;
-  return (
+  const distance =
     Math.acos(
       Math.sin(phi1) * Math.sin(phi2) +
         Math.cos(phi1) * Math.cos(phi2) * Math.cos(deltaLamba)
     ) *
     RADIUS_OF_EARTH_IN_KM *
-    1000
-  );
+    1000;
+
+  return distance;
 }
 
 /**
