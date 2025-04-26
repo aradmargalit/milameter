@@ -1,6 +1,6 @@
 import { Box, Option, Select, SelectProps, Typography } from '@mui/joy';
 import { ForwardedRef, forwardRef } from 'react';
-import Map, { FullscreenControl, MapRef } from 'react-map-gl';
+import Map, { FullscreenControl, MapRef } from 'react-map-gl/mapbox';
 
 import { MAPBOX_ACCESS_TOKEN } from '@/config';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';

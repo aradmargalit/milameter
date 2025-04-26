@@ -1,7 +1,7 @@
 import polyline from '@mapbox/polyline';
 import { Box, Stack } from '@mui/joy';
 import { useRef, useState } from 'react';
-import { Layer, LayerProps, MapRef, Source } from 'react-map-gl';
+import { Layer, LayerProps, MapRef, Source } from 'react-map-gl/mapbox';
 
 import { HUMAN_COLOR } from '@/colors';
 import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
