@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 // https://usehooks.com/usePrevious/
 export function usePrevious<T>(value: T) {
-  const ref = useRef();
+  const ref = useRef(undefined);
   // Store current value in ref
   useEffect(() => {
     // @ts-ignore
