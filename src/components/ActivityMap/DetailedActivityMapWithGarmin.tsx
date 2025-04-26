@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Layer, LayerProps, Source } from 'react-map-gl';
+import { Layer, LayerProps, Source } from 'react-map-gl/mapbox';
 
 import { DOG_COLOR } from '@/colors';
 import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';

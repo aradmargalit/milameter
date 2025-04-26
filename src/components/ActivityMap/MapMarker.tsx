@@ -1,5 +1,5 @@
 import { Typography } from '@mui/joy';
-import { Marker } from 'react-map-gl';
+import { Marker } from 'react-map-gl/mapbox';
 
 import { Coordinate } from '@/types';
 
