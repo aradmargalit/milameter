@@ -38,7 +38,7 @@ export function Legend() {
         left: '80%',
         padding: 1,
         position: 'relative',
-        width: 115,
+        width: 150,
       }}
     >
       <Stack>
@@ -46,6 +46,9 @@ export function Legend() {
         <LegendChip backgroundColor={DOG_COLOR} text="Dog" />
         {!!derivedActivityProperties?.zoomies.length && (
           <LegendChip backgroundColor="gray" text="Zoom 💨" />
+        )}
+        {!!derivedActivityProperties?.maxSeparation && (
+          <LegendChip backgroundColor="green" text="Max Separation" />
         )}
       </Stack>
     </Card>

@@ -14,6 +14,7 @@ import { makeLineFromCoordinates } from '@/utils/mapboxUtils';
 import { DetailedActivityMapBase } from './DetailedActivityMapBase';
 import { LiveSeparation } from './LiveSeparation';
 import { MapMarker } from './MapMarker';
+import { MaxSeparationLine } from './MaxSeparationLine';
 import { computeActivityDuration, findClosestCoord } from './utils';
 
 export function DetailedActivityMapWithGarmin() {
@@ -93,6 +94,11 @@ export function DetailedActivityMapWithGarmin() {
               opacity={50}
             />
           ))}
+          {!!derivedActivityProperties.maxSeparation && (
+            <MaxSeparationLine
+              maxSeparation={derivedActivityProperties.maxSeparation}
+            />
+          )}
           <Source
             id="garminRoute"
             type="geojson"

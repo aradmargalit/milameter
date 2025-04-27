@@ -82,7 +82,9 @@ export function useActivityStatsRows(): UseActivityStatsRows {
       label: 'Max Separation',
       stravaOverride: '',
       transformFn: (_garminActivity) => {
-        return derivedActivityProperties.maxSeparation.toFixed(2);
+        return (
+          derivedActivityProperties.maxSeparation?.distance.toFixed(2) ?? ''
+        );
       },
       unit: 'm',
     });
