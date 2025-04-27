@@ -15,7 +15,7 @@ export function ActivityGrid({ activityPairs }: ActivityGridProps) {
   const activityGrid = (
     <Grid container spacing={2} sx={{ flexGrow: 1 }}>
       {activityPairs.map(({ activity, garminActivity }) => (
-        <Grid key={activity.id} xs={12} md={6} lg={4}>
+        <Grid key={activity.id} xs={12} md={6} lg={3} xl={2}>
           <StravaActivityCard
             activity={activity}
             matchedGarminActivity={garminActivity}
