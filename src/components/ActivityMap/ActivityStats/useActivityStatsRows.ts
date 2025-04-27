@@ -1,4 +1,5 @@
 import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
+import { useMap } from '@/contexts/MapContext';
 import {
   computeMaxAccel,
   computeMaxDecel,
@@ -16,10 +17,13 @@ export function useActivityStatsRows(): UseActivityStatsRows {
   const { stravaActivity, garminActivity, derivedActivityProperties } =
     useActivityPair();
 
+  const { zoomTo } = useMap();
+
   const columns: string[] = [
     'Statistic',
     `${garminActivity ? '🏃‍♂️ Human' : 'Value'}`,
     ...(garminActivity ? ['🐶 Dog'] : []),
+    'Zoom to',
   ];
 
   const statistics: StatisticRow[] = [
@@ -80,9 +84,16 @@ export function useActivityStatsRows(): UseActivityStatsRows {
   if (derivedActivityProperties?.maxSeparation) {
     statistics.push({
       label: 'Max Separation',
+      onZoom: () =>
+        zoomTo([
+          derivedActivityProperties.maxSeparation!.garminCoord,
+          derivedActivityProperties.maxSeparation!.stravaCoord,
+        ]),
       stravaOverride: '',
       transformFn: (_garminActivity) => {
-        return derivedActivityProperties.maxSeparation.toFixed(2);
+        return (
+          derivedActivityProperties.maxSeparation?.distance.toFixed(2) ?? ''
+        );
       },
       unit: 'm',
     });

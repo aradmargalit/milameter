@@ -156,3 +156,21 @@ export function computeMaxAccel(records: Record[]): number {
 export function computeMaxDecel(records: Record[]): number {
   return Math.min(...computeAccelerations(records));
 }
+
+export function getMaxSeparation(
+  trajectory: SeparationTrajectory
+): Separation | undefined {
+  if (trajectory.length === 0) {
+    return;
+  }
+
+  let max = trajectory[0];
+
+  for (const separation of trajectory) {
+    if (separation.distance > max.distance) {
+      max = separation;
+    }
+  }
+
+  return max;
+}

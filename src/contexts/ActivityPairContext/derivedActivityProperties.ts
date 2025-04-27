@@ -1,14 +1,16 @@
 import { GarminActivity } from '@/models/garminActivity';
 import { ActivityWithRecords } from '@/types';
 import {
+  getMaxSeparation,
   getSeparationTrajectory,
+  Separation,
   SeparationTrajectory,
 } from '@/utils/distanceUtils';
 import { getZoomies, Zoom } from '@/utils/zoomies';
 
 export type DerivedActivityProperties = {
   separationTrajectory: SeparationTrajectory;
-  maxSeparation: number;
+  maxSeparation: Separation | undefined;
   zoomies: Zoom[];
 };
 
@@ -26,9 +28,7 @@ export function buildDerivedActivityProperties({
     stravaRecords: stravaActivity.records,
   });
 
-  const maxSeparation = Math.max(
-    ...separationTrajectory.map((separation) => separation.distance)
-  );
+  const maxSeparation = getMaxSeparation(separationTrajectory);
 
   const zoomies = getZoomies(separationTrajectory);
 

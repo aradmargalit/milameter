@@ -11,6 +11,7 @@ import { milaMeterThemeConfig } from '@/colors';
 import FullPageLoader from '@/components/FullPageLoader';
 import { GarminActivityProvider } from '@/contexts/GarminActivityContext';
 import { GarminActivityStorageProvider } from '@/contexts/GarminActivityStorageContext';
+import { MapProvider } from '@/contexts/MapContext';
 import { UserPrefsProvider } from '@/contexts/UserPreferencesContext';
 import { useAppLoading } from '@/hooks/useAppLoading';
 
@@ -26,9 +27,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <UserPrefsProvider>
           <GarminActivityStorageProvider>
             <GarminActivityProvider>
-              <main className={inter.className}>
-                {loading ? <FullPageLoader /> : <Component {...pageProps} />}
-              </main>
+              <MapProvider>
+                <main className={inter.className}>
+                  {loading ? <FullPageLoader /> : <Component {...pageProps} />}
+                </main>
+              </MapProvider>
             </GarminActivityProvider>
           </GarminActivityStorageProvider>
         </UserPrefsProvider>

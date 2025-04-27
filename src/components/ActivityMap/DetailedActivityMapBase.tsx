@@ -1,10 +1,11 @@
 import polyline from '@mapbox/polyline';
 import { Box, Stack } from '@mui/joy';
-import { useRef, useState } from 'react';
-import { Layer, LayerProps, MapRef, Source } from 'react-map-gl/mapbox';
+import { useState } from 'react';
+import { Layer, LayerProps, Source } from 'react-map-gl/mapbox';
 
 import { HUMAN_COLOR } from '@/colors';
 import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
+import { useMap } from '@/contexts/MapContext';
 import { Coordinate } from '@/types';
 import { swapLatLong } from '@/utils/coordinateUtils';
 import { expandBounds, makeLineFromCoordinates } from '@/utils/mapboxUtils';
@@ -28,7 +29,7 @@ export function DetailedActivityMapBase({
   activityDuration,
 }: DetailedActivityMapProps) {
   const { stravaActivity } = useActivityPair();
-  const mapRef = useRef<MapRef | null>(null);
+  const { mapRef } = useMap();
   const [humanCoord, setHumanCoord] = useState<Coordinate>(
     stravaActivity.records[0].coord
   );
