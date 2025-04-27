@@ -23,7 +23,7 @@ export function MaxSeparationLine({ maxSeparation }: MaxSeparationLineProps) {
     layout: {
       'symbol-placement': 'line',
       'text-anchor': 'bottom',
-      'text-field': 'Max Sep',
+      'text-field': `Max Separation: ${maxSeparation.distance.toFixed(2)}m`,
       'text-keep-upright': true,
       'text-letter-spacing': 0.05,
       'text-offset': [0, 0.5],
