@@ -1,3 +1,6 @@
+import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong';
+import { Button } from '@mui/joy';
+
 import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import { GenericActivity } from '@/types';
 
@@ -20,6 +23,11 @@ export type StatisticRow = {
    * A string to use instead of the computed metric value for Garmin
    */
   garminOverride?: string;
+  /**
+   * what should happen when the user clicks "zoom to"
+   * usually zooms the map to a relevant window for the data point
+   */
+  onZoom?: () => void;
 };
 
 type ActivityStatRowProps = StatisticRow;
@@ -30,6 +38,7 @@ export function ActivityStatRow({
   transformFn,
   stravaOverride,
   garminOverride,
+  onZoom,
 }: ActivityStatRowProps) {
   const { stravaActivity, garminActivity } = useActivityPair();
 
@@ -46,6 +55,13 @@ export function ActivityStatRow({
           {garminOverride ?? (
             <ActivityStatData data={transformFn(garminActivity)} unit={unit} />
           )}
+        </td>
+      )}
+      {onZoom && (
+        <td>
+          <Button variant="outlined" onClick={onZoom}>
+            <CenterFocusStrongIcon />
+          </Button>
         </td>
       )}
     </tr>
