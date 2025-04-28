@@ -70,14 +70,21 @@ export function useActivityStatsRows(): UseActivityStatsRows {
 
   if (derivedActivityProperties?.zoomies.length) {
     statistics.push({
-      label: 'Zoomies 💨',
+      label: 'Avg. Zoomies 💨',
       stravaOverride: '',
       transformFn: (activity) =>
         (
           derivedActivityProperties.zoomies.length /
           metersToMiles(activity.distance)
         ).toFixed(2),
-      unit: 'per mile',
+      unit: ' per mile',
+    });
+
+    statistics.push({
+      label: 'Total Zoomies 💨',
+      stravaOverride: '',
+      transformFn: () => derivedActivityProperties.zoomies.length.toFixed(0),
+      unit: '',
     });
   }
 
