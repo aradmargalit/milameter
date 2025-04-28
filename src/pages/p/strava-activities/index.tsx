@@ -45,9 +45,11 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async ({
   const activities = await milaMeterAPI.getActivities(DESIRED_PAGE_SIZE);
 
   // get preferences from cookies
-  const instructionsOpen = Boolean(
-    getCookie(GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE, { req, res })
+  const garminUploadOpen = await getCookie(
+    GARMIN_UPLOAD_INSTRUCTIONS_OPEN_COOKIE,
+    { req, res }
   );
+  const instructionsOpen = garminUploadOpen === 'false' ? false : true;
 
   return {
     props: {
