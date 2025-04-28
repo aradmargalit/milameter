@@ -1,6 +1,9 @@
-import { Grid, Sheet, Stack } from '@mui/joy';
+import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
+import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined';
+import { Grid, IconButton, Sheet, Stack, ToggleButtonGroup } from '@mui/joy';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getToken } from 'next-auth/jwt';
+import { useEffect, useState } from 'react';
 
 import { MilaMeterAPI } from '@/apiClients/milaMeterAPI/milaMeterAPI';
 import { ActivityStats } from '@/components/ActivityMap/ActivityStats/ActivityStats';
@@ -11,6 +14,7 @@ import { BackButton } from '@/components/pages/activity/BackButton';
 import { DetailedActivityMap } from '@/components/pages/activity/DetailedActivityMap';
 import { ViewOnStrava } from '@/components/ViewOnStrava/ViewOnStrava';
 import { ActivityPairProvider } from '@/contexts/ActivityPairContext/ActivityPairContext';
+import { useMap } from '@/contexts/MapContext';
 import { Layout } from '@/layout';
 import { Activity } from '@/models/activity';
 
@@ -52,10 +56,19 @@ export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
   };
 };
 
+type Layout = 'sidebyside' | 'stacked';
+
 export default function StravaActivityDetailPage({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { activity } = data;
+  const [layout, setLayout] = useState<Layout>('sidebyside');
+  const { mapRef, setHeight } = useMap();
+
+  // Redraw the map if the selected layout changes
+  useEffect(() => {
+    mapRef.current?.resize();
+  }, [mapRef, layout]);
 
   if (!activity) {
     return (
@@ -65,6 +78,20 @@ export default function StravaActivityDetailPage({
 
   if (!activityHasRecords(activity)) {
     return <ErrorAlert errors={['Activity does not have any GPS data.']} />;
+  }
+
+  function handleLayoutChange(newValue: Layout | null) {
+    if (newValue === null) return;
+    switch (newValue) {
+      case 'stacked':
+        setHeight('75vh');
+        break;
+      case 'sidebyside':
+      default:
+        setHeight('50vh');
+        break;
+    }
+    setLayout(newValue);
   }
 
   return (
@@ -82,16 +109,27 @@ export default function StravaActivityDetailPage({
               <BackButton />
               {/* Required by the Strava Brand Guidelines: https://developers.strava.com/guidelines/ */}
               <ViewOnStrava activityId={activity.id} />
+              <ToggleButtonGroup
+                value={layout}
+                onChange={(_event, newValue) => handleLayoutChange(newValue)}
+              >
+                <IconButton value="sidebyside">
+                  <ViewSidebarOutlinedIcon />
+                </IconButton>
+                <IconButton value="stacked">
+                  <TableRowsOutlinedIcon />
+                </IconButton>
+              </ToggleButtonGroup>
             </Stack>
             <Grid container spacing={2}>
-              <Grid xs={12} md={8}>
+              <Grid xs={12} md={layout === 'sidebyside' ? 8 : 12}>
                 <ActivityMeta />
                 <DetailedActivityMap />
               </Grid>
-              <Grid xs={12} md={4}>
+              <Grid xs={12} md={layout === 'sidebyside' ? 4 : 12}>
                 <ActivityStats />
               </Grid>
-              <Grid xs={12} md={8}>
+              <Grid xs={12} md={layout === 'sidebyside' ? 8 : 12}>
                 <AltitudeMap />
               </Grid>
             </Grid>

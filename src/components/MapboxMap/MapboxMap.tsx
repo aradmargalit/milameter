@@ -3,6 +3,7 @@ import { ForwardedRef, forwardRef } from 'react';
 import Map, { FullscreenControl, MapRef } from 'react-map-gl/mapbox';
 
 import { MAPBOX_ACCESS_TOKEN } from '@/config';
+import { useMap } from '@/contexts/MapContext';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 
 import { MapStyle, mapStyles } from './mapStyles';
@@ -24,6 +25,8 @@ export const MapboxMap = forwardRef(function MapboxMap(
     updateUserPrefs,
   } = useUserPreferences();
 
+  const { height } = useMap();
+
   // second generic argument is for multiselect boolean
   const handleChange: SelectProps<MapStyle, false>['onChange'] = (
     _e,
@@ -42,7 +45,7 @@ export const MapboxMap = forwardRef(function MapboxMap(
   const selectedStyleURI = mapStyles.find((x) => x.label === mapTheme)!.value;
 
   return (
-    <Box display="flex" flexDirection="column" gap={2} height="50vh">
+    <Box display="flex" flexDirection="column" gap={2} height={height}>
       <Box
         width={{ md: '50%', xs: '100%' }}
         display="flex"
