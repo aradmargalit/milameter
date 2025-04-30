@@ -4,6 +4,7 @@ import {
   AreaChart,
   Label,
   Legend,
+  ReferenceArea,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -12,6 +13,8 @@ import {
 
 import { useDisplayIsSizeOrLarger } from '@/hooks/useDisplayIsSizeOrLarger';
 import { secondsToDuration } from '@/utils/timeUtils';
+
+import { useDragZoom } from './hooks/useDragZoom';
 
 export type AltitudeChartOption = {
   dataKey: string;
@@ -35,6 +38,27 @@ const AXIS_PADDING_FEET = 20;
 export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
   const theme = useTheme();
   const isMediumOrLarger = useDisplayIsSizeOrLarger('md');
+  const {
+    bottom,
+    isZoomed,
+    left,
+    onMouseDown,
+    onMouseLeave,
+    onMouseMove,
+    onMouseUp,
+    right,
+    top,
+    dataSlice,
+    refLeft,
+    refRight,
+  } = useDragZoom({
+    data,
+    dataKeys: chartOptions.map((co) => co.dataKey) as Array<
+      keyof AltitudePoint
+    >,
+    max: Math.max(...data.map((point) => point.stravaAltitude ?? 0)),
+    xAxisKey: 'secondsSinceStart',
+  });
 
   return (
     <ResponsiveContainer
@@ -43,8 +67,12 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
       aspect={isMediumOrLarger ? 3.5 : 1.5}
     >
       <AreaChart
-        data={data}
+        data={dataSlice}
         margin={{ bottom: 10, left: 10, right: 10, top: 10 }}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+        onMouseUp={onMouseUp}
       >
         <defs>
           {chartOptions.map(({ dataKey, color }) => (
@@ -65,11 +93,12 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
           dataKey="secondsSinceStart"
           tickFormatter={(value) => secondsToDuration(value)}
           minTickGap={50}
+          domain={[left, right]}
         />
         <YAxis
           domain={[
-            (dataMin: number) => Math.max(dataMin - AXIS_PADDING_FEET, 0),
-            (dataMax: number) => dataMax + AXIS_PADDING_FEET,
+            (dataMin: number) => Math.max(bottom - AXIS_PADDING_FEET, 0),
+            (dataMax: number) => top + AXIS_PADDING_FEET,
           ]}
           tickFormatter={(tick, _) => Math.floor(tick).toString()}
         >
@@ -104,6 +133,7 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
             fillOpacity={0.5}
           />
         ))}
+        <ReferenceArea x1={refLeft} x2={refRight} strokeOpacity={0.3} />
         <Legend />
       </AreaChart>
     </ResponsiveContainer>
