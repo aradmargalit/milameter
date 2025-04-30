@@ -10,7 +10,7 @@ export function DetailedActivityMap() {
 
   return (
     <>
-      <Box width="100%" height="800">
+      <Box width="100%">
         {garminActivity ? (
           <DetailedActivityMapWithGarmin />
         ) : (

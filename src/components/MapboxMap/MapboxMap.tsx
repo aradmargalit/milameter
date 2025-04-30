@@ -61,7 +61,7 @@ export const MapboxMap = forwardRef(function MapboxMap(
           ))}
         </Select>
       </Box>
-      <Box height={500}>
+      <Box height={height}>
         <Map
           mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
           attributionControl={false}
