@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/joy';
+import { Button, Stack, Typography, useTheme } from '@mui/joy';
 import {
   Area,
   AreaChart,
@@ -41,6 +41,7 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
   const {
     bottom,
     isZoomed,
+    resetZoom,
     left,
     onMouseDown,
     onMouseLeave,
@@ -61,81 +62,89 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
   });
 
   return (
-    <ResponsiveContainer
-      minWidth={300}
-      width="100%"
-      aspect={isMediumOrLarger ? 3.5 : 1.5}
-    >
-      <AreaChart
-        data={dataSlice}
-        margin={{ bottom: 10, left: 10, right: 10, top: 10 }}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseLeave={onMouseLeave}
-        onMouseUp={onMouseUp}
+    <Stack height="100%" gap={2}>
+      <Button disabled={!isZoomed} onClick={resetZoom} sx={{ maxWidth: 200 }}>
+        Reset Zoom
+      </Button>
+      <Typography level="body-md">
+        <em>Highlight a section of the chart to zoom in</em>
+      </Typography>
+      <ResponsiveContainer
+        minWidth={300}
+        width="100%"
+        aspect={isMediumOrLarger ? 3.5 : 1.5}
       >
-        <defs>
-          {chartOptions.map(({ dataKey, color }) => (
-            <linearGradient
-              key={dataKey}
-              id={`${dataKey}color`}
-              x1="0"
-              y1="0"
-              x2="0"
-              y2="1"
-            >
-              <stop offset="5%" stopColor={color} stopOpacity={0.8} />
-              <stop offset="95%" stopColor={color} stopOpacity={0} />
-            </linearGradient>
-          ))}
-        </defs>
-        <XAxis
-          dataKey="secondsSinceStart"
-          tickFormatter={(value) => secondsToDuration(value)}
-          minTickGap={50}
-          domain={[left, right]}
-        />
-        <YAxis
-          domain={[
-            (dataMin: number) => Math.max(bottom - AXIS_PADDING_FEET, 0),
-            (dataMax: number) => top + AXIS_PADDING_FEET,
-          ]}
-          tickFormatter={(tick, _) => Math.floor(tick).toString()}
+        <AreaChart
+          data={dataSlice}
+          margin={{ bottom: 10, left: 10, right: 10, top: 10 }}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseLeave={onMouseLeave}
+          onMouseUp={onMouseUp}
         >
-          <Label
-            angle={-90}
-            value="Feet"
-            position="insideLeft"
-            style={{ textAnchor: 'middle' }}
+          <defs>
+            {chartOptions.map(({ dataKey, color }) => (
+              <linearGradient
+                key={dataKey}
+                id={`${dataKey}color`}
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="5%" stopColor={color} stopOpacity={0.8} />
+                <stop offset="95%" stopColor={color} stopOpacity={0} />
+              </linearGradient>
+            ))}
+          </defs>
+          <XAxis
+            dataKey="secondsSinceStart"
+            tickFormatter={(value) => secondsToDuration(value)}
+            minTickGap={50}
+            domain={[left, right]}
           />
-        </YAxis>
-        <Tooltip
-          formatter={(value) => [`${(value as number).toFixed(2)} ft`]}
-          labelFormatter={(label) => secondsToDuration(label)}
-          animationDuration={200}
-          contentStyle={{
-            background: theme.palette.background.backdrop,
-            borderRadius: '15%',
-          }}
-        />
-        {chartOptions.map(({ dataKey, color, label }) => (
-          <Area
-            key={dataKey}
-            type="monotone"
-            dot={false}
-            dataKey={dataKey}
-            stroke={color}
-            strokeWidth={3}
-            label={label}
-            name={label}
-            connectNulls
-            fill={`url(#${dataKey}color)`}
-            fillOpacity={0.5}
+          <YAxis
+            domain={[
+              (_dataMin: number) => Math.max(bottom - AXIS_PADDING_FEET, 0),
+              (_dataMax: number) => top + AXIS_PADDING_FEET,
+            ]}
+            tickFormatter={(tick, _) => Math.floor(tick).toString()}
+          >
+            <Label
+              angle={-90}
+              value="Feet"
+              position="insideLeft"
+              style={{ textAnchor: 'middle' }}
+            />
+          </YAxis>
+          <Tooltip
+            formatter={(value) => [`${(value as number).toFixed(2)} ft`]}
+            labelFormatter={(label) => secondsToDuration(label)}
+            animationDuration={200}
+            contentStyle={{
+              background: theme.palette.background.backdrop,
+              borderRadius: '15%',
+            }}
           />
-        ))}
-        <ReferenceArea x1={refLeft} x2={refRight} strokeOpacity={0.3} />
-        <Legend />
-      </AreaChart>
-    </ResponsiveContainer>
+          {chartOptions.map(({ dataKey, color, label }) => (
+            <Area
+              key={dataKey}
+              type="monotone"
+              dot={false}
+              dataKey={dataKey}
+              stroke={color}
+              strokeWidth={3}
+              label={label}
+              name={label}
+              connectNulls
+              fill={`url(#${dataKey}color)`}
+              fillOpacity={0.5}
+            />
+          ))}
+          <ReferenceArea x1={refLeft} x2={refRight} strokeOpacity={0.3} />
+          <Legend />
+        </AreaChart>
+      </ResponsiveContainer>
+    </Stack>
   );
 }

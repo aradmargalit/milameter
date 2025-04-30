@@ -20,6 +20,7 @@ type UseDragZoom<T> = {
   onMouseLeave: () => void;
   isZoomed: boolean;
   dataSlice: T[];
+  resetZoom: () => void;
 };
 
 /**
@@ -89,19 +90,37 @@ export function useDragZoom<T>({
 
     // new top is whatever is highest across all data sets
     const newTop = Math.max(
-      ...data.map((point) => {
-        let pointMax = point[dataKeys[0]] as number;
-        for (const k of dataKeys) {
-          const yVal = point[k];
-          if ((yVal as number) > pointMax) {
-            pointMax = yVal as number;
+      ...newSlice
+        .map((point) => {
+          let pointMax = point[dataKeys[0]] as number;
+          for (const k of dataKeys) {
+            const yVal = point[k];
+            if (yVal !== null && (yVal as number) > pointMax) {
+              pointMax = yVal as number;
+            }
           }
-        }
-        return pointMax;
-      })
+          return pointMax;
+        })
+        .filter((x) => x != null)
     );
 
-    return { newBottom: 0, newSlice, newTop };
+    // new bottom is whatever is lowest across all data sets
+    const newBottom = Math.min(
+      ...newSlice
+        .map((point) => {
+          let pointMin = point[dataKeys[0]] as number;
+          for (const k of dataKeys) {
+            const yVal = point[k];
+            if (yVal !== null && (yVal as number) < pointMin) {
+              pointMin = yVal as number;
+            }
+          }
+          return pointMin;
+        })
+        .filter((x) => x != null)
+    );
+
+    return { newBottom, newSlice, newTop };
   }
 
   function zoomIn() {
@@ -152,6 +171,10 @@ export function useDragZoom<T>({
 
   const onMouseUp = zoomIn;
 
+  function resetZoom() {
+    setState(initialState);
+  }
+
   return {
     bottom: state.bottom,
     dataSlice: state.dataSlice,
@@ -163,6 +186,7 @@ export function useDragZoom<T>({
     onMouseUp,
     refLeft: state.refLeft,
     refRight: state.refRight,
+    resetZoom,
     right: state.right,
     top: state.top,
   };
