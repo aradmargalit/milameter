@@ -1,4 +1,5 @@
-import { Button, Stack, Typography, useTheme } from '@mui/joy';
+import ZoomOutIcon from '@mui/icons-material/ZoomOutOutlined';
+import { IconButton, Stack, Typography, useTheme } from '@mui/joy';
 import {
   Area,
   AreaChart,
@@ -17,7 +18,7 @@ import { secondsToDuration } from '@/utils/timeUtils';
 import { useDragZoom } from './hooks/useDragZoom';
 
 export type AltitudeChartOption = {
-  dataKey: string;
+  dataKey: keyof AltitudePoint;
   color: string;
   label: string;
 };
@@ -38,6 +39,7 @@ const AXIS_PADDING_FEET = 20;
 export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
   const theme = useTheme();
   const isMediumOrLarger = useDisplayIsSizeOrLarger('md');
+  const dataKeys = chartOptions.map((option) => option.dataKey);
   const {
     bottom,
     isZoomed,
@@ -54,19 +56,25 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
     refRight,
   } = useDragZoom({
     data,
-    dataKeys: chartOptions.map((co) => co.dataKey) as Array<
-      keyof AltitudePoint
-    >,
+    dataKeys,
     max: Math.max(...data.map((point) => point.stravaAltitude ?? 0)),
     xAxisKey: 'secondsSinceStart',
   });
 
   return (
     <Stack height="100%" gap={2}>
-      <Button disabled={!isZoomed} onClick={resetZoom} sx={{ maxWidth: 200 }}>
+      <IconButton
+        disabled={!isZoomed}
+        onClick={resetZoom}
+        sx={{ maxWidth: 200 }}
+      >
+        <ZoomOutIcon />
         Reset Zoom
-      </Button>
-      <Typography level="body-md">
+      </IconButton>
+      <Typography
+        level="body-md"
+        textColor={isZoomed ? 'neutral.500' : 'neutral.100'}
+      >
         <em>Highlight a section of the chart to zoom in</em>
       </Typography>
       <ResponsiveContainer

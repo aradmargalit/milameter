@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AreaChart } from 'recharts';
 
 type UseDragZoomArgs<T> = {
   max: number;
@@ -14,10 +15,10 @@ type UseDragZoom<T> = {
   right: string;
   refLeft: string;
   refRight: string;
-  onMouseDown: () => void;
-  onMouseUp: () => void;
-  onMouseMove: () => void;
-  onMouseLeave: () => void;
+  onMouseDown: React.ComponentProps<typeof AreaChart>['onMouseDown'];
+  onMouseUp: React.ComponentProps<typeof AreaChart>['onMouseUp'];
+  onMouseMove: React.ComponentProps<typeof AreaChart>['onMouseMove'];
+  onMouseLeave: React.ComponentProps<typeof AreaChart>['onMouseLeave'];
   isZoomed: boolean;
   dataSlice: T[];
   resetZoom: () => void;
@@ -50,6 +51,9 @@ export function useDragZoom<T>({
   // Helper to determine if we are zoomedIn
   const isZoomed = state.left !== initialState.left;
 
+  /**
+   * Set the new bottom and top for the selected slice of data
+   */
   function getAxisYDomain(
     data: T[],
     dataKeys: Array<keyof T>,
@@ -161,14 +165,16 @@ export function useDragZoom<T>({
     });
   }
 
-  const onMouseDown = (e) =>
-    e && setState({ ...state, refLeft: e.activeLabel });
+  const onMouseDown: React.ComponentProps<typeof AreaChart>['onMouseDown'] = (
+    e
+  ) => e && setState({ ...state, refLeft: e.activeLabel ?? '' });
 
-  const onMouseMove = (e) =>
-    e && state.refLeft && setState({ ...state, refRight: e.activeLabel });
+  const onMouseMove: React.ComponentProps<typeof AreaChart>['onMouseDown'] = (
+    e
+  ) =>
+    e && state.refLeft && setState({ ...state, refRight: e.activeLabel ?? '' });
 
   const onMouseLeave = () => setState({ ...state, refLeft: '', refRight: '' });
-
   const onMouseUp = zoomIn;
 
   function resetZoom() {
