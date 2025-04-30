@@ -52,6 +52,7 @@
     "@types/luxon": "^3.6.2",
     "@types/mapbox__polyline": "^1.0.5",
     "@types/mapbox-gl": "^3.4.1",
+    "@types/recharts": "^1.8.29",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-simple-import-sort": "^12.1.1",
