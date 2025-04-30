@@ -1,9 +1,9 @@
 import { useTheme } from '@mui/joy';
 import {
+  Area,
+  AreaChart,
   Label,
   Legend,
-  Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -17,7 +17,6 @@ export type AltitudeChartOption = {
   dataKey: string;
   color: string;
   label: string;
-  strokeWidthPx: number;
 };
 
 export type AltitudePoint = {
@@ -43,10 +42,25 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
       width="100%"
       aspect={isMediumOrLarger ? 3.5 : 1.5}
     >
-      <LineChart
+      <AreaChart
         data={data}
         margin={{ bottom: 10, left: 10, right: 10, top: 10 }}
       >
+        <defs>
+          {chartOptions.map(({ dataKey, color }) => (
+            <linearGradient
+              key={dataKey}
+              id={`${dataKey}color`}
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop offset="5%" stopColor={color} stopOpacity={0.8} />
+              <stop offset="95%" stopColor={color} stopOpacity={0} />
+            </linearGradient>
+          ))}
+        </defs>
         <XAxis
           dataKey="secondsSinceStart"
           tickFormatter={(value) => secondsToDuration(value)}
@@ -75,21 +89,23 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
             borderRadius: '15%',
           }}
         />
-        {chartOptions.map(({ dataKey, color, label, strokeWidthPx }) => (
-          <Line
+        {chartOptions.map(({ dataKey, color, label }) => (
+          <Area
             key={dataKey}
             type="monotone"
             dot={false}
             dataKey={dataKey}
             stroke={color}
-            strokeWidth={strokeWidthPx}
+            strokeWidth={3}
             label={label}
             name={label}
             connectNulls
+            fill={`url(#${dataKey}color)`}
+            fillOpacity={0.5}
           />
         ))}
         <Legend />
-      </LineChart>
+      </AreaChart>
     </ResponsiveContainer>
   );
 }

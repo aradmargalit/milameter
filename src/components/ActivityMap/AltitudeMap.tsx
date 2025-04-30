@@ -2,6 +2,7 @@ import { Box, useTheme } from '@mui/joy';
 import { DateTime } from 'luxon';
 
 import { StravaActivity } from '@/apiClients/stravaClient/models';
+import { HUMAN_COLOR } from '@/colors';
 import { useActivityPair } from '@/contexts/ActivityPairContext/ActivityPairContext';
 import { GarminActivity } from '@/models/garminActivity';
 import { metersToFeet } from '@/utils/distanceUtils';
@@ -95,10 +96,9 @@ export function AltitudeMap() {
 
   const chartOptions: AltitudeChartOption[] = [
     {
-      color: theme.palette.text.primary,
+      color: HUMAN_COLOR,
       dataKey: 'stravaAltitude',
       label: 'Human Altitude',
-      strokeWidthPx: 5,
     },
   ];
 
@@ -107,7 +107,6 @@ export function AltitudeMap() {
       color: BRAND_ORANGE,
       dataKey: 'garminAltitude',
       label: 'Dog Altitude',
-      strokeWidthPx: 2,
     });
   }
 
