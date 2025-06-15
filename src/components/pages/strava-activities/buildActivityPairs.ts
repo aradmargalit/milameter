@@ -13,7 +13,6 @@ export function buildActivityPairs(
   activities: Activity[],
   garminActivities: GarminActivity[]
 ): ActivityPair[] {
-  activities;
   return activities.map((activity) => {
     const distances = garminActivities.map((gA) =>
       activityDistance(gA, activity)
