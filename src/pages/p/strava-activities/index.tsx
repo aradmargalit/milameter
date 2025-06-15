@@ -96,7 +96,11 @@ export default function StravaActivities({
     );
   }
 
-  const activityPairs = buildActivityPairs(activities, garminActivities);
+  const validGarminActivities = garminActivities.filter(
+    (gA) => gA.records?.length > 0
+  );
+
+  const activityPairs = buildActivityPairs(activities, validGarminActivities);
 
   return (
     <Layout>
