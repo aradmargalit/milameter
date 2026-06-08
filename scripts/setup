@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+HOSTS_ENTRY="127.0.0.1 local.milameter.run"
+HOSTS_FILE="/etc/hosts"
+
+if grep -q "local.milameter.run" "$HOSTS_FILE"; then
+  echo "✓ $HOSTS_FILE already contains local.milameter.run"
+else
+  echo "Adding local.milameter.run to $HOSTS_FILE (requires sudo)..."
+  echo "$HOSTS_ENTRY" | sudo tee -a "$HOSTS_FILE" > /dev/null
+  echo "✓ Added: $HOSTS_ENTRY"
+fi
