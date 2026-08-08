@@ -19,7 +19,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Requirements
 
-- Node 18.17.1
+- Node 24
 - `npm`
 
 ## Getting Started
