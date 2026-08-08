@@ -2,7 +2,7 @@ import { Coordinate, Record } from '@/types';
 
 import { isDistancePossible } from './garminUtils';
 
-jest.mock('@garmin-fit/sdk', () => {});
+jest.mock('@garmin/fitsdk', () => {});
 
 function makeMockRecord(partialRecord?: Partial<Record>): Record {
   return { altitude: 0, coord: [0, 0], time: 0, ...partialRecord };

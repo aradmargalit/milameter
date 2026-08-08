@@ -1,5 +1,4 @@
-// @ts-ignore
-import { Decoder, Stream } from '@garmin-fit/sdk';
+import { Decoder, Stream } from '@garmin/fitsdk';
 import { DateTime } from 'luxon';
 
 import { DEFAULT_TIME_SNAP_INTERVAL } from '@/config';
@@ -74,7 +73,10 @@ export async function garminActivityFromFile(
   const stream = Stream.fromBuffer(new Uint8Array(buffer));
   const decoder = new Decoder(stream);
   const messages = decoder.read().messages;
-  const garminRecords: GarminActivityRecord[] = messages.recordMesgs;
+  // GarminActivityRecord is our narrowed view of the SDK's RecordMesg, which
+  // declares every field optional because they depend on the recording device
+  const garminRecords = (messages.recordMesgs ??
+    []) as unknown as GarminActivityRecord[];
 
   const distance =
     garminRecords.length > 0
@@ -90,11 +92,11 @@ export async function garminActivityFromFile(
   // expose coordinates more easily
   const coordinates = records.map((record) => record.coord);
 
-  const sessionData = messages.sessionMesgs[0];
+  const sessionData = messages.sessionMesgs?.[0];
 
-  const elapsedTime = sessionData.totalElapsedTime;
-  const totalElevationGain = sessionData.totalAscent;
-  const maxSpeed = sessionData.enhancedMaxSpeed;
+  const elapsedTime = sessionData?.totalElapsedTime ?? 0;
+  const totalElevationGain = sessionData?.totalAscent ?? 0;
+  const maxSpeed = sessionData?.enhancedMaxSpeed ?? 0;
 
   return {
     coordinates,

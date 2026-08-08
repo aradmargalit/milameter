@@ -24,8 +24,7 @@ type ActivityPairContextDataWithGarmin = Omit<
 };
 
 type ActivityPairContextData =
-  | BaseActivityPairContextData
-  | ActivityPairContextDataWithGarmin;
+  BaseActivityPairContextData | ActivityPairContextDataWithGarmin;
 
 type ActivityPairContextMethods = {};
 

@@ -8,13 +8,17 @@ type UseDragZoomArgs<T> = {
   dataKeys: Array<keyof T>;
 };
 
+// The x-axis bounds are either a data value (a number, for a zoomed-in slice)
+// or one of recharts' 'dataMin'/'dataMax' sentinels
+type AxisBound = string | number;
+
 type UseDragZoom<T> = {
   top: number;
   bottom: number;
-  left: string;
-  right: string;
-  refLeft: string;
-  refRight: string;
+  left: AxisBound;
+  right: AxisBound;
+  refLeft: AxisBound;
+  refRight: AxisBound;
   onMouseDown: React.ComponentProps<typeof AreaChart>['onMouseDown'];
   onMouseUp: React.ComponentProps<typeof AreaChart>['onMouseUp'];
   onMouseMove: React.ComponentProps<typeof AreaChart>['onMouseMove'];
@@ -36,7 +40,15 @@ export function useDragZoom<T>({
   dataKeys,
 }: UseDragZoomArgs<T>): UseDragZoom<T> {
   // 'dataMin' and 'dataMax' let recharts default to the left and right bounds of the data
-  const initialState = {
+  const initialState: {
+    bottom: number;
+    dataSlice: T[];
+    left: AxisBound;
+    refLeft: AxisBound;
+    refRight: AxisBound;
+    right: AxisBound;
+    top: number;
+  } = {
     bottom: 0,
     dataSlice: data,
     left: 'dataMin',
@@ -58,8 +70,8 @@ export function useDragZoom<T>({
     data: T[],
     dataKeys: Array<keyof T>,
     xAxisKey: keyof T,
-    leftBound: string,
-    rightBound: string
+    leftBound: AxisBound,
+    rightBound: AxisBound
   ) {
     // Data is already sorted, so push everything from left to right into an array
     // Once we find the data point at the left bound, set hitLeft to true

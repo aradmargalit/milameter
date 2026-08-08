@@ -127,7 +127,7 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
           </YAxis>
           <Tooltip
             formatter={(value) => [`${(value as number).toFixed(2)} ft`]}
-            labelFormatter={(label) => secondsToDuration(label)}
+            labelFormatter={(label) => secondsToDuration(label as number)}
             animationDuration={200}
             contentStyle={{
               background: theme.palette.background.backdrop,
@@ -142,7 +142,6 @@ export function AltitudeChart({ data, chartOptions }: AltitudeChartProps) {
               dataKey={dataKey}
               stroke={color}
               strokeWidth={3}
-              label={label}
               name={label}
               connectNulls
               fill={`url(#${dataKey}color)`}
