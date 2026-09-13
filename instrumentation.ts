@@ -21,3 +21,7 @@ export function register() {
     // that it will also get attached to your source maps
   });
 }
+
+// Export the onRequestError hook so Sentry captures server-side request errors,
+// including those from nested React Server Components
+export const onRequestError = Sentry.captureRequestError;
