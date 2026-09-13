@@ -12,7 +12,6 @@ describe('computePace', () => {
       const meters = miles * METERS_PER_MILE;
       expect(
         computePace({
-          coordinates: [],
           distance: meters,
           elapsedTime: minutes * 60 + 1,
           maxSpeed: 10,
